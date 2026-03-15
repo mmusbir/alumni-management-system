@@ -184,6 +184,10 @@ Sebelum deploy ke server production:
 - set `CORS_ORIGIN` ke domain aplikasi
 - aktifkan reverse proxy jika tidak ingin memakai `:3000`
 
+## Changelog
+
+Riwayat rilis dan perubahan penting tersedia di [CHANGELOG.md](d:/Laragon/www/ikasmanda/CHANGELOG.md).
+
 ## Lisensi
 
 Belum ditentukan.
