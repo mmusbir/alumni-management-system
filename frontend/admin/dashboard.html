@@ -1,0 +1,1181 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel Admin | IKA SMANDA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { primary: '#0E4BA8', ink: '#0B1D3A' },
+          fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] }
+        }
+      }
+    };
+  </script>
+  <style>
+    .menu-icon {
+      display: inline-flex;
+      flex-shrink: 0;
+      align-items: center;
+      justify-content: center;
+    }
+    .menu-label {
+      min-width: 0;
+    }
+    @media (min-width: 1024px) {
+      .admin-shell {
+        grid-template-columns: 224px minmax(0, 1fr) !important;
+      }
+      .admin-shell.sidebar-collapsed {
+        grid-template-columns: 72px minmax(0, 1fr) !important;
+      }
+      .admin-sidebar .brand-block {
+        padding: 0.875rem 0.875rem !important;
+      }
+      .admin-sidebar .nav-block {
+        padding: 0.625rem !important;
+      }
+      .admin-sidebar .menu-btn,
+      .admin-sidebar .submenu-btn,
+      .admin-sidebar #settingsToggleBtn,
+      .admin-sidebar #logoutBtn {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        font-size: 12px !important;
+        line-height: 1.2 !important;
+        padding-top: 0.625rem !important;
+        padding-bottom: 0.625rem !important;
+      }
+      .admin-sidebar .submenu-btn {
+        padding-left: 0.75rem !important;
+      }
+      .admin-main {
+        gap: 0.875rem !important;
+        padding: 0.875rem !important;
+      }
+      .admin-main .view-panel {
+        gap: 0.875rem !important;
+      }
+      .admin-main .grid {
+        gap: 0.875rem;
+      }
+      .admin-main .rounded-2xl {
+        border-radius: 1rem;
+      }
+      .admin-main article.rounded-2xl,
+      .admin-main section.rounded-2xl {
+        padding: 0.875rem !important;
+      }
+      .admin-main h2 {
+        font-size: 0.95rem !important;
+      }
+      .admin-main p,
+      .admin-main label,
+      .admin-main input,
+      .admin-main select,
+      .admin-main textarea,
+      .admin-main button,
+      .admin-main a {
+        font-size: 12.5px;
+      }
+      .admin-main table {
+        font-size: 13px !important;
+      }
+      .admin-main th {
+        font-size: 11px !important;
+        padding-bottom: 0.75rem !important;
+      }
+      .admin-main td {
+        padding-top: 0.75rem !important;
+        padding-bottom: 0.75rem !important;
+      }
+      .admin-main .overflow-x-auto {
+        scrollbar-width: thin;
+      }
+      #alumniSearch,
+      #usahaSearch {
+        width: 13rem !important;
+      }
+      #statAlumni,
+      #statUsaha,
+      #statToday {
+        font-size: 1.5rem !important;
+      }
+      .admin-shell.sidebar-collapsed .brand-row {
+        justify-content: center;
+      }
+      .admin-shell.sidebar-collapsed .brand-copy,
+      .admin-shell.sidebar-collapsed #adminBrandImage,
+      .admin-shell.sidebar-collapsed #adminBrandText,
+      .admin-shell.sidebar-collapsed .menu-label,
+      .admin-shell.sidebar-collapsed #settingsToggleIcon {
+        display: none !important;
+      }
+      .admin-shell.sidebar-collapsed .brand-block {
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
+      }
+      .admin-shell.sidebar-collapsed .nav-block {
+        padding-left: 0.375rem !important;
+        padding-right: 0.375rem !important;
+      }
+      .admin-shell.sidebar-collapsed .menu-btn,
+      .admin-shell.sidebar-collapsed .submenu-btn,
+      .admin-shell.sidebar-collapsed #settingsToggleBtn,
+      .admin-shell.sidebar-collapsed #logoutBtn {
+        justify-content: center;
+        gap: 0 !important;
+        padding-left: 0.625rem !important;
+        padding-right: 0.625rem !important;
+      }
+      .admin-shell.sidebar-collapsed .submenu-shell {
+        padding: 0.25rem !important;
+      }
+      .admin-shell.sidebar-collapsed #settingsSubmenu {
+        margin-top: 0.25rem !important;
+      }
+    }
+  </style>
+</head>
+<body class="bg-slate-100 font-sans text-slate-900">
+  <div class="admin-shell min-h-screen lg:grid lg:grid-cols-[252px_1fr]">
+    <aside class="admin-sidebar border-r border-slate-200 bg-white">
+      <div class="sticky top-0 flex h-screen flex-col">
+        <div class="brand-block border-b border-slate-200 px-4 py-4">
+          <div class="brand-row flex items-start justify-between gap-2">
+            <div class="flex min-w-0 items-center gap-3">
+              <img id="adminBrandImage" class="hidden h-9 w-auto rounded-md object-contain" alt="Logo admin IKA SMANDA" />
+              <p id="adminBrandText" class="text-xs font-bold uppercase tracking-[0.18em] text-primary">IKA SMANDA</p>
+            </div>
+            <button id="sidebarToggleBtn" type="button" class="hidden rounded-lg border border-slate-200 p-2 text-slate-600 transition hover:bg-slate-50 lg:inline-flex" aria-label="Sembunyikan sidebar" title="Sembunyikan sidebar">
+              <svg aria-hidden="true" class="h-4 w-4" fill="none" viewBox="0 0 24 24">
+                <path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+              </svg>
+            </button>
+          </div>
+          <div class="brand-copy">
+            <h1 class="mt-1 text-base font-extrabold text-ink">Admin Panel</h1>
+            <p id="adminName" class="mt-1 text-xs text-slate-500"></p>
+          </div>
+        </div>
+        <nav class="nav-block flex-1 space-y-1.5 overflow-y-auto p-3">
+          <button data-view="dashboard" title="Dashboard" class="menu-btn w-full rounded-lg px-3 py-2 text-left text-[13px] font-semibold text-slate-700">
+            <span class="menu-icon">
+              <svg aria-hidden="true" class="h-4 w-4" fill="none" viewBox="0 0 24 24">
+                <path d="M4 11.5 12 5l8 6.5V20a1 1 0 0 1-1 1h-4.5v-5h-5v5H5a1 1 0 0 1-1-1v-8.5Z" stroke="currentColor" stroke-linejoin="round" stroke-width="1.8"/>
+              </svg>
+            </span>
+            <span class="menu-label">Dashboard</span>
+          </button>
+          <button data-view="alumni" title="Data Alumni" class="menu-btn w-full rounded-lg px-3 py-2 text-left text-[13px] font-semibold text-slate-700">
+            <span class="menu-icon">
+              <svg aria-hidden="true" class="h-4 w-4" fill="none" viewBox="0 0 24 24">
+                <circle cx="9" cy="8" r="3" stroke="currentColor" stroke-width="1.8"/>
+                <path d="M4.5 18a4.5 4.5 0 0 1 9 0" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"/>
+                <circle cx="17" cy="9" r="2.5" stroke="currentColor" stroke-width="1.8"/>
+                <path d="M14.5 18a3.5 3.5 0 0 1 5 0" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"/>
+              </svg>
+            </span>
+            <span class="menu-label">Data Alumni</span>
+          </button>
+          <button data-view="usaha" title="Daftar Usaha Alumni" class="menu-btn w-full rounded-lg px-3 py-2 text-left text-[13px] font-semibold text-slate-700">
+            <span class="menu-icon">
+              <svg aria-hidden="true" class="h-4 w-4" fill="none" viewBox="0 0 24 24">
+                <path d="M4 10h16v10H4zM6 10V6h12v4M9 14h6" stroke="currentColor" stroke-linejoin="round" stroke-width="1.8"/>
+              </svg>
+            </span>
+            <span class="menu-label">Daftar Usaha Alumni</span>
+          </button>
+          <div class="submenu-shell rounded-xl border border-slate-200 p-1.5">
+            <button id="settingsToggleBtn" title="Pengaturan" class="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-[13px] font-semibold text-slate-700">
+              <span class="flex min-w-0 items-center gap-3">
+                <span class="menu-icon">
+                  <svg aria-hidden="true" class="h-4 w-4" fill="none" viewBox="0 0 24 24">
+                    <path d="M4 7h10M16 7h4M4 12h4M10 12h10M4 17h12M18 17h2" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"/>
+                    <circle cx="14" cy="7" r="2" stroke="currentColor" stroke-width="1.8"/>
+                    <circle cx="8" cy="12" r="2" stroke="currentColor" stroke-width="1.8"/>
+                    <circle cx="16" cy="17" r="2" stroke="currentColor" stroke-width="1.8"/>
+                  </svg>
+                </span>
+                <span class="menu-label">Pengaturan</span>
+              </span>
+              <span id="settingsToggleIcon" class="text-xs">v</span>
+            </button>
+            <div id="settingsSubmenu" class="mt-2 space-y-1">
+              <button data-view="frontpage" title="Halaman Depan" class="submenu-btn w-full rounded-lg px-3 py-2 text-left text-[13px] font-medium text-slate-600">
+                <span class="menu-icon">
+                  <svg aria-hidden="true" class="h-4 w-4" fill="none" viewBox="0 0 24 24">
+                    <path d="M4 6h16v12H4zM4 10h16" stroke="currentColor" stroke-linejoin="round" stroke-width="1.8"/>
+                  </svg>
+                </span>
+                <span class="menu-label">Halaman Depan</span>
+              </button>
+              <button data-view="lapak-categories" title="Kategori Lapak" class="submenu-btn w-full rounded-lg px-3 py-2 text-left text-[13px] font-medium text-slate-600">
+                <span class="menu-icon">
+                  <svg aria-hidden="true" class="h-4 w-4" fill="none" viewBox="0 0 24 24">
+                    <path d="m7 7 5-3 5 3v5l-5 3-5-3V7Zm-3 9 5-3m6 0 5 3" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>
+                  </svg>
+                </span>
+                <span class="menu-label">Kategori Lapak</span>
+              </button>
+              <button data-view="provinces" title="Provinsi" class="submenu-btn w-full rounded-lg px-3 py-2 text-left text-[13px] font-medium text-slate-600">
+                <span class="menu-icon">
+                  <svg aria-hidden="true" class="h-4 w-4" fill="none" viewBox="0 0 24 24">
+                    <path d="M12 3c4.4 0 8 3.1 8 7 0 5.5-8 11-8 11S4 15.5 4 10c0-3.9 3.6-7 8-7Zm0 4a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z" stroke="currentColor" stroke-linejoin="round" stroke-width="1.8"/>
+                  </svg>
+                </span>
+                <span class="menu-label">Provinsi</span>
+              </button>
+              <button data-view="admin-users" title="User Admin" class="submenu-btn w-full rounded-lg px-3 py-2 text-left text-[13px] font-medium text-slate-600">
+                <span class="menu-icon">
+                  <svg aria-hidden="true" class="h-4 w-4" fill="none" viewBox="0 0 24 24">
+                    <path d="M15 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM5 19a5 5 0 0 1 10 0m5-8v6m-3-3h6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>
+                  </svg>
+                </span>
+                <span class="menu-label">User Admin</span>
+              </button>
+            </div>
+          </div>
+        </nav>
+        <div class="border-t border-slate-200 p-3">
+          <button id="logoutBtn" title="Logout" class="w-full rounded-lg bg-slate-900 px-3 py-2 text-[13px] font-semibold text-white hover:bg-slate-700">
+            <span class="menu-icon">
+              <svg aria-hidden="true" class="h-4 w-4" fill="none" viewBox="0 0 24 24">
+                <path d="M10 17l-5-5 5-5M5 12h10m-3 8h5a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>
+              </svg>
+            </span>
+            <span class="menu-label">Logout</span>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="admin-main space-y-5 p-4 sm:p-5">
+      <section id="view-dashboard" class="view-panel space-y-5">
+        <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+          <article class="rounded-2xl bg-ink p-4 text-white shadow-lg"><p class="text-xs font-semibold uppercase tracking-[0.16em] text-blue-200">Total Alumni</p><p id="statAlumni" class="mt-1.5 text-2xl font-extrabold">0</p></article>
+          <article class="rounded-2xl bg-primary p-4 text-white shadow-lg"><p class="text-xs font-semibold uppercase tracking-[0.16em] text-blue-100">Total Usaha</p><p id="statUsaha" class="mt-1.5 text-2xl font-extrabold">0</p></article>
+          <article class="rounded-2xl bg-emerald-600 p-4 text-white shadow-lg"><p class="text-xs font-semibold uppercase tracking-[0.16em] text-emerald-100">Alumni Hari Ini</p><p id="statToday" class="mt-1.5 text-2xl font-extrabold">0</p></article>
+        </div>
+        <div class="grid gap-5 lg:grid-cols-2">
+          <article class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+            <h2 class="mb-4 text-base font-bold text-ink">Alumni Terbaru</h2>
+            <div class="overflow-x-auto"><table class="w-full min-w-[500px] text-sm"><thead><tr class="border-b border-slate-200 text-left text-xs uppercase tracking-wide text-slate-500"><th class="pb-3">Nama</th><th class="pb-3">Angkatan</th><th class="pb-3">Kontak</th><th class="pb-3">Kota</th></tr></thead><tbody id="recentAlumniRows"><tr><td class="py-4 text-slate-500" colspan="4">Memuat data...</td></tr></tbody></table></div>
+          </article>
+          <article class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+            <h2 class="mb-4 text-base font-bold text-ink">Usaha Terbaru</h2>
+            <div class="overflow-x-auto"><table class="w-full min-w-[420px] text-sm"><thead><tr class="border-b border-slate-200 text-left text-xs uppercase tracking-wide text-slate-500"><th class="pb-3">Nama Usaha</th><th class="pb-3">Kategori</th><th class="pb-3">Pemilik</th></tr></thead><tbody id="recentUsahaRows"><tr><td class="py-4 text-slate-500" colspan="3">Memuat data...</td></tr></tbody></table></div>
+          </article>
+        </div>
+      </section>
+
+      <section id="view-alumni" class="view-panel hidden space-y-5">
+        <article class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div class="flex flex-wrap items-start justify-between gap-4">
+            <div><h2 class="text-base font-bold text-ink">Import Data Alumni CSV</h2><p class="mt-1 text-sm text-slate-500">Gunakan template resmi agar kolom sesuai. Baris duplikat akan dilewati.</p></div>
+            <a href="/api/admin/alumni/import-template" class="rounded-lg border border-slate-300 px-3 py-2 text-[13px] font-semibold text-slate-700 hover:bg-slate-50">Unduh Template CSV</a>
+          </div>
+          <form id="importAlumniForm" class="mt-4 flex flex-col gap-3 md:flex-row md:items-center">
+            <input id="csvFileInput" name="file" accept=".csv" type="file" class="block w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px]" />
+            <button id="importAlumniBtn" type="submit" class="rounded-lg bg-primary px-4 py-2 text-[13px] font-semibold text-white hover:bg-blue-700">Import CSV</button>
+          </form>
+          <div id="importAlumniMessage" class="mt-3 text-sm text-slate-500"></div>
+          <div id="importAlumniErrors" class="mt-3 hidden rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900"></div>
+        </article>
+        <article id="alumniFormCard" class="hidden rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div class="mb-4 flex items-center justify-between gap-3">
+            <div><h2 id="alumniFormTitle" class="text-base font-bold text-ink">Tambah Alumni</h2><p class="mt-1 text-sm text-slate-500">Input manual untuk data alumni dari panel admin.</p></div>
+            <button id="cancelAlumniFormBtn" type="button" class="rounded-lg border border-slate-300 px-3 py-2 text-[13px] font-semibold text-slate-700 hover:bg-slate-50">Tutup</button>
+          </div>
+          <form id="alumniForm" class="grid gap-2.5 md:grid-cols-2 xl:grid-cols-3">
+            <input id="alumniNama" type="text" placeholder="Nama alumni" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" />
+            <input id="alumniAngkatan" type="text" placeholder="Angkatan" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" />
+            <select id="alumniGender" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary"><option value="Laki-laki">Laki-laki</option><option value="Perempuan">Perempuan</option></select>
+            <input id="alumniEmail" type="email" placeholder="Email" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" />
+            <input id="alumniPhone" type="text" placeholder="No. HP" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" />
+            <input id="alumniProfesi" type="text" placeholder="Profesi" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" />
+            <input id="alumniTempatLahir" type="text" placeholder="Tempat lahir" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" />
+            <input id="alumniTanggalLahir" type="date" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" />
+            <input id="alumniProvinsi" type="text" placeholder="Provinsi" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" />
+            <input id="alumniKota" type="text" placeholder="Kota / Kabupaten" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" />
+            <textarea id="alumniAlamat" rows="3" placeholder="Alamat" class="md:col-span-2 xl:col-span-2 w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary"></textarea>
+            <label class="flex items-center gap-2 rounded-lg border border-slate-300 px-3 py-2 text-[13px] font-medium text-slate-700"><input id="alumniVerified" type="checkbox" checked class="h-4 w-4 rounded border-slate-300 text-primary focus:ring-primary" /> Langsung terverifikasi</label>
+            <div class="md:col-span-2 xl:col-span-3 flex items-center justify-between gap-3">
+              <p id="alumniFormMessage" class="text-sm text-slate-500"></p>
+              <div class="flex gap-2">
+                <button id="resetAlumniFormBtn" type="button" class="rounded-lg border border-slate-300 px-3 py-2 text-[13px] font-semibold text-slate-700 hover:bg-slate-50">Reset</button>
+                <button id="saveAlumniBtn" type="submit" class="rounded-lg bg-primary px-4 py-2 text-[13px] font-semibold text-white hover:bg-blue-700">Simpan Alumni</button>
+              </div>
+            </div>
+          </form>
+        </article>
+        <article class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+            <h2 class="text-base font-bold text-ink">Data Alumni</h2>
+            <div class="flex flex-wrap gap-2"><input id="alumniSearch" type="text" placeholder="Cari nama/email/HP..." class="w-60 rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" /><button id="alumniSearchBtn" class="rounded-lg bg-primary px-3 py-2 text-[13px] font-semibold text-white hover:bg-blue-700">Cari</button><button id="openAlumniFormBtn" class="rounded-lg bg-slate-900 px-3 py-2 text-[13px] font-semibold text-white hover:bg-slate-700">Tambah Alumni</button></div>
+          </div>
+          <div class="overflow-x-auto"><table class="w-full min-w-[1060px] text-sm"><thead><tr class="border-b border-slate-200 text-left text-xs uppercase tracking-wide text-slate-500"><th class="pb-3">Nama</th><th class="pb-3">Angkatan</th><th class="pb-3">Email</th><th class="pb-3">Phone</th><th class="pb-3">Profesi</th><th class="pb-3">Kota</th><th class="pb-3">Status</th><th class="pb-3">Aksi</th></tr></thead><tbody id="alumniRows"><tr><td class="py-4 text-slate-500" colspan="8">Memuat data...</td></tr></tbody></table></div>
+        </article>
+      </section>
+
+      <section id="view-usaha" class="view-panel hidden rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+        <article id="usahaFormCard" class="mb-5 hidden rounded-2xl border border-slate-200 bg-slate-50 p-4 shadow-sm">
+          <div class="mb-4 flex items-center justify-between gap-3">
+            <div><h2 id="usahaFormTitle" class="text-base font-bold text-ink">Tambah Usaha</h2><p class="mt-1 text-sm text-slate-500">Kelola data usaha alumni secara manual.</p></div>
+            <button id="cancelUsahaFormBtn" type="button" class="rounded-lg border border-slate-300 px-3 py-2 text-[13px] font-semibold text-slate-700 hover:bg-white">Tutup</button>
+          </div>
+          <form id="usahaForm" class="grid gap-2.5 md:grid-cols-2 xl:grid-cols-4">
+            <input id="usahaNama" type="text" placeholder="Nama usaha" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" />
+            <select id="usahaKategori" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary"><option value="">Pilih kategori</option></select>
+            <select id="usahaPemilik" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary"><option value="">Pilih pemilik alumni</option></select>
+            <label class="flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2 text-[13px] font-medium text-slate-700"><input id="usahaVerified" type="checkbox" checked class="h-4 w-4 rounded border-slate-300 text-primary focus:ring-primary" /> Langsung terverifikasi</label>
+            <div class="md:col-span-2 xl:col-span-4 flex items-center justify-between gap-3">
+              <p id="usahaFormMessage" class="text-sm text-slate-500"></p>
+              <div class="flex gap-2">
+                <button id="resetUsahaFormBtn" type="button" class="rounded-lg border border-slate-300 px-3 py-2 text-[13px] font-semibold text-slate-700 hover:bg-white">Reset</button>
+                <button id="saveUsahaBtn" type="submit" class="rounded-lg bg-primary px-4 py-2 text-[13px] font-semibold text-white hover:bg-blue-700">Simpan Usaha</button>
+              </div>
+            </div>
+          </form>
+        </article>
+        <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+          <h2 class="text-base font-bold text-ink">Daftar Usaha Alumni</h2>
+          <div class="flex flex-wrap gap-2"><input id="usahaSearch" type="text" placeholder="Cari usaha/pemilik..." class="w-60 rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" /><button id="usahaSearchBtn" class="rounded-lg bg-primary px-3 py-2 text-[13px] font-semibold text-white hover:bg-blue-700">Cari</button><button id="openUsahaFormBtn" class="rounded-lg bg-slate-900 px-3 py-2 text-[13px] font-semibold text-white hover:bg-slate-700">Tambah Usaha</button></div>
+        </div>
+        <div class="overflow-x-auto"><table class="w-full min-w-[920px] text-sm"><thead><tr class="border-b border-slate-200 text-left text-xs uppercase tracking-wide text-slate-500"><th class="pb-3">Nama Usaha</th><th class="pb-3">Kategori</th><th class="pb-3">Pemilik</th><th class="pb-3">Dibuat</th><th class="pb-3">Status</th><th class="pb-3">Aksi</th></tr></thead><tbody id="usahaRows"><tr><td class="py-4 text-slate-500" colspan="6">Memuat data...</td></tr></tbody></table></div>
+      </section>
+
+      <section id="view-frontpage" class="view-panel hidden rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+        <div class="mb-5"><h2 class="text-base font-bold text-ink">Pengaturan Halaman Depan</h2><p class="mt-1 text-sm text-slate-500">Upload asset visual untuk favicon, logo, dan background hero. Format file: PNG atau JPG.</p></div>
+        <form id="siteSettingsForm" class="grid gap-5 lg:grid-cols-2">
+          <div class="space-y-4">
+            <div><label class="mb-1 block text-sm font-semibold">Teks Logo Fallback</label><input id="logoText" type="text" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" /><p class="mt-1 text-xs text-slate-500">Dipakai jika file logo belum diunggah dan ikut menjadi teks brand di panel admin.</p></div>
+            <label class="flex items-start gap-3 rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700"><input id="hideLogoTextOnIndex" type="checkbox" class="mt-0.5 h-4 w-4 rounded border-slate-300 text-primary focus:ring-primary" /><span>Sembunyikan teks logo di halaman index dan panel admin saat logo PNG/JPG ditampilkan.</span></label>
+            <div><label class="mb-1 block text-sm font-semibold">Upload Favicon</label><input id="faviconFile" accept="image/png,image/jpeg" type="file" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px]" /><div class="mt-2 flex items-center gap-3"><img id="faviconPreview" class="hidden h-14 w-14 rounded-lg border border-slate-200 object-contain p-1" alt="Preview favicon" /><button id="removeFaviconBtn" type="button" class="hidden rounded-lg border border-red-200 px-3 py-1.5 text-xs font-semibold text-red-600 hover:bg-red-50">Hapus</button></div></div>
+            <div><label class="mb-1 block text-sm font-semibold">Upload Logo</label><input id="logoFile" accept="image/png,image/jpeg" type="file" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px]" /><div class="mt-2 flex items-center gap-3"><img id="logoPreview" class="hidden h-14 w-auto rounded-lg border border-slate-200 object-contain p-1" alt="Preview logo" /><button id="removeLogoBtn" type="button" class="hidden rounded-lg border border-red-200 px-3 py-1.5 text-xs font-semibold text-red-600 hover:bg-red-50">Hapus</button></div></div>
+            <div><label class="mb-1 block text-sm font-semibold">Judul Hero</label><input id="heroTitle" type="text" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" /></div>
+            <div><label class="mb-1 block text-sm font-semibold">Subjudul Hero</label><textarea id="heroSubtitle" rows="4" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary"></textarea></div>
+          </div>
+          <div class="space-y-4">
+            <div><label class="mb-1 block text-sm font-semibold">Teks Tombol Hero 1</label><input id="heroPrimaryText" type="text" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" /></div>
+            <div><label class="mb-1 block text-sm font-semibold">Link Tombol Hero 1</label><input id="heroPrimaryLink" type="text" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" placeholder="/pendaftaran atau https://..." /></div>
+            <div><label class="mb-1 block text-sm font-semibold">Teks Tombol Hero 2</label><input id="heroSecondaryText" type="text" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" /></div>
+            <div><label class="mb-1 block text-sm font-semibold">Link Tombol Hero 2</label><input id="heroSecondaryLink" type="text" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" placeholder="/direktori atau https://..." /></div>
+            <div><label class="mb-1 block text-sm font-semibold">Upload Background Hero</label><input id="heroFile" accept="image/png,image/jpeg" type="file" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px]" /><div class="mt-2 space-y-3"><img id="heroPreview" class="hidden h-28 w-full rounded-lg border border-slate-200 object-cover" alt="Preview hero" /><button id="removeHeroBtn" type="button" class="hidden rounded-lg border border-red-200 px-3 py-1.5 text-xs font-semibold text-red-600 hover:bg-red-50">Hapus Background Hero</button></div></div>
+          </div>
+          <div class="flex items-center justify-between gap-3 lg:col-span-2"><p id="settingsMessage" class="text-sm text-slate-500"></p><button id="saveSettingsBtn" type="submit" class="rounded-lg bg-primary px-4 py-2 text-[13px] font-semibold text-white hover:bg-blue-700">Simpan Pengaturan</button></div>
+        </form>
+      </section>
+      <section id="view-lapak-categories" class="view-panel hidden space-y-5">
+        <article class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div class="mb-4"><h2 class="text-base font-bold text-ink">Kategori Lapak</h2><p class="mt-1 text-sm text-slate-500">Kelola kategori yang dipakai di halaman lapak dan form usaha alumni.</p></div>
+          <form id="lapakCategoryForm" class="flex flex-col gap-3 md:flex-row md:items-center"><input id="lapakCategoryName" type="text" placeholder="Nama kategori baru" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" /><button id="saveLapakCategoryBtn" type="submit" class="rounded-lg bg-primary px-4 py-2 text-[13px] font-semibold text-white hover:bg-blue-700">Tambah Kategori</button></form>
+          <p id="lapakCategoryMessage" class="mt-3 text-sm text-slate-500"></p>
+        </article>
+        <article class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div class="overflow-x-auto"><table class="w-full min-w-[640px] text-sm"><thead><tr class="border-b border-slate-200 text-left text-xs uppercase tracking-wide text-slate-500"><th class="pb-3">Nama</th><th class="pb-3">Dibuat</th><th class="pb-3">Diupdate</th><th class="pb-3">Aksi</th></tr></thead><tbody id="lapakCategoryRows"><tr><td class="py-4 text-slate-500" colspan="4">Memuat data...</td></tr></tbody></table></div>
+        </article>
+      </section>
+
+      <section id="view-provinces" class="view-panel hidden space-y-5">
+        <article class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div class="mb-4"><h2 class="text-base font-bold text-ink">Provinsi</h2><p class="mt-1 text-sm text-slate-500">Kelola daftar provinsi yang muncul di form pendaftaran alumni.</p></div>
+          <form id="provinceForm" class="flex flex-col gap-3 md:flex-row md:items-center"><input id="provinceName" type="text" placeholder="Nama provinsi" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" /><button id="saveProvinceBtn" type="submit" class="rounded-lg bg-primary px-4 py-2 text-[13px] font-semibold text-white hover:bg-blue-700">Tambah Provinsi</button></form>
+          <p id="provinceMessage" class="mt-3 text-sm text-slate-500"></p>
+        </article>
+        <article class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div class="overflow-x-auto"><table class="w-full min-w-[640px] text-sm"><thead><tr class="border-b border-slate-200 text-left text-xs uppercase tracking-wide text-slate-500"><th class="pb-3">Nama</th><th class="pb-3">Dibuat</th><th class="pb-3">Diupdate</th><th class="pb-3">Aksi</th></tr></thead><tbody id="provinceRows"><tr><td class="py-4 text-slate-500" colspan="4">Memuat data...</td></tr></tbody></table></div>
+        </article>
+      </section>
+
+      <section id="view-admin-users" class="view-panel hidden space-y-5">
+        <article class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div class="mb-4"><h2 class="text-base font-bold text-ink">User Admin</h2><p class="mt-1 text-sm text-slate-500">Kelola akun yang dapat login ke halaman admin.</p></div>
+          <form id="adminUserForm" class="grid gap-3 md:grid-cols-3">
+            <input id="adminUserName" type="text" placeholder="Nama admin" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" />
+            <input id="adminUserEmail" type="email" placeholder="Email admin" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" />
+            <input id="adminUserPassword" type="password" placeholder="Password admin" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" />
+            <div class="md:col-span-3 flex items-center justify-between gap-3">
+              <p id="adminUserMessage" class="text-sm text-slate-500"></p>
+              <button id="saveAdminUserBtn" type="submit" class="rounded-lg bg-primary px-4 py-2 text-[13px] font-semibold text-white hover:bg-blue-700">Tambah User</button>
+            </div>
+          </form>
+        </article>
+        <article class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+          <div class="overflow-x-auto"><table class="w-full min-w-[720px] text-sm"><thead><tr class="border-b border-slate-200 text-left text-xs uppercase tracking-wide text-slate-500"><th class="pb-3">Nama</th><th class="pb-3">Email</th><th class="pb-3">Dibuat</th><th class="pb-3">Aksi</th></tr></thead><tbody id="adminUserRows"><tr><td class="py-4 text-slate-500" colspan="4">Memuat data...</td></tr></tbody></table></div>
+        </article>
+      </section>
+
+      <footer class="rounded-2xl border border-slate-200 bg-white/80 px-4 py-3 text-center text-[11px] leading-relaxed text-slate-500 shadow-sm">
+        <p>&copy; 2026 Ikatan Keluarga Alumni SMAN 2 Kendal.</p>
+        <p>
+          Developed by
+          <a href="https://www.yunakatech.com/" target="_blank" rel="noopener noreferrer" class="text-primary transition hover:text-blue-700">
+            Yunaka Tech
+          </a>.
+          ❤️
+        </p>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    const API_BASE = '/api';
+    const state = {
+      activeView: 'dashboard',
+      alumniSearch: '',
+      usahaSearch: '',
+      lapakCategoryEditId: null,
+      provinceEditId: null,
+      adminUserEditId: null,
+      currentAdminId: null,
+      alumniEditId: null,
+      usahaEditId: null,
+      deleteFavicon: false,
+      deleteLogo: false,
+      deleteHero: false,
+      sidebarCollapsed: false,
+      alumniRows: [],
+      usahaRows: [],
+      alumniOptions: [],
+      lapakCategories: [],
+    };
+    const SETTINGS_VIEWS = ['frontpage', 'lapak-categories', 'provinces', 'admin-users'];
+
+    function numberFormat(num) { return new Intl.NumberFormat('id-ID').format(num || 0); }
+    function formatDate(value) { if (!value) return '-'; return new Date(value).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' }); }
+    function renderVerificationBadge(isVerified, verifiedAt) {
+      if (isVerified) {
+        return `<span class="inline-flex rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">Terverifikasi${verifiedAt ? ` | ${formatDate(verifiedAt)}` : ''}</span>`;
+      }
+      return '<span class="inline-flex rounded-full bg-amber-100 px-3 py-1 text-xs font-semibold text-amber-700">Menunggu Verifikasi</span>';
+    }
+    async function fetchJSON(url, options = {}) {
+      const response = await fetch(url, { credentials: 'include', ...options });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.message || 'Request gagal');
+      return result;
+    }
+    function setActiveMenu(view) {
+      document.querySelectorAll('.menu-btn, .submenu-btn').forEach((btn) => {
+        const isActive = btn.dataset.view === view;
+        btn.classList.toggle('bg-primary', isActive);
+        btn.classList.toggle('text-white', isActive);
+        if (!isActive) {
+          btn.classList.remove('bg-primary', 'text-white');
+          if (btn.classList.contains('menu-btn')) btn.classList.add('text-slate-700');
+          if (btn.classList.contains('submenu-btn')) btn.classList.add('text-slate-600');
+        }
+      });
+      if (SETTINGS_VIEWS.includes(view)) {
+        document.getElementById('settingsSubmenu').classList.remove('hidden');
+        document.getElementById('settingsToggleIcon').textContent = 'v';
+      }
+    }
+    function toggleCardVisibility(id, visible) { document.getElementById(id).classList.toggle('hidden', !visible); }
+    function syncAssetRemoveButton(buttonId, hasAsset) {
+      document.getElementById(buttonId).classList.toggle('hidden', !hasAsset);
+    }
+    function setImagePreview(id, src) {
+      const img = document.getElementById(id);
+      if (!src) { img.classList.add('hidden'); img.removeAttribute('src'); return; }
+      img.src = src;
+      img.classList.remove('hidden');
+    }
+    function syncAdminBrand(data = {}) {
+      const brandText = document.getElementById('adminBrandText');
+      const brandImage = document.getElementById('adminBrandImage');
+      if (brandText && data.logo_text) brandText.textContent = data.logo_text;
+      if (brandImage) {
+        if (data.logo_image_url) {
+          brandImage.src = data.logo_image_url;
+          brandImage.classList.remove('hidden');
+        } else {
+          brandImage.classList.add('hidden');
+          brandImage.removeAttribute('src');
+        }
+      }
+      if (brandText) {
+        const shouldHideText = Boolean(data.logo_image_url) && Boolean(data.hide_logo_text_on_index);
+        brandText.classList.toggle('hidden', shouldHideText);
+      }
+    }
+    function fillSiteSettingsForm(data) {
+      state.deleteFavicon = false;
+      state.deleteLogo = false;
+      state.deleteHero = false;
+      document.getElementById('logoText').value = data.logo_text || '';
+      document.getElementById('hideLogoTextOnIndex').checked = Boolean(data.hide_logo_text_on_index);
+      document.getElementById('heroTitle').value = data.hero_title || '';
+      document.getElementById('heroSubtitle').value = data.hero_subtitle || '';
+      document.getElementById('heroPrimaryText').value = data.hero_primary_text || '';
+      document.getElementById('heroPrimaryLink').value = data.hero_primary_link || '';
+      document.getElementById('heroSecondaryText').value = data.hero_secondary_text || '';
+      document.getElementById('heroSecondaryLink').value = data.hero_secondary_link || '';
+      setImagePreview('faviconPreview', data.favicon_url || '');
+      setImagePreview('logoPreview', data.logo_image_url || '');
+      setImagePreview('heroPreview', data.hero_background_url || '');
+      syncAssetRemoveButton('removeFaviconBtn', Boolean(data.favicon_url));
+      syncAssetRemoveButton('removeLogoBtn', Boolean(data.logo_image_url));
+      syncAssetRemoveButton('removeHeroBtn', Boolean(data.hero_background_url));
+      syncAdminBrand(data);
+    }
+    function fillUsahaOwnerOptions(rows) {
+      state.alumniOptions = rows;
+      const select = document.getElementById('usahaPemilik');
+      const currentValue = select.value;
+      select.innerHTML = '<option value="">Pilih pemilik alumni</option>' + rows.map((row) => `<option value="${row.id}">${row.nama}${row.angkatan ? ` - ${row.angkatan}` : ''}</option>`).join('');
+      if (currentValue) select.value = currentValue;
+    }
+    function fillUsahaCategoryOptions(rows) {
+      state.lapakCategories = rows;
+      const select = document.getElementById('usahaKategori');
+      const currentValue = select.value;
+      select.innerHTML = '<option value="">Pilih kategori</option>' + rows.map((row) => `<option value="${row.name}">${row.name}</option>`).join('');
+      if (currentValue) select.value = currentValue;
+    }
+    function setSidebarCollapsed(collapsed) {
+      state.sidebarCollapsed = collapsed;
+      const shell = document.querySelector('.admin-shell');
+      shell.classList.toggle('sidebar-collapsed', collapsed);
+      const toggleBtn = document.getElementById('sidebarToggleBtn');
+      toggleBtn.setAttribute('aria-label', collapsed ? 'Tampilkan sidebar' : 'Sembunyikan sidebar');
+      toggleBtn.setAttribute('title', collapsed ? 'Tampilkan sidebar' : 'Sembunyikan sidebar');
+      toggleBtn.innerHTML = collapsed
+        ? '<svg aria-hidden="true" class="h-4 w-4" fill="none" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>'
+        : '<svg aria-hidden="true" class="h-4 w-4" fill="none" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>';
+      localStorage.setItem('adminSidebarCollapsed', collapsed ? '1' : '0');
+      if (collapsed && SETTINGS_VIEWS.includes(state.activeView)) {
+        document.getElementById('settingsSubmenu').classList.remove('hidden');
+        document.getElementById('settingsToggleIcon').textContent = 'v';
+      }
+    }
+    function initializeSidebarState() {
+      if (window.innerWidth < 1024) return;
+      setSidebarCollapsed(localStorage.getItem('adminSidebarCollapsed') === '1');
+    }
+    function resetAlumniForm() {
+      state.alumniEditId = null;
+      document.getElementById('alumniFormTitle').textContent = 'Tambah Alumni';
+      document.getElementById('alumniNama').value = '';
+      document.getElementById('alumniAngkatan').value = '';
+      document.getElementById('alumniGender').value = 'Laki-laki';
+      document.getElementById('alumniEmail').value = '';
+      document.getElementById('alumniPhone').value = '';
+      document.getElementById('alumniProfesi').value = '';
+      document.getElementById('alumniTempatLahir').value = '';
+      document.getElementById('alumniTanggalLahir').value = '';
+      document.getElementById('alumniProvinsi').value = '';
+      document.getElementById('alumniKota').value = '';
+      document.getElementById('alumniAlamat').value = '';
+      document.getElementById('alumniVerified').checked = true;
+      document.getElementById('saveAlumniBtn').textContent = 'Simpan Alumni';
+      document.getElementById('alumniFormMessage').textContent = '';
+    }
+    function openAlumniForm(row = null) {
+      toggleCardVisibility('alumniFormCard', true);
+      if (!row) { resetAlumniForm(); return; }
+      state.alumniEditId = row.id;
+      document.getElementById('alumniFormTitle').textContent = `Edit Alumni: ${row.nama}`;
+      document.getElementById('alumniNama').value = row.nama || '';
+      document.getElementById('alumniAngkatan').value = row.angkatan || '';
+      document.getElementById('alumniGender').value = row.gender || 'Laki-laki';
+      document.getElementById('alumniEmail').value = row.email || '';
+      document.getElementById('alumniPhone').value = row.phone || '';
+      document.getElementById('alumniProfesi').value = row.profesi || '';
+      document.getElementById('alumniTempatLahir').value = row.tempat_lahir || '';
+      document.getElementById('alumniTanggalLahir').value = row.tanggal_lahir ? String(row.tanggal_lahir).slice(0, 10) : '';
+      document.getElementById('alumniProvinsi').value = row.provinsi || '';
+      document.getElementById('alumniKota').value = row.kota || '';
+      document.getElementById('alumniAlamat').value = row.alamat || '';
+      document.getElementById('alumniVerified').checked = Boolean(row.is_verified);
+      document.getElementById('saveAlumniBtn').textContent = 'Simpan Perubahan';
+      document.getElementById('alumniFormMessage').textContent = `Mode edit data: ${row.nama}`;
+    }
+    function closeAlumniForm() { resetAlumniForm(); toggleCardVisibility('alumniFormCard', false); }
+    function resetUsahaForm() {
+      state.usahaEditId = null;
+      document.getElementById('usahaFormTitle').textContent = 'Tambah Usaha';
+      document.getElementById('usahaNama').value = '';
+      document.getElementById('usahaKategori').value = '';
+      document.getElementById('usahaPemilik').value = '';
+      document.getElementById('usahaVerified').checked = true;
+      document.getElementById('saveUsahaBtn').textContent = 'Simpan Usaha';
+      document.getElementById('usahaFormMessage').textContent = '';
+    }
+    function openUsahaForm(row = null) {
+      toggleCardVisibility('usahaFormCard', true);
+      if (!row) { resetUsahaForm(); return; }
+      state.usahaEditId = row.id;
+      document.getElementById('usahaFormTitle').textContent = `Edit Usaha: ${row.nama_usaha}`;
+      document.getElementById('usahaNama').value = row.nama_usaha || '';
+      document.getElementById('usahaKategori').value = row.kategori || '';
+      document.getElementById('usahaPemilik').value = String(row.pemilik_id || '');
+      document.getElementById('usahaVerified').checked = Boolean(row.is_verified);
+      document.getElementById('saveUsahaBtn').textContent = 'Simpan Perubahan';
+      document.getElementById('usahaFormMessage').textContent = `Mode edit data: ${row.nama_usaha}`;
+    }
+    function closeUsahaForm() { resetUsahaForm(); toggleCardVisibility('usahaFormCard', false); }
+    function renderRecentAlumni(rows) {
+      const tbody = document.getElementById('recentAlumniRows');
+      if (!rows.length) { tbody.innerHTML = '<tr><td class="py-4 text-slate-500" colspan="4">Belum ada data.</td></tr>'; return; }
+      tbody.innerHTML = rows.map((row) => `<tr class="border-b border-slate-100"><td class="py-3 font-semibold text-slate-800">${row.nama}</td><td class="py-3">${row.angkatan || '-'}</td><td class="py-3">${row.email || row.phone || '-'}</td><td class="py-3">${row.kota || '-'}</td></tr>`).join('');
+    }
+    function renderRecentUsaha(rows) {
+      const tbody = document.getElementById('recentUsahaRows');
+      if (!rows.length) { tbody.innerHTML = '<tr><td class="py-4 text-slate-500" colspan="3">Belum ada data.</td></tr>'; return; }
+      tbody.innerHTML = rows.map((row) => `<tr class="border-b border-slate-100"><td class="py-3 font-semibold text-slate-800">${row.nama_usaha}</td><td class="py-3">${row.kategori || '-'}</td><td class="py-3">${row.pemilik || '-'}</td></tr>`).join('');
+    }
+    function renderAlumniTable(rows) {
+      const tbody = document.getElementById('alumniRows');
+      if (!rows.length) { tbody.innerHTML = '<tr><td class="py-4 text-slate-500" colspan="8">Tidak ada data alumni.</td></tr>'; return; }
+      tbody.innerHTML = rows.map((row) => `<tr class="border-b border-slate-100"><td class="py-3 font-semibold text-slate-800">${row.nama}</td><td class="py-3">${row.angkatan || '-'}</td><td class="py-3">${row.email || '-'}</td><td class="py-3">${row.phone || '-'}</td><td class="py-3">${row.profesi || '-'}</td><td class="py-3">${row.kota || '-'}</td><td class="py-3">${renderVerificationBadge(row.is_verified, row.verified_at)}</td><td class="py-3"><div class="flex flex-wrap gap-2"><button data-id="${row.id}" class="edit-alumni-btn rounded bg-slate-900 px-2 py-1 text-xs font-semibold text-white hover:bg-slate-700">Edit</button>${row.is_verified ? '' : `<button data-id="${row.id}" class="verify-alumni-btn rounded bg-emerald-600 px-2 py-1 text-xs font-semibold text-white hover:bg-emerald-700">Verifikasi</button>`}<button data-id="${row.id}" class="delete-alumni-btn rounded bg-red-600 px-2 py-1 text-xs font-semibold text-white hover:bg-red-700">Hapus</button></div></td></tr>`).join('');
+    }
+    function renderUsahaTable(rows) {
+      const tbody = document.getElementById('usahaRows');
+      if (!rows.length) { tbody.innerHTML = '<tr><td class="py-4 text-slate-500" colspan="6">Tidak ada data usaha.</td></tr>'; return; }
+      tbody.innerHTML = rows.map((row) => `<tr class="border-b border-slate-100"><td class="py-3 font-semibold text-slate-800">${row.nama_usaha}</td><td class="py-3">${row.kategori || '-'}</td><td class="py-3">${row.pemilik || '-'}</td><td class="py-3">${formatDate(row.created_at)}</td><td class="py-3">${renderVerificationBadge(row.is_verified, row.verified_at)}</td><td class="py-3"><div class="flex flex-wrap gap-2"><button data-id="${row.id}" class="edit-usaha-btn rounded bg-slate-900 px-2 py-1 text-xs font-semibold text-white hover:bg-slate-700">Edit</button>${row.is_verified ? '' : `<button data-id="${row.id}" class="verify-usaha-btn rounded bg-emerald-600 px-2 py-1 text-xs font-semibold text-white hover:bg-emerald-700">Verifikasi</button>`}<button data-id="${row.id}" class="delete-usaha-btn rounded bg-red-600 px-2 py-1 text-xs font-semibold text-white hover:bg-red-700">Hapus</button></div></td></tr>`).join('');
+    }
+    function renderLapakCategories(rows) {
+      const tbody = document.getElementById('lapakCategoryRows');
+      if (!rows.length) { tbody.innerHTML = '<tr><td class="py-4 text-slate-500" colspan="4">Belum ada kategori.</td></tr>'; return; }
+      tbody.innerHTML = rows.map((row) => `<tr class="border-b border-slate-100"><td class="py-3 font-semibold text-slate-800">${row.name}</td><td class="py-3">${formatDate(row.created_at)}</td><td class="py-3">${formatDate(row.updated_at)}</td><td class="py-3"><div class="flex gap-2"><button data-id="${row.id}" data-name="${row.name}" class="edit-category-btn rounded bg-slate-900 px-2 py-1 text-xs font-semibold text-white hover:bg-slate-700">Edit</button><button data-id="${row.id}" class="delete-category-btn rounded bg-red-600 px-2 py-1 text-xs font-semibold text-white hover:bg-red-700">Hapus</button></div></td></tr>`).join('');
+    }
+    function renderProvinces(rows) {
+      const tbody = document.getElementById('provinceRows');
+      if (!rows.length) { tbody.innerHTML = '<tr><td class="py-4 text-slate-500" colspan="4">Belum ada provinsi.</td></tr>'; return; }
+      tbody.innerHTML = rows.map((row) => `<tr class="border-b border-slate-100"><td class="py-3 font-semibold text-slate-800">${row.name}</td><td class="py-3">${formatDate(row.created_at)}</td><td class="py-3">${formatDate(row.updated_at)}</td><td class="py-3"><div class="flex gap-2"><button data-id="${row.id}" data-name="${row.name}" class="edit-province-btn rounded bg-slate-900 px-2 py-1 text-xs font-semibold text-white hover:bg-slate-700">Edit</button><button data-id="${row.id}" class="delete-province-btn rounded bg-red-600 px-2 py-1 text-xs font-semibold text-white hover:bg-red-700">Hapus</button></div></td></tr>`).join('');
+    }
+    function renderAdminUsers(rows) {
+      const tbody = document.getElementById('adminUserRows');
+      if (!rows.length) { tbody.innerHTML = '<tr><td class="py-4 text-slate-500" colspan="4">Belum ada user admin.</td></tr>'; return; }
+      tbody.innerHTML = rows.map((row) => `<tr class="border-b border-slate-100"><td class="py-3 font-semibold text-slate-800">${row.name}${row.id === state.currentAdminId ? ' <span class="rounded bg-emerald-100 px-2 py-0.5 text-xs text-emerald-700">Anda</span>' : ''}</td><td class="py-3">${row.email}</td><td class="py-3">${formatDate(row.created_at)}</td><td class="py-3"><div class="flex gap-2"><button data-id="${row.id}" data-name="${row.name}" data-email="${row.email}" class="edit-admin-user-btn rounded bg-slate-900 px-2 py-1 text-xs font-semibold text-white hover:bg-slate-700">Edit</button><button data-id="${row.id}" class="delete-admin-user-btn rounded bg-red-600 px-2 py-1 text-xs font-semibold text-white hover:bg-red-700">Hapus</button></div></td></tr>`).join('');
+    }
+    async function ensureAuth() {
+      try {
+        const me = await fetchJSON(`${API_BASE}/admin/me`);
+        document.getElementById('adminName').textContent = me.data.admin.name;
+        state.currentAdminId = me.data.admin.id;
+      } catch (_err) {
+        window.location.href = '/admin';
+      }
+    }
+    async function loadDashboard() {
+      const result = await fetchJSON(`${API_BASE}/admin/dashboard`);
+      document.getElementById('statAlumni').textContent = numberFormat(result.data.stats.totalAlumni);
+      document.getElementById('statUsaha').textContent = numberFormat(result.data.stats.totalUsaha);
+      document.getElementById('statToday').textContent = numberFormat(result.data.stats.alumniHariIni);
+      renderRecentAlumni(result.data.recentAlumni || []);
+      renderRecentUsaha(result.data.recentUsaha || []);
+    }
+    async function loadAlumni() {
+      const query = new URLSearchParams();
+      if (state.alumniSearch) query.set('search', state.alumniSearch);
+      const result = await fetchJSON(`${API_BASE}/admin/alumni?${query.toString()}`);
+      state.alumniRows = result.data || [];
+      renderAlumniTable(state.alumniRows);
+    }
+    async function loadUsaha() {
+      const query = new URLSearchParams();
+      if (state.usahaSearch) query.set('search', state.usahaSearch);
+      const result = await fetchJSON(`${API_BASE}/admin/usaha?${query.toString()}`);
+      state.usahaRows = result.data || [];
+      renderUsahaTable(state.usahaRows);
+    }
+    async function loadAlumniOptions() {
+      const result = await fetchJSON(`${API_BASE}/admin/alumni-options`);
+      fillUsahaOwnerOptions(result.data || []);
+    }
+    async function loadUsahaFormOptions() {
+      const [categoriesResult, alumniResult] = await Promise.all([
+        fetchJSON(`${API_BASE}/admin/lapak-categories`),
+        fetchJSON(`${API_BASE}/admin/alumni-options`),
+      ]);
+      fillUsahaCategoryOptions(categoriesResult.data || []);
+      fillUsahaOwnerOptions(alumniResult.data || []);
+    }
+    async function loadSiteSettings() {
+      const result = await fetchJSON(`${API_BASE}/admin/site-settings`);
+      fillSiteSettingsForm(result.data || {});
+    }
+    async function loadLapakCategories() {
+      const result = await fetchJSON(`${API_BASE}/admin/lapak-categories`);
+      renderLapakCategories(result.data || []);
+      fillUsahaCategoryOptions(result.data || []);
+    }
+    async function loadProvinces() {
+      const result = await fetchJSON(`${API_BASE}/admin/provinces`);
+      renderProvinces(result.data || []);
+    }
+    async function loadAdminUsers() {
+      const result = await fetchJSON(`${API_BASE}/admin/users`);
+      renderAdminUsers(result.data || []);
+    }
+    async function setView(view) {
+      state.activeView = view;
+      setActiveMenu(view);
+      document.querySelectorAll('.view-panel').forEach((panel) => panel.classList.add('hidden'));
+      const target = document.getElementById(`view-${view}`);
+      if (target) target.classList.remove('hidden');
+      if (view === 'dashboard') await loadDashboard();
+      if (view === 'alumni') { closeAlumniForm(); await loadAlumni(); }
+      if (view === 'usaha') { closeUsahaForm(); await Promise.all([loadUsaha(), loadUsahaFormOptions()]); }
+      if (view === 'frontpage') await loadSiteSettings();
+      if (view === 'lapak-categories') await loadLapakCategories();
+      if (view === 'provinces') await loadProvinces();
+      if (view === 'admin-users') await loadAdminUsers();
+    }
+    async function saveSiteSettings(event) {
+      event.preventDefault();
+      const message = document.getElementById('settingsMessage');
+      const saveButton = document.getElementById('saveSettingsBtn');
+      const formData = new FormData();
+      formData.append('logo_text', document.getElementById('logoText').value.trim());
+      formData.append('hide_logo_text_on_index', document.getElementById('hideLogoTextOnIndex').checked ? '1' : '0');
+      formData.append('delete_favicon_file', state.deleteFavicon ? '1' : '0');
+      formData.append('delete_logo_file', state.deleteLogo ? '1' : '0');
+      formData.append('delete_hero_file', state.deleteHero ? '1' : '0');
+      formData.append('hero_title', document.getElementById('heroTitle').value.trim());
+      formData.append('hero_subtitle', document.getElementById('heroSubtitle').value.trim());
+      formData.append('hero_primary_text', document.getElementById('heroPrimaryText').value.trim());
+      formData.append('hero_primary_link', document.getElementById('heroPrimaryLink').value.trim());
+      formData.append('hero_secondary_text', document.getElementById('heroSecondaryText').value.trim());
+      formData.append('hero_secondary_link', document.getElementById('heroSecondaryLink').value.trim());
+      const faviconFile = document.getElementById('faviconFile').files[0];
+      const logoFile = document.getElementById('logoFile').files[0];
+      const heroFile = document.getElementById('heroFile').files[0];
+      if (faviconFile) formData.append('favicon_file', faviconFile);
+      if (logoFile) formData.append('logo_file', logoFile);
+      if (heroFile) formData.append('hero_file', heroFile);
+      saveButton.disabled = true;
+      saveButton.textContent = 'Menyimpan...';
+      message.textContent = '';
+      try {
+        const result = await fetchJSON(`${API_BASE}/admin/site-settings`, { method: 'PUT', body: formData });
+        fillSiteSettingsForm(result.data || {});
+        document.getElementById('faviconFile').value = '';
+        document.getElementById('logoFile').value = '';
+        document.getElementById('heroFile').value = '';
+        message.textContent = result.message || 'Pengaturan berhasil disimpan';
+      } catch (err) {
+        message.textContent = err.message;
+      } finally {
+        saveButton.disabled = false;
+        saveButton.textContent = 'Simpan Pengaturan';
+      }
+    }
+    async function submitLapakCategory(event) {
+      event.preventDefault();
+      const input = document.getElementById('lapakCategoryName');
+      const button = document.getElementById('saveLapakCategoryBtn');
+      const message = document.getElementById('lapakCategoryMessage');
+      const name = input.value.trim();
+      if (!name) { message.textContent = 'Nama kategori wajib diisi'; return; }
+      button.disabled = true;
+      button.textContent = state.lapakCategoryEditId ? 'Menyimpan...' : 'Menambah...';
+      try {
+        if (state.lapakCategoryEditId) {
+          await fetchJSON(`${API_BASE}/admin/lapak-categories/${state.lapakCategoryEditId}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name }) });
+          message.textContent = 'Kategori berhasil diperbarui';
+        } else {
+          await fetchJSON(`${API_BASE}/admin/lapak-categories`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name }) });
+          message.textContent = 'Kategori berhasil ditambahkan';
+        }
+        state.lapakCategoryEditId = null;
+        input.value = '';
+        button.textContent = 'Tambah Kategori';
+        await loadLapakCategories();
+      } catch (err) {
+        message.textContent = err.message;
+      } finally {
+        button.disabled = false;
+      }
+    }
+    async function submitProvince(event) {
+      event.preventDefault();
+      const input = document.getElementById('provinceName');
+      const button = document.getElementById('saveProvinceBtn');
+      const message = document.getElementById('provinceMessage');
+      const name = input.value.trim();
+      if (!name) { message.textContent = 'Nama provinsi wajib diisi'; return; }
+      button.disabled = true;
+      button.textContent = state.provinceEditId ? 'Menyimpan...' : 'Menambah...';
+      try {
+        if (state.provinceEditId) {
+          await fetchJSON(`${API_BASE}/admin/provinces/${state.provinceEditId}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name }) });
+          message.textContent = 'Provinsi berhasil diperbarui';
+        } else {
+          await fetchJSON(`${API_BASE}/admin/provinces`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name }) });
+          message.textContent = 'Provinsi berhasil ditambahkan';
+        }
+        state.provinceEditId = null;
+        input.value = '';
+        button.textContent = 'Tambah Provinsi';
+        await loadProvinces();
+      } catch (err) {
+        message.textContent = err.message;
+      } finally {
+        button.disabled = false;
+      }
+    }
+    async function submitAdminUser(event) {
+      event.preventDefault();
+      const nameInput = document.getElementById('adminUserName');
+      const emailInput = document.getElementById('adminUserEmail');
+      const passwordInput = document.getElementById('adminUserPassword');
+      const button = document.getElementById('saveAdminUserBtn');
+      const message = document.getElementById('adminUserMessage');
+      const payload = { name: nameInput.value.trim(), email: emailInput.value.trim(), password: passwordInput.value.trim() };
+      if (!payload.name || !payload.email || (!state.adminUserEditId && payload.password.length < 6)) { message.textContent = 'Nama, email, dan password minimal 6 karakter wajib diisi'; return; }
+      if (state.adminUserEditId && payload.password && payload.password.length < 6) { message.textContent = 'Password baru minimal 6 karakter'; return; }
+      button.disabled = true;
+      button.textContent = state.adminUserEditId ? 'Menyimpan...' : 'Menambah...';
+      try {
+        if (state.adminUserEditId) {
+          await fetchJSON(`${API_BASE}/admin/users/${state.adminUserEditId}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+          message.textContent = 'User admin berhasil diperbarui';
+        } else {
+          await fetchJSON(`${API_BASE}/admin/users`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+          message.textContent = 'User admin berhasil ditambahkan';
+        }
+        state.adminUserEditId = null;
+        nameInput.value = '';
+        emailInput.value = '';
+        passwordInput.value = '';
+        button.textContent = 'Tambah User';
+        await loadAdminUsers();
+      } catch (err) {
+        message.textContent = err.message;
+      } finally {
+        button.disabled = false;
+      }
+    }
+    async function submitAlumniForm(event) {
+      event.preventDefault();
+      const button = document.getElementById('saveAlumniBtn');
+      const message = document.getElementById('alumniFormMessage');
+      const payload = {
+        nama: document.getElementById('alumniNama').value.trim(),
+        angkatan: document.getElementById('alumniAngkatan').value.trim(),
+        gender: document.getElementById('alumniGender').value,
+        email: document.getElementById('alumniEmail').value.trim(),
+        phone: document.getElementById('alumniPhone').value.trim(),
+        profesi: document.getElementById('alumniProfesi').value.trim(),
+        tempat_lahir: document.getElementById('alumniTempatLahir').value.trim(),
+        tanggal_lahir: document.getElementById('alumniTanggalLahir').value,
+        provinsi: document.getElementById('alumniProvinsi').value.trim(),
+        kota: document.getElementById('alumniKota').value.trim(),
+        alamat: document.getElementById('alumniAlamat').value.trim(),
+        is_verified: document.getElementById('alumniVerified').checked,
+      };
+      if (!payload.nama || !payload.angkatan || !payload.email || !payload.phone) {
+        message.textContent = 'Nama, angkatan, email, dan no. HP wajib diisi';
+        return;
+      }
+      button.disabled = true;
+      button.textContent = state.alumniEditId ? 'Menyimpan...' : 'Menambah...';
+      try {
+        if (state.alumniEditId) {
+          await fetchJSON(`${API_BASE}/admin/alumni/${state.alumniEditId}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+          message.textContent = 'Data alumni berhasil diperbarui';
+        } else {
+          await fetchJSON(`${API_BASE}/admin/alumni`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+          message.textContent = 'Data alumni berhasil ditambahkan';
+        }
+        await Promise.all([loadDashboard(), loadAlumni(), loadAlumniOptions()]);
+        closeAlumniForm();
+      } catch (err) {
+        message.textContent = err.message;
+      } finally {
+        button.disabled = false;
+        button.textContent = state.alumniEditId ? 'Simpan Perubahan' : 'Simpan Alumni';
+      }
+    }
+    async function submitUsahaForm(event) {
+      event.preventDefault();
+      const button = document.getElementById('saveUsahaBtn');
+      const message = document.getElementById('usahaFormMessage');
+      const payload = {
+        nama_usaha: document.getElementById('usahaNama').value.trim(),
+        kategori: document.getElementById('usahaKategori').value,
+        pemilik_id: document.getElementById('usahaPemilik').value,
+        is_verified: document.getElementById('usahaVerified').checked,
+      };
+      if (!payload.nama_usaha || !payload.kategori || !payload.pemilik_id) {
+        message.textContent = 'Nama usaha, kategori, dan pemilik alumni wajib diisi';
+        return;
+      }
+      button.disabled = true;
+      button.textContent = state.usahaEditId ? 'Menyimpan...' : 'Menambah...';
+      try {
+        if (state.usahaEditId) {
+          await fetchJSON(`${API_BASE}/admin/usaha/${state.usahaEditId}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+          message.textContent = 'Data usaha berhasil diperbarui';
+        } else {
+          await fetchJSON(`${API_BASE}/admin/usaha`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+          message.textContent = 'Data usaha berhasil ditambahkan';
+        }
+        await Promise.all([loadDashboard(), loadUsaha()]);
+        closeUsahaForm();
+      } catch (err) {
+        message.textContent = err.message;
+      } finally {
+        button.disabled = false;
+        button.textContent = state.usahaEditId ? 'Simpan Perubahan' : 'Simpan Usaha';
+      }
+    }
+    async function importAlumni(event) {
+      event.preventDefault();
+      const fileInput = document.getElementById('csvFileInput');
+      const button = document.getElementById('importAlumniBtn');
+      const message = document.getElementById('importAlumniMessage');
+      const errorBox = document.getElementById('importAlumniErrors');
+      const file = fileInput.files[0];
+      if (!file) { message.textContent = 'Pilih file CSV terlebih dahulu'; return; }
+      const formData = new FormData();
+      formData.append('file', file);
+      button.disabled = true;
+      button.textContent = 'Mengimpor...';
+      message.textContent = '';
+      errorBox.classList.add('hidden');
+      errorBox.innerHTML = '';
+      try {
+        const result = await fetchJSON(`${API_BASE}/admin/alumni/import`, { method: 'POST', body: formData });
+        const data = result.data || {};
+        message.textContent = `${result.message} Total baris: ${data.totalRows || 0}, berhasil: ${data.imported || 0}, dilewati: ${data.skipped || 0}.`;
+        if (Array.isArray(data.errors) && data.errors.length) {
+          errorBox.classList.remove('hidden');
+          errorBox.innerHTML = `<ul class="list-disc space-y-1 pl-5">${data.errors.map((item) => `<li>${item}</li>`).join('')}</ul>`;
+        }
+        fileInput.value = '';
+        await Promise.all([loadDashboard(), loadAlumni(), loadAlumniOptions()]);
+      } catch (err) {
+        message.textContent = err.message;
+      } finally {
+        button.disabled = false;
+        button.textContent = 'Import CSV';
+      }
+    }
+    async function handleAlumniAction(event) {
+      const editButton = event.target.closest('.edit-alumni-btn');
+      if (editButton) {
+        const row = state.alumniRows.find((item) => String(item.id) === editButton.dataset.id);
+        if (row) openAlumniForm(row);
+        return;
+      }
+      const verifyButton = event.target.closest('.verify-alumni-btn');
+      if (verifyButton) {
+        await fetchJSON(`${API_BASE}/admin/alumni/${verifyButton.dataset.id}/verify`, { method: 'POST' });
+        await Promise.all([loadDashboard(), loadAlumni(), loadAlumniOptions()]);
+        return;
+      }
+      const deleteButton = event.target.closest('.delete-alumni-btn');
+      if (!deleteButton) return;
+      if (!confirm('Hapus data alumni ini?')) return;
+      await fetchJSON(`${API_BASE}/admin/alumni/${deleteButton.dataset.id}`, { method: 'DELETE' });
+      await Promise.all([loadDashboard(), loadAlumni(), loadAlumniOptions()]);
+    }
+    async function handleUsahaAction(event) {
+      const editButton = event.target.closest('.edit-usaha-btn');
+      if (editButton) {
+        const row = state.usahaRows.find((item) => String(item.id) === editButton.dataset.id);
+        if (row) openUsahaForm(row);
+        return;
+      }
+      const verifyButton = event.target.closest('.verify-usaha-btn');
+      if (verifyButton) {
+        await fetchJSON(`${API_BASE}/admin/usaha/${verifyButton.dataset.id}/verify`, { method: 'POST' });
+        await Promise.all([loadDashboard(), loadUsaha()]);
+        return;
+      }
+      const deleteButton = event.target.closest('.delete-usaha-btn');
+      if (!deleteButton) return;
+      if (!confirm('Hapus data usaha ini?')) return;
+      await fetchJSON(`${API_BASE}/admin/usaha/${deleteButton.dataset.id}`, { method: 'DELETE' });
+      await Promise.all([loadDashboard(), loadUsaha()]);
+    }
+    async function handleCategoryAction(event) {
+      const editButton = event.target.closest('.edit-category-btn');
+      if (editButton) {
+        state.lapakCategoryEditId = editButton.dataset.id;
+        document.getElementById('lapakCategoryName').value = editButton.dataset.name;
+        document.getElementById('saveLapakCategoryBtn').textContent = 'Simpan Perubahan';
+        document.getElementById('lapakCategoryMessage').textContent = `Mode edit kategori: ${editButton.dataset.name}`;
+        return;
+      }
+      const deleteButton = event.target.closest('.delete-category-btn');
+      if (!deleteButton) return;
+      if (!confirm('Hapus kategori ini?')) return;
+      try {
+        await fetchJSON(`${API_BASE}/admin/lapak-categories/${deleteButton.dataset.id}`, { method: 'DELETE' });
+        document.getElementById('lapakCategoryMessage').textContent = 'Kategori berhasil dihapus';
+        await loadLapakCategories();
+      } catch (err) {
+        document.getElementById('lapakCategoryMessage').textContent = err.message;
+      }
+    }
+    async function handleProvinceAction(event) {
+      const editButton = event.target.closest('.edit-province-btn');
+      if (editButton) {
+        state.provinceEditId = editButton.dataset.id;
+        document.getElementById('provinceName').value = editButton.dataset.name;
+        document.getElementById('saveProvinceBtn').textContent = 'Simpan Perubahan';
+        document.getElementById('provinceMessage').textContent = `Mode edit provinsi: ${editButton.dataset.name}`;
+        return;
+      }
+      const deleteButton = event.target.closest('.delete-province-btn');
+      if (!deleteButton) return;
+      if (!confirm('Hapus provinsi ini?')) return;
+      try {
+        await fetchJSON(`${API_BASE}/admin/provinces/${deleteButton.dataset.id}`, { method: 'DELETE' });
+        document.getElementById('provinceMessage').textContent = 'Provinsi berhasil dihapus';
+        await loadProvinces();
+      } catch (err) {
+        document.getElementById('provinceMessage').textContent = err.message;
+      }
+    }
+    async function handleAdminUserAction(event) {
+      const editButton = event.target.closest('.edit-admin-user-btn');
+      if (editButton) {
+        state.adminUserEditId = editButton.dataset.id;
+        document.getElementById('adminUserName').value = editButton.dataset.name;
+        document.getElementById('adminUserEmail').value = editButton.dataset.email;
+        document.getElementById('adminUserPassword').value = '';
+        document.getElementById('saveAdminUserBtn').textContent = 'Simpan Perubahan';
+        document.getElementById('adminUserMessage').textContent = `Mode edit user: ${editButton.dataset.email}`;
+        return;
+      }
+      const deleteButton = event.target.closest('.delete-admin-user-btn');
+      if (!deleteButton) return;
+      if (!confirm('Hapus user admin ini?')) return;
+      try {
+        await fetchJSON(`${API_BASE}/admin/users/${deleteButton.dataset.id}`, { method: 'DELETE' });
+        document.getElementById('adminUserMessage').textContent = 'User admin berhasil dihapus';
+        await loadAdminUsers();
+      } catch (err) {
+        document.getElementById('adminUserMessage').textContent = err.message;
+      }
+    }
+    async function logout() {
+      try {
+        await fetchJSON(`${API_BASE}/admin/logout`, { method: 'POST' });
+      } finally {
+        window.location.href = '/admin';
+      }
+    }
+    function setupPreview(inputId, previewId) {
+      document.getElementById(inputId).addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+        const previewUrl = URL.createObjectURL(file);
+        setImagePreview(previewId, previewUrl);
+        if (inputId === 'faviconFile') { state.deleteFavicon = false; syncAssetRemoveButton('removeFaviconBtn', true); }
+        if (inputId === 'logoFile') {
+          state.deleteLogo = false;
+          syncAssetRemoveButton('removeLogoBtn', true);
+          syncAdminBrand({
+            logo_text: document.getElementById('logoText').value.trim() || 'IKA SMANDA',
+            logo_image_url: previewUrl,
+            hide_logo_text_on_index: document.getElementById('hideLogoTextOnIndex').checked,
+          });
+        }
+        if (inputId === 'heroFile') { state.deleteHero = false; syncAssetRemoveButton('removeHeroBtn', true); }
+      });
+    }
+
+    document.querySelectorAll('[data-view]').forEach((btn) => btn.addEventListener('click', () => setView(btn.dataset.view)));
+    document.getElementById('sidebarToggleBtn').addEventListener('click', () => {
+      if (window.innerWidth < 1024) return;
+      setSidebarCollapsed(!state.sidebarCollapsed);
+    });
+    document.getElementById('settingsToggleBtn').addEventListener('click', () => {
+      const submenu = document.getElementById('settingsSubmenu');
+      submenu.classList.toggle('hidden');
+      document.getElementById('settingsToggleIcon').textContent = submenu.classList.contains('hidden') ? '>' : 'v';
+    });
+    document.getElementById('logoutBtn').addEventListener('click', logout);
+    document.getElementById('alumniSearchBtn').addEventListener('click', async () => { state.alumniSearch = document.getElementById('alumniSearch').value.trim(); await loadAlumni(); });
+    document.getElementById('usahaSearchBtn').addEventListener('click', async () => { state.usahaSearch = document.getElementById('usahaSearch').value.trim(); await loadUsaha(); });
+    document.getElementById('openAlumniFormBtn').addEventListener('click', () => openAlumniForm());
+    document.getElementById('openUsahaFormBtn').addEventListener('click', () => openUsahaForm());
+    document.getElementById('cancelAlumniFormBtn').addEventListener('click', closeAlumniForm);
+    document.getElementById('cancelUsahaFormBtn').addEventListener('click', closeUsahaForm);
+    document.getElementById('resetAlumniFormBtn').addEventListener('click', resetAlumniForm);
+    document.getElementById('resetUsahaFormBtn').addEventListener('click', resetUsahaForm);
+    document.getElementById('hideLogoTextOnIndex').addEventListener('change', () => {
+      syncAdminBrand({
+        logo_text: document.getElementById('logoText').value.trim() || 'IKA SMANDA',
+        logo_image_url: document.getElementById('logoPreview').getAttribute('src') || '',
+        hide_logo_text_on_index: document.getElementById('hideLogoTextOnIndex').checked,
+      });
+    });
+    document.getElementById('logoText').addEventListener('input', () => {
+      syncAdminBrand({
+        logo_text: document.getElementById('logoText').value.trim() || 'IKA SMANDA',
+        logo_image_url: document.getElementById('logoPreview').getAttribute('src') || '',
+        hide_logo_text_on_index: document.getElementById('hideLogoTextOnIndex').checked,
+      });
+    });
+    document.getElementById('removeFaviconBtn').addEventListener('click', () => {
+      state.deleteFavicon = true;
+      document.getElementById('faviconFile').value = '';
+      setImagePreview('faviconPreview', '');
+      syncAssetRemoveButton('removeFaviconBtn', false);
+    });
+    document.getElementById('removeLogoBtn').addEventListener('click', () => {
+      state.deleteLogo = true;
+      document.getElementById('logoFile').value = '';
+      setImagePreview('logoPreview', '');
+      syncAssetRemoveButton('removeLogoBtn', false);
+      syncAdminBrand({
+        logo_text: document.getElementById('logoText').value.trim() || 'IKA SMANDA',
+        logo_image_url: '',
+        hide_logo_text_on_index: document.getElementById('hideLogoTextOnIndex').checked,
+      });
+    });
+    document.getElementById('removeHeroBtn').addEventListener('click', () => {
+      state.deleteHero = true;
+      document.getElementById('heroFile').value = '';
+      setImagePreview('heroPreview', '');
+      syncAssetRemoveButton('removeHeroBtn', false);
+    });
+    document.getElementById('alumniForm').addEventListener('submit', submitAlumniForm);
+    document.getElementById('usahaForm').addEventListener('submit', submitUsahaForm);
+    document.getElementById('siteSettingsForm').addEventListener('submit', saveSiteSettings);
+    document.getElementById('lapakCategoryForm').addEventListener('submit', submitLapakCategory);
+    document.getElementById('provinceForm').addEventListener('submit', submitProvince);
+    document.getElementById('adminUserForm').addEventListener('submit', submitAdminUser);
+    document.getElementById('importAlumniForm').addEventListener('submit', importAlumni);
+    document.getElementById('alumniRows').addEventListener('click', handleAlumniAction);
+    document.getElementById('usahaRows').addEventListener('click', handleUsahaAction);
+    document.getElementById('lapakCategoryRows').addEventListener('click', handleCategoryAction);
+    document.getElementById('provinceRows').addEventListener('click', handleProvinceAction);
+    document.getElementById('adminUserRows').addEventListener('click', handleAdminUserAction);
+    setupPreview('faviconFile', 'faviconPreview');
+    setupPreview('logoFile', 'logoPreview');
+    setupPreview('heroFile', 'heroPreview');
+    initializeSidebarState();
+    window.addEventListener('resize', () => {
+      const shell = document.querySelector('.admin-shell');
+      if (window.innerWidth < 1024) {
+        shell.classList.remove('sidebar-collapsed');
+      } else {
+        shell.classList.toggle('sidebar-collapsed', state.sidebarCollapsed);
+      }
+    });
+
+    (async () => {
+      await ensureAuth();
+      await loadSiteSettings();
+      await setView('dashboard');
+    })();
+  </script>
+</body>
+</html>

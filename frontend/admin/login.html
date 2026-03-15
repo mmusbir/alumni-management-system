@@ -1,0 +1,176 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login Admin | IKA SMANDA</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0E4BA8',
+            darkNavy: '#0B1D3A',
+            softSky: '#EAF2FF'
+          },
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="min-h-screen bg-slate-950 text-slate-100 font-sans">
+  <div class="relative min-h-screen overflow-hidden">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,#1E3A8A_0%,transparent_45%),radial-gradient(circle_at_80%_15%,#0EA5E9_0%,transparent_35%),linear-gradient(120deg,#020617,#0F172A,#111827)]"></div>
+    <div class="absolute -left-28 bottom-0 h-80 w-80 rounded-full bg-blue-500/20 blur-3xl"></div>
+    <div class="absolute right-0 top-0 h-72 w-72 rounded-full bg-cyan-400/20 blur-3xl"></div>
+
+    <main class="relative z-10 mx-auto flex min-h-screen max-w-5xl items-center px-5 py-8">
+      <section class="grid w-full gap-8 lg:grid-cols-2">
+        <div class="hidden lg:block">
+          <p class="mb-4 inline-flex rounded-full border border-cyan-300/30 bg-cyan-300/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-cyan-200">
+            Admin Console
+          </p>
+          <h1 class="max-w-lg text-3xl font-extrabold leading-tight text-white md:text-4xl">
+            Kelola data alumni dan lapak usaha dari satu panel.
+          </h1>
+          <p class="mt-3 max-w-lg text-sm text-slate-300 md:text-base">
+            Gunakan akun admin untuk memantau statistik pendaftaran, data alumni terbaru, dan usaha yang masuk.
+          </p>
+        </div>
+
+        <div class="mx-auto w-full max-w-md rounded-2xl border border-white/15 bg-white/10 p-6 shadow-2xl backdrop-blur-md">
+          <div class="mb-5">
+            <h2 class="text-xl font-bold text-white">Login Admin</h2>
+            <p class="mt-1 text-sm text-slate-300">Masukkan kredensial admin untuk masuk ke panel.</p>
+          </div>
+
+          <form id="loginForm" class="space-y-4">
+            <div>
+              <label for="email" class="mb-1 block text-sm font-semibold text-slate-200">Email</label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                required
+                class="w-full rounded-xl border border-white/20 bg-slate-900/60 px-4 py-2.5 text-slate-100 outline-none ring-0 placeholder:text-slate-400 focus:border-cyan-300"
+                placeholder="admin@ikasmanda.local"
+              />
+            </div>
+            <div>
+              <label for="password" class="mb-1 block text-sm font-semibold text-slate-200">Password</label>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                autocomplete="current-password"
+                required
+                class="w-full rounded-xl border border-white/20 bg-slate-900/60 px-4 py-2.5 text-slate-100 outline-none ring-0 placeholder:text-slate-400 focus:border-cyan-300"
+                placeholder="Masukkan password"
+              />
+            </div>
+
+            <p id="feedback" class="hidden rounded-lg border px-3 py-2 text-sm"></p>
+
+            <button
+              id="submitBtn"
+              type="submit"
+              class="w-full rounded-xl bg-primary px-4 py-2.5 text-sm font-bold tracking-wide text-white transition hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-70"
+            >
+              Masuk ke Panel
+            </button>
+          </form>
+
+          <div class="mt-5 text-center text-xs leading-relaxed text-slate-300">
+            <p>&copy; 2026 Ikatan Keluarga Alumni SMAN 2 Kendal.</p>
+            <p>
+              Developed by
+              <a href="https://www.yunakatech.com/" target="_blank" rel="noopener noreferrer" class="text-cyan-300 transition hover:text-cyan-200">
+                Yunaka Tech
+              </a>.
+              ❤️
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const API_BASE = '/api';
+    const loginForm = document.getElementById('loginForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const feedback = document.getElementById('feedback');
+
+    function showFeedback(message, type = 'error') {
+      feedback.textContent = message;
+      feedback.classList.remove('hidden', 'border-red-300/50', 'bg-red-500/10', 'text-red-200', 'border-emerald-300/50', 'bg-emerald-500/10', 'text-emerald-200');
+
+      if (type === 'success') {
+        feedback.classList.add('border-emerald-300/50', 'bg-emerald-500/10', 'text-emerald-200');
+      } else {
+        feedback.classList.add('border-red-300/50', 'bg-red-500/10', 'text-red-200');
+      }
+    }
+
+    async function checkSession() {
+      try {
+        const res = await fetch(`${API_BASE}/admin/me`, {
+          credentials: 'include'
+        });
+        if (res.ok) {
+          window.location.href = '/admin/panel';
+        }
+      } catch (err) {
+        console.error('Session check failed:', err);
+      }
+    }
+
+    loginForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Memproses...';
+      feedback.classList.add('hidden');
+
+      try {
+        const res = await fetch(`${API_BASE}/admin/login`, {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email, password })
+        });
+
+        const result = await res.json();
+        if (!res.ok) {
+          throw new Error(result.message || 'Login gagal');
+        }
+
+        showFeedback('Login berhasil. Mengarahkan ke panel...', 'success');
+        setTimeout(() => {
+          window.location.href = '/admin/panel';
+        }, 500);
+      } catch (err) {
+        showFeedback(err.message || 'Terjadi kesalahan saat login');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Masuk ke Panel';
+      }
+    });
+
+    checkSession();
+  </script>
+</body>
+</html>
+

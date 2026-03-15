@@ -1,0 +1,15 @@
+backend/node_modules/
+backend/.env
+
+frontend/uploads/*
+!frontend/uploads/.gitkeep
+!frontend/uploads/imports/
+!frontend/uploads/imports/.gitkeep
+!frontend/uploads/site-settings/
+!frontend/uploads/site-settings/.gitkeep
+
+.DS_Store
+Thumbs.db
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

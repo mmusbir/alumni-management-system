@@ -1,0 +1,423 @@
+﻿<!DOCTYPE html>
+<html class="light" lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Pendaftaran Alumni | IKA SMANDA Kendal</title>
+  <link href="https://www.google.com/s2/favicons?domain=ikasmanda.test&sz=64" id="siteFavicon" rel="icon" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Serif+Display&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#1560BD",
+            accent: "#2E80F0",
+            "dark-navy": "#0D1F3C",
+            "background-light": "#F5F8FE"
+          },
+          fontFamily: {
+            display: ["Plus Jakarta Sans", "sans-serif"],
+            serif: ["DM Serif Display", "serif"]
+          },
+          boxShadow: {
+            soft: "0 20px 40px rgba(13, 31, 60, 0.12)"
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    body {
+      font-family: "Plus Jakarta Sans", sans-serif;
+      background: radial-gradient(circle at 10% 0, #eef4ff 0%, #f5f8fe 48%, #edf3ff 100%);
+      min-height: 100dvh;
+    }
+    .font-serif { font-family: "DM Serif Display", serif; }
+    .step-content { display: none; }
+    .step-content.active { display: block; }
+    .enter-up { animation: enterUp 520ms ease-out both; }
+    .icon-svg {
+      display: inline-block;
+      flex-shrink: 0;
+    }
+    @keyframes enterUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="text-slate-900">
+  <nav class="sticky top-0 z-50 border-b border-primary/10 bg-white/85 backdrop-blur-md">
+    <div class="mx-auto flex h-14 max-w-7xl items-center justify-between px-4">
+      <a class="flex items-center gap-3 text-primary font-serif text-2xl font-bold tracking-tight" href="/">
+        <img id="siteLogoImage" class="hidden h-10 w-auto rounded-md object-contain" alt="Logo IKA SMANDA" />
+        <span id="siteLogoText">IKA SMANDA</span>
+      </a>
+      <div class="hidden items-center gap-6 md:flex">
+        <a class="text-sm font-semibold text-dark-navy hover:text-primary transition-colors" href="/">Beranda</a>
+        <a class="text-sm font-semibold text-dark-navy hover:text-primary transition-colors" href="/direktori">Direktori</a>
+        <a class="text-sm font-semibold text-dark-navy hover:text-primary transition-colors" href="/lapak">Lapak</a>
+        <a class="rounded-lg bg-primary px-4 py-2 text-sm font-bold text-white shadow-soft transition hover:bg-accent" href="/pendaftaran">Pendaftaran</a>
+      </div>
+      <button class="p-2 text-dark-navy md:hidden" id="menuBtn" type="button">
+        <span class="icon-svg">
+          <svg aria-hidden="true" class="h-8 w-8" fill="none" viewBox="0 0 24 24">
+            <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-linecap="round" stroke-width="2"/>
+          </svg>
+        </span>
+      </button>
+    </div>
+    <div class="hidden border-t border-primary/10 bg-white px-5 py-4 md:hidden" id="mobileMenu">
+      <div class="flex flex-col gap-3">
+        <a class="rounded-lg px-3 py-2 font-semibold hover:bg-primary/10" href="/">Beranda</a>
+        <a class="rounded-lg px-3 py-2 font-semibold hover:bg-primary/10" href="/direktori">Direktori</a>
+        <a class="rounded-lg px-3 py-2 font-semibold hover:bg-primary/10" href="/lapak">Lapak</a>
+        <a class="mt-2 rounded-lg bg-primary px-4 py-2.5 text-center text-sm font-bold text-white" href="/pendaftaran">Pendaftaran</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="px-4 py-8 md:py-10">
+    <section class="mx-auto max-w-3xl">
+      <div class="mb-5 text-center enter-up">
+        <p class="inline-flex rounded-full bg-primary/10 px-4 py-1 text-xs font-bold uppercase tracking-[0.2em] text-primary">
+          Pendaftaran Alumni
+        </p>
+        <h1 class="mt-3 font-serif text-2xl leading-tight text-dark-navy md:text-4xl">Lengkapi data dan bergabung ke jaringan IKA SMANDA</h1>
+        <p class="mx-auto mt-2 max-w-2xl text-sm text-slate-600 md:text-base">
+          Form dibuat ringkas dalam 3 langkah agar proses pendaftaran cepat dan mudah diselesaikan.
+        </p>
+      </div>
+
+      <section class="enter-up rounded-2xl border border-primary/10 bg-white shadow-soft overflow-hidden">
+        <div class="bg-primary p-5 text-white">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <h2 class="text-lg font-bold">Form Pendaftaran</h2>
+              <p class="text-white/80 text-sm">Selesaikan ketiga langkah berikut</p>
+            </div>
+            <p class="text-xs font-bold uppercase tracking-widest text-cyan-100" id="stepLabel">Langkah 1 dari 3</p>
+          </div>
+
+          <div class="mt-5 relative">
+            <div class="h-1.5 w-full rounded-full bg-white/25"></div>
+            <div class="absolute left-0 top-0 h-1.5 w-0 rounded-full bg-white transition-all duration-300" id="progressBar"></div>
+          </div>
+
+          <div class="mt-4 grid grid-cols-3 gap-2 text-[11px] font-bold uppercase tracking-wider">
+            <div class="flex items-center gap-2">
+              <span class="step-indicator inline-flex h-6 w-6 items-center justify-center rounded-full bg-white text-primary">1</span>
+              Profil
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="step-indicator inline-flex h-6 w-6 items-center justify-center rounded-full border border-white/60 text-white">2</span>
+              Kontak
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="step-indicator inline-flex h-6 w-6 items-center justify-center rounded-full border border-white/60 text-white">3</span>
+              Domisili
+            </div>
+          </div>
+        </div>
+
+        <form class="p-5 md:p-6" id="regForm" novalidate>
+          <div class="step-content active" data-step="1">
+            <div class="space-y-4">
+              <div>
+                <label class="mb-1 block text-sm font-semibold">Nama Lengkap</label>
+                <input class="w-full rounded-xl border-slate-200 px-4 py-2.5 focus:border-primary focus:ring-primary" name="nama" placeholder="Contoh: Budi Santoso" required type="text" />
+              </div>
+              <div>
+                <label class="mb-1 block text-sm font-semibold">Angkatan</label>
+                <select class="w-full rounded-xl border-slate-200 px-4 py-2.5 focus:border-primary focus:ring-primary" id="inputAngkatan" name="angkatan" required>
+                  <option value="">Pilih Angkatan</option>
+                </select>
+              </div>
+              <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div>
+                  <label class="mb-1 block text-sm font-semibold">Tanggal Lahir</label>
+                  <input class="w-full rounded-xl border-slate-200 px-4 py-2.5 focus:border-primary focus:ring-primary" name="tanggal_lahir" type="date" />
+                </div>
+                <div>
+                  <label class="mb-1 block text-sm font-semibold">Gender</label>
+                  <select class="w-full rounded-xl border-slate-200 px-4 py-2.5 focus:border-primary focus:ring-primary" name="gender">
+                    <option>Laki-laki</option>
+                    <option>Perempuan</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-content" data-step="2">
+            <div class="space-y-4">
+              <div>
+                <label class="mb-1 block text-sm font-semibold">Email</label>
+                <input class="w-full rounded-xl border-slate-200 px-4 py-2.5 focus:border-primary focus:ring-primary" name="email" placeholder="nama@email.com" required type="email" />
+              </div>
+              <div>
+                <label class="mb-1 block text-sm font-semibold">No. HP / WhatsApp</label>
+                <input class="w-full rounded-xl border-slate-200 px-4 py-2.5 focus:border-primary focus:ring-primary" name="phone" placeholder="0812xxxx" required type="tel" />
+              </div>
+              <div>
+                <label class="mb-2 block text-sm font-semibold">Profesi Utama</label>
+                <div class="flex flex-wrap gap-2">
+                  <label class="cursor-pointer"><input class="peer hidden" name="profesi" type="radio" value="PNS" /><span class="inline-block rounded-full border border-slate-300 px-3 py-1 text-sm peer-checked:border-primary peer-checked:bg-primary peer-checked:text-white">PNS/TNI/Polri</span></label>
+                  <label class="cursor-pointer"><input class="peer hidden" name="profesi" type="radio" value="Swasta" /><span class="inline-block rounded-full border border-slate-300 px-3 py-1 text-sm peer-checked:border-primary peer-checked:bg-primary peer-checked:text-white">Karyawan Swasta</span></label>
+                  <label class="cursor-pointer"><input class="peer hidden" name="profesi" type="radio" value="Wirausaha" /><span class="inline-block rounded-full border border-slate-300 px-3 py-1 text-sm peer-checked:border-primary peer-checked:bg-primary peer-checked:text-white">Wirausaha</span></label>
+                  <label class="cursor-pointer"><input class="peer hidden" name="profesi" type="radio" value="Lainnya" /><span class="inline-block rounded-full border border-slate-300 px-3 py-1 text-sm peer-checked:border-primary peer-checked:bg-primary peer-checked:text-white">Lainnya</span></label>
+                </div>
+              </div>
+              <div class="hidden rounded-xl border border-primary/20 bg-primary/5 p-3.5 space-y-3" id="usahaFields">
+                <p class="text-xs font-bold uppercase tracking-widest text-primary">Detail Usaha</p>
+                <input class="w-full rounded-xl border-slate-200 px-4 py-2.5 focus:border-primary focus:ring-primary" name="nama_usaha" placeholder="Nama Usaha" type="text" />
+                <select class="w-full rounded-xl border-slate-200 px-4 py-2.5 focus:border-primary focus:ring-primary" id="inputKategoriUsaha" name="kategori_usaha">
+                  <option value="">Pilih Kategori Usaha</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-content" data-step="3">
+            <div class="space-y-4">
+              <div>
+                <label class="mb-1 block text-sm font-semibold">Domisili (Kota/Kab)</label>
+                <input class="w-full rounded-xl border-slate-200 px-4 py-2.5 focus:border-primary focus:ring-primary" name="kota" placeholder="Contoh: Semarang" type="text" />
+              </div>
+              <div>
+                <label class="mb-1 block text-sm font-semibold">Provinsi</label>
+                <select class="w-full rounded-xl border-slate-200 px-4 py-2.5 focus:border-primary focus:ring-primary" id="inputProvinsi" name="provinsi">
+                  <option value="">Pilih Provinsi</option>
+                </select>
+              </div>
+              <label class="flex items-start gap-3 rounded-xl border border-slate-200 p-4">
+                <input class="mt-1 rounded border-slate-300 text-primary focus:ring-primary" id="inputConsent" type="checkbox" />
+                <span class="text-sm text-slate-600">Saya setuju data saya ditampilkan di Direktori Alumni agar bisa dihubungi oleh sesama alumni.</span>
+              </label>
+            </div>
+          </div>
+
+          <p class="mt-4 hidden rounded-lg border px-3 py-2 text-sm" id="feedbackText"></p>
+
+          <div class="mt-6 flex gap-3">
+            <button class="hidden flex-1 rounded-xl border border-slate-200 px-4 py-2.5 font-bold text-slate-600 hover:bg-slate-50" id="prevBtn" type="button">Kembali</button>
+            <button class="flex-[2] rounded-xl bg-primary px-4 py-2.5 font-bold text-white shadow-soft transition hover:bg-accent disabled:opacity-70 disabled:cursor-not-allowed" id="nextBtn" type="button">Lanjut</button>
+          </div>
+        </form>
+      </section>
+    </section>
+  </main>
+
+  <script>
+    const API_URL = window.location.origin.includes(':3000') ? '/api' : 'http://localhost:3000/api';
+    const STEP_LABELS = ['Profil', 'Kontak', 'Domisili'];
+
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+
+    const showFeedback = (message, isError = true) => {
+      const feedback = document.getElementById('feedbackText');
+      feedback.textContent = message;
+      feedback.classList.remove('hidden', 'text-red-600', 'border-red-200', 'bg-red-50', 'text-emerald-700', 'border-emerald-200', 'bg-emerald-50');
+      if (isError) {
+        feedback.classList.add('text-red-600', 'border-red-200', 'bg-red-50');
+      } else {
+        feedback.classList.add('text-emerald-700', 'border-emerald-200', 'bg-emerald-50');
+      }
+    };
+
+    const clearFeedback = () => {
+      document.getElementById('feedbackText').classList.add('hidden');
+    };
+
+    const setSiteBranding = async () => {
+      try {
+        const res = await fetch(`${API_URL}/site-settings`);
+        const result = await res.json();
+        if (!result.success || !result.data) return;
+        if (result.data.logo_text) document.getElementById('siteLogoText').textContent = result.data.logo_text;
+        if (result.data.logo_image_url) {
+          const logoImage = document.getElementById('siteLogoImage');
+          logoImage.src = result.data.logo_image_url;
+          logoImage.classList.remove('hidden');
+          document.getElementById('siteLogoText').classList.add('hidden');
+        }
+        if (result.data.favicon_url) document.getElementById('siteFavicon').href = result.data.favicon_url;
+      } catch (err) {
+        console.error('Failed to fetch site settings', err);
+      }
+    };
+
+    const loadLapakCategories = async () => {
+      const select = document.getElementById('inputKategoriUsaha');
+      try {
+        const res = await fetch(`${API_URL}/lapak-categories`);
+        const result = await res.json();
+        (result.data || []).forEach((item) => {
+          const option = document.createElement('option');
+          option.value = item.name;
+          option.textContent = item.name;
+          select.appendChild(option);
+        });
+      } catch (err) {
+        console.error('Failed to fetch lapak categories', err);
+      }
+    };
+
+    const loadProvinces = async () => {
+      const select = document.getElementById('inputProvinsi');
+      try {
+        const res = await fetch(`${API_URL}/provinces`);
+        const result = await res.json();
+        (result.data || []).forEach((item) => {
+          const option = document.createElement('option');
+          option.value = item.name;
+          option.textContent = item.name;
+          select.appendChild(option);
+        });
+      } catch (err) {
+        console.error('Failed to fetch provinces', err);
+      }
+    };
+
+    const fillAngkatanOptions = () => {
+      const select = document.getElementById('inputAngkatan');
+      const currentYear = new Date().getFullYear();
+      select.innerHTML = '<option value="">Pilih Angkatan</option>';
+      for (let i = currentYear; i >= 1980; i -= 1) {
+        const option = document.createElement('option');
+        option.value = String(i);
+        option.textContent = `Lulus Tahun ${i}`;
+        select.appendChild(option);
+      }
+    };
+
+    let currentStep = 1;
+    const totalSteps = 3;
+    const regForm = document.getElementById('regForm');
+    const steps = document.querySelectorAll('.step-content');
+    const indicators = document.querySelectorAll('.step-indicator');
+    const progressBar = document.getElementById('progressBar');
+    const nextBtn = document.getElementById('nextBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const stepLabel = document.getElementById('stepLabel');
+
+    const updateFormStep = () => {
+      clearFeedback();
+      steps.forEach((step) => step.classList.remove('active'));
+      document.querySelector(`[data-step="${currentStep}"]`).classList.add('active');
+      progressBar.style.width = `${((currentStep - 1) / (totalSteps - 1)) * 100}%`;
+      stepLabel.textContent = `Langkah ${currentStep} dari ${totalSteps} - ${STEP_LABELS[currentStep - 1]}`;
+
+      indicators.forEach((indicator, index) => {
+        if (index < currentStep) {
+          indicator.classList.add('bg-white', 'text-primary');
+          indicator.classList.remove('border', 'border-white/60', 'text-white');
+        } else {
+          indicator.classList.remove('bg-white', 'text-primary');
+          indicator.classList.add('border', 'border-white/60', 'text-white');
+        }
+      });
+
+      prevBtn.classList.toggle('hidden', currentStep === 1);
+      nextBtn.textContent = currentStep === totalSteps ? 'Selesaikan Pendaftaran' : 'Lanjut';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    const validateCurrentStep = () => {
+      const data = Object.fromEntries(new FormData(regForm).entries());
+      if (currentStep === 1) {
+        if (!data.nama || !data.angkatan) {
+          showFeedback('Nama lengkap dan angkatan wajib diisi.');
+          return false;
+        }
+      }
+      if (currentStep === 2) {
+        if (!data.email || !data.phone) {
+          showFeedback('Email dan nomor HP wajib diisi.');
+          return false;
+        }
+      }
+      if (currentStep === 3) {
+        if (!document.getElementById('inputConsent').checked) {
+          showFeedback('Anda harus menyetujui data untuk ditampilkan di direktori.');
+          return false;
+        }
+      }
+      return true;
+    };
+
+    const submitForm = async () => {
+      const formData = new FormData(regForm);
+      const data = Object.fromEntries(formData.entries());
+      const profesiRadio = document.querySelector('input[name="profesi"]:checked');
+      data.profesi = profesiRadio ? profesiRadio.value : '';
+      data.punya_usaha = data.profesi === 'Wirausaha';
+
+      try {
+        nextBtn.disabled = true;
+        nextBtn.textContent = 'Mengirim...';
+        clearFeedback();
+
+        const res = await fetch(`${API_URL}/register`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        const result = await res.json();
+
+        if (!res.ok) {
+          let message = result.message || `Pendaftaran gagal (Status: ${res.status})`;
+          if (result.errors) {
+            message += ` ${result.errors.map((item) => item.message).join(', ')}`;
+          }
+          throw new Error(message);
+        }
+
+        showFeedback('Pendaftaran berhasil. Anda akan diarahkan ke direktori.', false);
+        setTimeout(() => {
+          window.location.href = '/direktori';
+        }, 1200);
+      } catch (err) {
+        showFeedback(`Gagal: ${err.message}`);
+        nextBtn.disabled = false;
+        nextBtn.textContent = 'Selesaikan Pendaftaran';
+      }
+    };
+
+    nextBtn.addEventListener('click', () => {
+      if (!validateCurrentStep()) return;
+      if (currentStep < totalSteps) {
+        currentStep += 1;
+        updateFormStep();
+      } else {
+        submitForm();
+      }
+    });
+
+    prevBtn.addEventListener('click', () => {
+      if (currentStep > 1) {
+        currentStep -= 1;
+        updateFormStep();
+      }
+    });
+
+    document.querySelectorAll('input[name="profesi"]').forEach((radio) => {
+      radio.addEventListener('change', (event) => {
+        document.getElementById('usahaFields').classList.toggle('hidden', event.target.value !== 'Wirausaha');
+      });
+    });
+
+    fillAngkatanOptions();
+    setSiteBranding();
+    loadLapakCategories();
+    loadProvinces();
+    updateFormStep();
+  </script>
+</body>
+</html>
+

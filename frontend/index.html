@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html class="light" lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>IKA SMANDA Kendal - Ikatan Keluarga Alumni SMAN 2 Kendal</title>
+  <link href="https://www.google.com/s2/favicons?domain=ikasmanda.test&sz=64" id="siteFavicon" rel="icon" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Serif+Display&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary: "#1560BD",
+            accent: "#2E80F0",
+            "dark-navy": "#0D1F3C",
+            "background-light": "#F5F8FE",
+            "background-dark": "#101822"
+          },
+          fontFamily: {
+            display: ["Plus Jakarta Sans", "sans-serif"],
+            serif: ["DM Serif Display", "serif"]
+          },
+          boxShadow: {
+            soft: "0 20px 40px rgba(13, 31, 60, 0.16)"
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    :root {
+      --hero-overlay: linear-gradient(120deg, rgba(13, 31, 60, 0.92), rgba(21, 96, 189, 0.84));
+    }
+    body {
+      font-family: "Plus Jakarta Sans", sans-serif;
+      background: radial-gradient(circle at 20% 0, #eef4ff 0%, #f5f8fe 50%, #edf3ff 100%);
+      min-height: 100dvh;
+    }
+    .font-serif { font-family: "DM Serif Display", serif; }
+    .glass {
+      backdrop-filter: blur(12px);
+      background: rgba(255, 255, 255, 0.16);
+    }
+    .enter-up {
+      animation: enterUp 700ms ease-out both;
+    }
+    .icon-svg {
+      display: inline-block;
+      flex-shrink: 0;
+    }
+    @keyframes enterUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="text-slate-900">
+  <nav class="sticky top-0 z-50 border-b border-primary/10 bg-white/80 backdrop-blur-md">
+    <div class="mx-auto flex h-14 max-w-7xl items-center justify-between px-4">
+      <a class="flex items-center gap-3 text-primary font-serif text-2xl font-bold tracking-tight" href="/">
+        <img id="siteLogoImage" class="hidden h-10 w-auto rounded-md object-contain" alt="Logo IKA SMANDA" />
+        <span id="siteLogoText">IKA SMANDA</span>
+      </a>
+      <div class="hidden items-center gap-6 md:flex">
+        <a class="text-sm font-semibold text-primary transition-colors" data-nav-link="beranda" href="/">Beranda</a>
+        <a class="text-sm font-semibold text-dark-navy hover:text-primary transition-colors" data-nav-link="direktori" href="/direktori">Direktori</a>
+        <a class="text-sm font-semibold text-dark-navy hover:text-primary transition-colors" data-nav-link="lapak" href="/lapak">Lapak</a>
+        <a class="rounded-lg bg-primary px-4 py-2 text-sm font-bold text-white shadow-soft transition hover:bg-accent" href="/pendaftaran">Daftar Sekarang</a>
+      </div>
+      <button class="p-2 text-dark-navy md:hidden" id="menuBtn" type="button">
+        <span class="icon-svg">
+          <svg aria-hidden="true" class="h-8 w-8" fill="none" viewBox="0 0 24 24">
+            <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-linecap="round" stroke-width="2"/>
+          </svg>
+        </span>
+      </button>
+    </div>
+    <div class="hidden border-t border-primary/10 bg-white px-6 py-5 md:hidden" id="mobileMenu">
+      <div class="flex flex-col gap-3">
+        <a class="rounded-lg bg-primary/10 px-3 py-2 font-semibold text-primary" data-mobile-nav-link="beranda" href="/">Beranda</a>
+        <a class="rounded-lg px-3 py-2 font-semibold hover:bg-primary/10" href="/direktori">Direktori</a>
+        <a class="rounded-lg px-3 py-2 font-semibold hover:bg-primary/10" data-mobile-nav-link="lapak" href="/lapak">Lapak</a>
+        <a class="mt-2 rounded-lg bg-primary px-4 py-3 text-center font-bold text-white" href="/pendaftaran">Daftar Sekarang</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="relative overflow-hidden px-6 pb-16 pt-14 md:pb-20 md:pt-16" id="heroSection">
+    <div class="absolute inset-0 bg-dark-navy" id="heroBackgroundLayer"></div>
+    <div class="absolute inset-0 opacity-90" style="background: var(--hero-overlay);"></div>
+    <div class="absolute -top-20 -right-16 h-80 w-80 rounded-full bg-cyan-300/20 blur-3xl"></div>
+    <div class="absolute -bottom-20 -left-12 h-72 w-72 rounded-full bg-blue-300/20 blur-3xl"></div>
+
+    <div class="relative z-10 mx-auto grid max-w-7xl gap-5 lg:grid-cols-[1.15fr_0.9fr]">
+      <div class="enter-up">
+        <p class="mb-4 inline-flex rounded-full border border-white/30 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-cyan-100">
+          Ikatan Alumni SMAN 2 Kendal
+        </p>
+        <h1 class="font-serif text-3xl leading-tight text-white md:text-4xl" id="heroTitle">
+          Ikatan Keluarga Alumni SMAN 2 Kendal
+        </h1>
+        <p class="mt-4 max-w-2xl text-base leading-relaxed text-blue-100 md:text-lg" id="heroSubtitle">
+          Menghubungkan alumni lintas angkatan dan membangun kolaborasi nyata bagi almamater serta sesama alumni.
+        </p>
+        <div class="mt-6 flex flex-col gap-3 sm:flex-row">
+          <a class="rounded-xl bg-primary px-5 py-3 text-center text-sm font-bold text-white shadow-soft transition hover:bg-accent" href="/pendaftaran" id="heroPrimaryCta">Daftar Sekarang</a>
+          <a class="rounded-xl border border-white/35 px-5 py-3 text-center text-sm font-bold text-white transition hover:bg-white/10" href="/direktori" id="heroSecondaryCta">Lihat Direktori</a>
+        </div>
+      </div>
+
+      <div class="enter-up grid grid-cols-2 gap-3 lg:self-end">
+        <article class="glass rounded-2xl border border-white/20 p-3.5 text-white">
+          <p class="text-xs uppercase tracking-widest text-blue-100">Total Alumni</p>
+          <p class="mt-1 text-2xl font-extrabold md:text-3xl">5,200+</p>
+        </article>
+        <article class="glass rounded-2xl border border-white/20 p-3.5 text-white">
+          <p class="text-xs uppercase tracking-widest text-blue-100">Angkatan</p>
+          <p class="mt-1 text-2xl font-extrabold md:text-3xl">42</p>
+        </article>
+        <article class="glass rounded-2xl border border-white/20 p-3.5 text-white">
+          <p class="text-xs uppercase tracking-widest text-blue-100">Provinsi</p>
+          <p class="mt-1 text-2xl font-extrabold md:text-3xl">34</p>
+        </article>
+        <article class="glass rounded-2xl border border-white/20 p-3.5 text-white">
+          <p class="text-xs uppercase tracking-widest text-blue-100">Lapak Usaha</p>
+          <p class="mt-1 text-2xl font-extrabold md:text-3xl">850+</p>
+        </article>
+      </div>
+    </div>
+  </header>
+
+  <section class="relative z-20 -mt-4 px-4 md:-mt-8 lg:-mt-10">
+    <div class="mx-auto grid max-w-7xl gap-4 md:grid-cols-3">
+      <a class="flex h-full flex-col rounded-2xl border border-primary/10 bg-white p-5 shadow-soft transition hover:-translate-y-1 hover:shadow-lg" href="/pendaftaran">
+        <p class="text-xs font-bold uppercase tracking-[0.18em] text-primary">Pendaftaran</p>
+        <h3 class="mt-2 text-xl font-bold text-dark-navy">Gabung Jadi Alumni Terdaftar</h3>
+        <p class="mt-2 text-sm text-slate-600">Isi data diri, verifikasi, lalu terhubung dengan alumni lintas angkatan.</p>
+      </a>
+      <a class="flex h-full flex-col rounded-2xl border border-primary/10 bg-white p-5 shadow-soft transition hover:-translate-y-1 hover:shadow-lg" href="/direktori">
+        <p class="text-xs font-bold uppercase tracking-[0.18em] text-primary">Direktori</p>
+        <h3 class="mt-2 text-xl font-bold text-dark-navy">Temukan Rekan Seangkatan</h3>
+        <p class="mt-2 text-sm text-slate-600">Filter alumni berdasarkan angkatan, profesi, dan domisili dalam satu halaman.</p>
+      </a>
+      <a class="flex h-full flex-col rounded-2xl border border-primary/10 bg-white p-5 shadow-soft transition hover:-translate-y-1 hover:shadow-lg" href="/lapak">
+        <p class="text-xs font-bold uppercase tracking-[0.18em] text-primary">Lapak</p>
+        <h3 class="mt-2 text-xl font-bold text-dark-navy">Dukung Usaha Sesama Alumni</h3>
+        <p class="mt-2 text-sm text-slate-600">Eksplorasi dan promosikan bisnis alumni untuk memperluas jaringan kolaborasi.</p>
+      </a>
+    </div>
+  </section>
+
+  <section class="bg-white px-6 py-12" id="profil">
+    <div class="mx-auto max-w-6xl">
+      <div class="mb-10 text-center">
+        <h2 class="font-serif text-2xl text-dark-navy md:text-3xl">Profil Organisasi</h2>
+        <p class="mx-auto mt-3 max-w-2xl text-slate-600">IKA SMANDA adalah wadah alumni yang fokus pada koneksi, kontribusi, dan kolaborasi yang berdampak.</p>
+      </div>
+      <div class="grid gap-4 md:grid-cols-3">
+        <article class="rounded-2xl border border-primary/10 bg-background-light p-5">
+          <span class="icon-svg text-primary">
+            <svg aria-hidden="true" class="h-10 w-10" fill="none" viewBox="0 0 24 24">
+              <path d="M12 5a2.5 2.5 0 1 0 0 .01V8m0 8v3m-6-6H3m18 0h-3M7.5 9.5a2 2 0 1 0 0 .01V12m9-2.5a2 2 0 1 0 0 .01V12M9 13h6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7"/>
+            </svg>
+          </span>
+          <h3 class="mt-3 text-xl font-bold text-dark-navy">Koneksi Alumni</h3>
+          <p class="mt-2 text-sm text-slate-600">Mempererat tali silaturahmi antar generasi melalui kegiatan sosial dan profesional.</p>
+        </article>
+        <article class="rounded-2xl border border-primary/10 bg-background-light p-5">
+          <span class="icon-svg text-primary">
+            <svg aria-hidden="true" class="h-10 w-10" fill="none" viewBox="0 0 24 24">
+              <path d="M8 11l2.3 2.3a2 2 0 0 0 2.8 0L16 10.5m-9.5 5L3 12l3-3 4 4m7.5 2.5L21 12l-3-3-4 4" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7"/>
+            </svg>
+          </span>
+          <h3 class="mt-3 text-xl font-bold text-dark-navy">Kolaborasi Usaha</h3>
+          <p class="mt-2 text-sm text-slate-600">Mendorong kemandirian ekonomi alumni melalui jejaring Lapak Usaha IKA SMANDA.</p>
+        </article>
+        <article class="rounded-2xl border border-primary/10 bg-background-light p-5">
+          <span class="icon-svg text-primary">
+            <svg aria-hidden="true" class="h-10 w-10" fill="none" viewBox="0 0 24 24">
+              <path d="M12 20s-6-3.7-6-9a3.5 3.5 0 0 1 6-2.3A3.5 3.5 0 0 1 18 11c0 5.3-6 9-6 9Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7"/>
+              <path d="M10.5 12h3M12 10.5v3" stroke="currentColor" stroke-linecap="round" stroke-width="1.7"/>
+            </svg>
+          </span>
+          <h3 class="mt-3 text-xl font-bold text-dark-navy">Kontribusi Sosial</h3>
+          <p class="mt-2 text-sm text-slate-600">Aktif berperan dalam memajukan almamater SMAN 2 Kendal dan masyarakat sekitar.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="px-6 py-12" id="program">
+    <div class="mx-auto max-w-6xl rounded-3xl bg-dark-navy p-5 text-white md:p-6">
+      <div class="grid gap-5 md:grid-cols-[1.2fr_1fr]">
+        <div>
+          <p class="text-xs font-bold uppercase tracking-[0.2em] text-cyan-200">Alur Bergabung</p>
+          <h2 class="mt-2 font-serif text-2xl md:text-3xl">Masuk ke jaringan alumni dalam 3 langkah</h2>
+          <p class="mt-3 text-blue-100">Alur dibuat ringkas agar data valid, mudah dicari, dan siap dipakai untuk kolaborasi.</p>
+        </div>
+        <ol class="space-y-4">
+          <li class="rounded-xl border border-white/20 bg-white/10 p-4">
+            <p class="text-xs font-bold uppercase tracking-widest text-cyan-100">Langkah 1</p>
+            <p class="mt-1 font-semibold">Isi data pendaftaran di halaman khusus.</p>
+          </li>
+          <li class="rounded-xl border border-white/20 bg-white/10 p-4">
+            <p class="text-xs font-bold uppercase tracking-widest text-cyan-100">Langkah 2</p>
+            <p class="mt-1 font-semibold">Data diverifikasi sebelum tampil di jaringan alumni.</p>
+          </li>
+          <li class="rounded-xl border border-white/20 bg-white/10 p-4">
+            <p class="text-xs font-bold uppercase tracking-widest text-cyan-100">Langkah 3</p>
+            <p class="mt-1 font-semibold">Profil tampil di direktori dan siap berjejaring.</p>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-background-light px-4 py-12" id="lapak">
+    <div class="mx-auto max-w-6xl">
+      <div class="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+        <div>
+          <h2 class="font-serif text-2xl text-dark-navy md:text-3xl">Lapak Usaha Alumni</h2>
+          <p class="mt-2 text-slate-600">Dukung bisnis sesama alumni SMANDA berdasarkan kategori yang Anda butuhkan.</p>
+        </div>
+        <a class="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-bold text-white transition hover:bg-accent" href="/lapak">
+          Lihat Semua Lapak
+          <span class="icon-svg">
+            <svg aria-hidden="true" class="h-4 w-4" fill="none" viewBox="0 0 24 24">
+              <path d="M7 17 17 7m0 0H9m8 0v8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+            </svg>
+          </span>
+        </a>
+      </div>
+
+      <div class="mb-7 flex flex-wrap gap-2" id="lapakFilterButtons"></div>
+
+      <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4" id="lapakGrid"></div>
+    </div>
+  </section>
+
+  <footer class="bg-dark-navy px-6 pb-8 pt-14 text-white">
+    <div class="mx-auto grid max-w-6xl gap-8 border-b border-white/10 pb-8 md:grid-cols-3">
+      <div>
+        <h3 class="font-serif text-2xl">IKA SMANDA</h3>
+        <p class="mt-3 text-sm leading-relaxed text-slate-300">Wadah resmi komunikasi dan kolaborasi alumni SMAN 2 Kendal untuk membangun dampak yang berkelanjutan.</p>
+      </div>
+      <div>
+        <h4 class="text-sm font-bold uppercase tracking-widest text-cyan-200">Menu Utama</h4>
+        <ul class="mt-3 space-y-2 text-sm text-slate-300">
+          <li><a class="hover:text-white" href="/pendaftaran">Pendaftaran Alumni</a></li>
+          <li><a class="hover:text-white" href="/direktori">Direktori Alumni</a></li>
+          <li><a class="hover:text-white" href="/lapak">Lapak Usaha</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-sm font-bold uppercase tracking-widest text-cyan-200">Hubungi Kami</h4>
+        <div class="mt-3 space-y-3 text-sm text-slate-300">
+          <p class="flex items-start gap-2">
+            <span class="icon-svg text-primary">
+              <svg aria-hidden="true" class="h-4 w-4" fill="none" viewBox="0 0 24 24">
+                <path d="M12 21s6-5.4 6-11a6 6 0 1 0-12 0c0 5.6 6 11 6 11Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>
+                <circle cx="12" cy="10" r="2.2" stroke="currentColor" stroke-width="1.8"/>
+              </svg>
+            </span>
+            <span>Sekretariat IKA SMANDA, Kendal, Jawa Tengah</span>
+          </p>
+          <p class="flex items-center gap-2">
+            <span class="icon-svg text-primary">
+              <svg aria-hidden="true" class="h-4 w-4" fill="none" viewBox="0 0 24 24">
+                <path d="M4 7h16v10H4z" stroke="currentColor" stroke-linejoin="round" stroke-width="1.8"/>
+                <path d="m5 8 7 5 7-5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>
+              </svg>
+            </span>
+            <span>admin@ikasmanda-kendal.or.id</span>
+          </p>
+          <p class="flex items-center gap-2">
+            <span class="icon-svg text-primary">
+              <svg aria-hidden="true" class="h-4 w-4" fill="none" viewBox="0 0 24 24">
+                <path d="M7.5 4.5h3l1.5 4-2 1.5a16 16 0 0 0 4 4l1.5-2 4 1.5v3A1.5 1.5 0 0 1 18 18C10.8 18 5 12.2 5 5a1.5 1.5 0 0 1 1.5-1.5Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"/>
+              </svg>
+            </span>
+            <span>+62 812-3456-7890</span>
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="mx-auto mt-6 max-w-6xl text-center text-xs text-slate-400">
+      <p>&copy; 2026 Ikatan Keluarga Alumni SMAN 2 Kendal. 
+Developed by 
+<a href="https://www.yunakatech.com/" target="_blank" style="color:#007bff; text-decoration:none;">
+Yunaka Tech</a>. ❤️
+</p>
+    </div>
+  </footer>
+
+  <script>
+    const API_URL = window.location.origin.includes(':3000') ? '/api' : 'http://localhost:3000/api';
+
+    const mapLegacyLink = (value, fallback) => {
+      if (!value) return fallback;
+      if (value === '#daftar') return '/pendaftaran';
+      if (value === '#direktori') return '/direktori';
+      return value;
+    };
+
+    const applySiteSettings = (settings = {}) => {
+      const logoText = document.getElementById('siteLogoText');
+      const logoImage = document.getElementById('siteLogoImage');
+      const favicon = document.getElementById('siteFavicon');
+      const heroBackgroundLayer = document.getElementById('heroBackgroundLayer');
+      const heroTitle = document.getElementById('heroTitle');
+      const heroSubtitle = document.getElementById('heroSubtitle');
+      const heroPrimaryCta = document.getElementById('heroPrimaryCta');
+      const heroSecondaryCta = document.getElementById('heroSecondaryCta');
+
+      if (logoText && settings.logo_text) logoText.textContent = settings.logo_text;
+      if (logoImage) {
+        if (settings.logo_image_url) {
+          logoImage.src = settings.logo_image_url;
+          logoImage.classList.remove('hidden');
+          logoText.classList.toggle('hidden', Boolean(settings.hide_logo_text_on_index));
+        } else {
+          logoImage.classList.add('hidden');
+          logoText.classList.remove('hidden');
+        }
+      }
+      if (favicon && settings.favicon_url) favicon.href = settings.favicon_url;
+      if (heroTitle && settings.hero_title) heroTitle.textContent = settings.hero_title;
+      if (heroSubtitle && settings.hero_subtitle) heroSubtitle.textContent = settings.hero_subtitle;
+      if (heroPrimaryCta) {
+        if (settings.hero_primary_text) heroPrimaryCta.textContent = settings.hero_primary_text;
+        heroPrimaryCta.href = mapLegacyLink(settings.hero_primary_link, '/pendaftaran');
+      }
+      if (heroSecondaryCta) {
+        if (settings.hero_secondary_text) heroSecondaryCta.textContent = settings.hero_secondary_text;
+        heroSecondaryCta.href = mapLegacyLink(settings.hero_secondary_link, '/direktori');
+      }
+
+      if (heroBackgroundLayer) {
+        if (settings.hero_background_url) {
+          heroBackgroundLayer.style.backgroundImage = `url('${settings.hero_background_url}')`;
+          heroBackgroundLayer.style.backgroundSize = 'cover';
+          heroBackgroundLayer.style.backgroundPosition = 'center';
+        } else {
+          heroBackgroundLayer.style.backgroundImage = 'none';
+        }
+      }
+    };
+
+    const fetchSiteSettings = async () => {
+      try {
+        const res = await fetch(`${API_URL}/site-settings`);
+        const result = await res.json();
+        if (result.success && result.data) applySiteSettings(result.data);
+      } catch (err) {
+        console.error('Failed to fetch site settings', err);
+      }
+    };
+
+    const renderLapakCategoryButtons = (categories = []) => {
+      const container = document.getElementById('lapakFilterButtons');
+      const items = ['All', ...categories];
+      container.innerHTML = items.map((category) => `
+        <button
+          class="lapak-filter rounded-full ${category === 'All' ? 'bg-primary text-white' : 'border border-slate-300 bg-white text-slate-700'} px-5 py-2 text-sm font-bold"
+          data-cat="${category}"
+          type="button"
+        >
+          ${category === 'All' ? 'Semua' : category}
+        </button>
+      `).join('');
+
+      container.querySelectorAll('.lapak-filter').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          container.querySelectorAll('.lapak-filter').forEach((item) => {
+            item.classList.remove('bg-primary', 'text-white');
+            item.classList.add('bg-white', 'text-slate-700', 'border', 'border-slate-300');
+          });
+          btn.classList.add('bg-primary', 'text-white');
+          btn.classList.remove('bg-white', 'text-slate-700', 'border', 'border-slate-300');
+          lapakState.kategori = btn.dataset.cat;
+          lapakState.page = 1;
+          fetchLapak();
+        });
+      });
+    };
+
+    const fetchLapakCategories = async () => {
+      try {
+        const res = await fetch(`${API_URL}/lapak-categories`);
+        const result = await res.json();
+        renderLapakCategoryButtons((result.data || []).map((item) => item.name));
+      } catch (err) {
+        console.error('Failed to fetch lapak categories', err);
+        renderLapakCategoryButtons(['Kuliner', 'Jasa', 'Fashion', 'Teknologi']);
+      }
+    };
+
+    const lapakState = { data: [], page: 1, kategori: '' };
+
+    const categoryIcon = (cat) => {
+      const map = {
+        Kuliner: `
+          <svg aria-hidden="true" class="h-6 w-6" fill="none" viewBox="0 0 24 24">
+            <path d="M7 3v8M10 3v8M7 7h3M14 3v18m0-10c2.2 0 4-1.8 4-4V3h-4" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>
+          </svg>
+        `,
+        Teknologi: `
+          <svg aria-hidden="true" class="h-6 w-6" fill="none" viewBox="0 0 24 24">
+            <rect x="7" y="7" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 15h3M1 9h3M1 15h3" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"/>
+          </svg>
+        `,
+        Fashion: `
+          <svg aria-hidden="true" class="h-6 w-6" fill="none" viewBox="0 0 24 24">
+            <path d="m9 4 3 2 3-2 3 4-2 2 1 10H7l1-10-2-2 3-4Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>
+          </svg>
+        `,
+        Jasa: `
+          <svg aria-hidden="true" class="h-6 w-6" fill="none" viewBox="0 0 24 24">
+            <path d="M4 18h16M7 18V8l5-3 5 3v10M10 12h4" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>
+          </svg>
+        `
+      };
+      return map[cat] || `
+        <svg aria-hidden="true" class="h-6 w-6" fill="none" viewBox="0 0 24 24">
+          <path d="M4 10h16v10H4zM6 10V6h12v4" stroke="currentColor" stroke-linejoin="round" stroke-width="1.8"/>
+        </svg>
+      `;
+    };
+
+    const fetchLapak = async () => {
+      try {
+        const query = new URLSearchParams({
+          page: lapakState.page,
+          ...(lapakState.kategori && lapakState.kategori !== 'All' && { kategori: lapakState.kategori })
+        });
+        const res = await fetch(`${API_URL}/usaha?${query.toString()}`);
+        const result = await res.json();
+        if (result.success) {
+          lapakState.data = result.data;
+          renderLapak();
+        }
+      } catch (err) {
+        console.error('Failed to fetch lapak', err);
+      }
+    };
+
+    const renderLapak = () => {
+      const grid = document.getElementById('lapakGrid');
+      if (!lapakState.data.length) {
+        grid.innerHTML = '<div class="col-span-1 py-8 text-center text-slate-500 sm:col-span-2 lg:col-span-4">Belum ada lapak di kategori ini.</div>';
+        return;
+      }
+
+      grid.innerHTML = lapakState.data.map((item) => `
+        <article class="flex flex-col h-full rounded-2xl border border-primary/10 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+          <div class="mb-4 flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
+            ${categoryIcon(item.kategori)}
+          </div>
+          <div class="flex flex-col flex-grow">
+            <h3 class="line-clamp-2 text-lg font-bold text-dark-navy">${item.nama_usaha}</h3>
+            <div class="mt-1">
+              <p class="inline-flex rounded-full bg-slate-100 px-2.5 py-1 text-xs font-bold uppercase tracking-wide text-slate-600">${item.kategori}</p>
+            </div>
+            <p class="mt-auto pt-4 text-sm text-slate-500">Pemilik: <span class="font-semibold text-slate-700">${item.pemilik}</span></p>
+          </div>
+        </article>
+      `).join('');
+    };
+
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+
+    fetchSiteSettings();
+    fetchLapakCategories();
+    fetchLapak();
+  </script>
+</body>
+</html>
