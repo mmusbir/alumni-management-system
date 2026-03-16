@@ -294,18 +294,67 @@
             <div><h2 id="alumniFormTitle" class="text-base font-bold text-ink">Tambah Alumni</h2><p class="mt-1 text-sm text-slate-500">Input manual untuk data alumni dari panel admin.</p></div>
             <button id="cancelAlumniFormBtn" type="button" class="rounded-lg border border-slate-300 px-3 py-2 text-[13px] font-semibold text-slate-700 hover:bg-slate-50">Tutup</button>
           </div>
-          <form id="alumniForm" class="grid gap-2.5 md:grid-cols-2 xl:grid-cols-3">
-            <input id="alumniNama" type="text" placeholder="Nama alumni" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" />
-            <input id="alumniAngkatan" type="text" placeholder="Angkatan" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" />
-            <select id="alumniGender" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary"><option value="Laki-laki">Laki-laki</option><option value="Perempuan">Perempuan</option></select>
-            <input id="alumniEmail" type="email" placeholder="Email" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" />
-            <input id="alumniPhone" type="text" placeholder="No. HP" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" />
-            <input id="alumniProfesi" type="text" placeholder="Profesi" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" />
-            <input id="alumniTempatLahir" type="text" placeholder="Tempat lahir" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" />
-            <input id="alumniTanggalLahir" type="date" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" />
-            <input id="alumniProvinsi" type="text" placeholder="Provinsi" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" />
-            <input id="alumniKota" type="text" placeholder="Kota / Kabupaten" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" />
-            <textarea id="alumniAlamat" rows="3" placeholder="Alamat" class="md:col-span-2 xl:col-span-2 w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary"></textarea>
+          <form id="alumniForm" class="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+            <div class="space-y-1.5">
+              <label for="alumniNama" class="block text-[13px] font-semibold text-slate-700">Nama Lengkap</label>
+              <input id="alumniNama" type="text" placeholder="Contoh: Budi Santoso" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" />
+            </div>
+            <div class="space-y-1.5">
+              <label for="alumniAngkatan" class="block text-[13px] font-semibold text-slate-700">Angkatan</label>
+              <select id="alumniAngkatan" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary">
+                <option value="">Pilih Angkatan</option>
+              </select>
+            </div>
+            <div class="space-y-1.5">
+              <label for="alumniTanggalLahir" class="block text-[13px] font-semibold text-slate-700">Tanggal Lahir</label>
+              <input id="alumniTanggalLahir" type="date" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" />
+            </div>
+            <div class="space-y-1.5">
+              <label for="alumniGender" class="block text-[13px] font-semibold text-slate-700">Gender</label>
+              <select id="alumniGender" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary"><option value="Laki-laki">Laki-laki</option><option value="Perempuan">Perempuan</option></select>
+            </div>
+            <div class="space-y-1.5">
+              <label for="alumniEmail" class="block text-[13px] font-semibold text-slate-700">Email</label>
+              <input id="alumniEmail" type="email" placeholder="nama@email.com" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" />
+            </div>
+            <div class="space-y-1.5">
+              <label for="alumniPhone" class="block text-[13px] font-semibold text-slate-700">No. HP / WhatsApp</label>
+              <input id="alumniPhone" type="text" placeholder="0812xxxx" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" />
+            </div>
+            <div class="space-y-1.5 md:col-span-2 xl:col-span-3">
+              <span class="block text-[13px] font-semibold text-slate-700">Profesi Utama</span>
+              <div class="flex flex-wrap gap-2">
+                <label class="cursor-pointer"><input class="peer hidden" name="alumniProfesi" type="radio" value="PNS" /><span class="inline-block rounded-full border border-slate-300 px-3 py-1 text-xs font-medium text-slate-700 peer-checked:border-primary peer-checked:bg-primary peer-checked:text-white">PNS/TNI/Polri</span></label>
+                <label class="cursor-pointer"><input class="peer hidden" name="alumniProfesi" type="radio" value="Swasta" /><span class="inline-block rounded-full border border-slate-300 px-3 py-1 text-xs font-medium text-slate-700 peer-checked:border-primary peer-checked:bg-primary peer-checked:text-white">Karyawan Swasta</span></label>
+                <label class="cursor-pointer"><input class="peer hidden" name="alumniProfesi" type="radio" value="Wirausaha" /><span class="inline-block rounded-full border border-slate-300 px-3 py-1 text-xs font-medium text-slate-700 peer-checked:border-primary peer-checked:bg-primary peer-checked:text-white">Wirausaha</span></label>
+                <label class="cursor-pointer"><input class="peer hidden" name="alumniProfesi" type="radio" value="Lainnya" /><span class="inline-block rounded-full border border-slate-300 px-3 py-1 text-xs font-medium text-slate-700 peer-checked:border-primary peer-checked:bg-primary peer-checked:text-white">Lainnya</span></label>
+              </div>
+            </div>
+            <div id="alumniUsahaFields" class="hidden space-y-3 rounded-xl border border-primary/20 bg-primary/5 p-3 md:col-span-2 xl:col-span-3">
+              <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-primary">Detail Usaha</p>
+              <div class="grid gap-3 md:grid-cols-2">
+                <div class="space-y-1.5">
+                  <label for="alumniNamaUsaha" class="block text-[13px] font-semibold text-slate-700">Nama Usaha</label>
+                  <input id="alumniNamaUsaha" type="text" placeholder="Nama Usaha" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" />
+                </div>
+                <div class="space-y-1.5">
+                  <label for="alumniKategoriUsaha" class="block text-[13px] font-semibold text-slate-700">Kategori Usaha</label>
+                  <select id="alumniKategoriUsaha" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary">
+                    <option value="">Pilih Kategori Usaha</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="space-y-1.5">
+              <label for="alumniKota" class="block text-[13px] font-semibold text-slate-700">Domisili (Kota/Kab)</label>
+              <input id="alumniKota" type="text" placeholder="Contoh: Semarang" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" />
+            </div>
+            <div class="space-y-1.5">
+              <label for="alumniProvinsi" class="block text-[13px] font-semibold text-slate-700">Provinsi</label>
+              <select id="alumniProvinsi" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary">
+                <option value="">Pilih Provinsi</option>
+              </select>
+            </div>
             <label class="flex items-center gap-2 rounded-lg border border-slate-300 px-3 py-2 text-[13px] font-medium text-slate-700"><input id="alumniVerified" type="checkbox" checked class="h-4 w-4 rounded border-slate-300 text-primary focus:ring-primary" /> Langsung terverifikasi</label>
             <div class="md:col-span-2 xl:col-span-3 flex items-center justify-between gap-3">
               <p id="alumniFormMessage" class="text-sm text-slate-500"></p>
@@ -331,10 +380,24 @@
             <div><h2 id="usahaFormTitle" class="text-base font-bold text-ink">Tambah Usaha</h2><p class="mt-1 text-sm text-slate-500">Kelola data usaha alumni secara manual.</p></div>
             <button id="cancelUsahaFormBtn" type="button" class="rounded-lg border border-slate-300 px-3 py-2 text-[13px] font-semibold text-slate-700 hover:bg-white">Tutup</button>
           </div>
-          <form id="usahaForm" class="grid gap-2.5 md:grid-cols-2 xl:grid-cols-4">
-            <input id="usahaNama" type="text" placeholder="Nama usaha" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" />
-            <select id="usahaKategori" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary"><option value="">Pilih kategori</option></select>
-            <select id="usahaPemilik" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary"><option value="">Pilih pemilik alumni</option></select>
+          <form id="usahaForm" class="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+            <div class="space-y-1.5">
+              <label for="usahaNama" class="block text-[13px] font-semibold text-slate-700">Nama Usaha</label>
+              <input id="usahaNama" type="text" placeholder="Nama Usaha" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" />
+            </div>
+            <div class="space-y-1.5">
+              <label for="usahaKategori" class="block text-[13px] font-semibold text-slate-700">Kategori Usaha</label>
+              <select id="usahaKategori" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary"><option value="">Pilih Kategori Usaha</option></select>
+            </div>
+            <div class="space-y-1.5 xl:col-span-2">
+              <label for="usahaPemilikSearch" class="block text-[13px] font-semibold text-slate-700">Pemilik Alumni</label>
+              <div id="usahaPemilikSearchWrap" class="relative">
+                <input id="usahaPemilikSearch" type="text" placeholder="Cari nama, angkatan, profesi, atau kota" autocomplete="off" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" />
+                <div id="usahaPemilikResults" class="hidden absolute left-0 right-0 z-20 mt-1 max-h-56 overflow-y-auto rounded-xl border border-slate-200 bg-white p-1 shadow-lg"></div>
+              </div>
+              <select id="usahaPemilik" class="hidden"><option value="">Pilih pemilik alumni</option></select>
+              <p id="usahaPemilikMeta" class="text-xs text-slate-500">Pilih alumni yang menjadi pemilik usaha.</p>
+            </div>
             <label class="flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2 text-[13px] font-medium text-slate-700"><input id="usahaVerified" type="checkbox" checked class="h-4 w-4 rounded border-slate-300 text-primary focus:ring-primary" /> Langsung terverifikasi</label>
             <div class="md:col-span-2 xl:col-span-4 flex items-center justify-between gap-3">
               <p id="usahaFormMessage" class="text-sm text-slate-500"></p>
@@ -446,6 +509,7 @@
       usahaRows: [],
       alumniOptions: [],
       lapakCategories: [],
+      provinces: [],
     };
     const SETTINGS_VIEWS = ['frontpage', 'lapak-categories', 'provinces', 'admin-users'];
 
@@ -531,15 +595,144 @@
       state.alumniOptions = rows;
       const select = document.getElementById('usahaPemilik');
       const currentValue = select.value;
-      select.innerHTML = '<option value="">Pilih pemilik alumni</option>' + rows.map((row) => `<option value="${row.id}">${row.nama}${row.angkatan ? ` - ${row.angkatan}` : ''}</option>`).join('');
+      const options = rows.map((row) => `<option value="${row.id}">${formatUsahaOwnerLabel(row)}</option>`);
+      if (currentValue && !rows.some((row) => String(row.id) === String(currentValue))) {
+        options.unshift(`<option value="${currentValue}">Pemilik lama #${currentValue} (legacy)</option>`);
+      }
+      select.innerHTML = '<option value="">Pilih pemilik alumni</option>' + options.join('');
       if (currentValue) select.value = currentValue;
+      syncUsahaPemilikSearch();
+      syncUsahaPemilikMeta();
     }
     function fillUsahaCategoryOptions(rows) {
       state.lapakCategories = rows;
       const select = document.getElementById('usahaKategori');
       const currentValue = select.value;
-      select.innerHTML = '<option value="">Pilih kategori</option>' + rows.map((row) => `<option value="${row.name}">${row.name}</option>`).join('');
+      const options = rows.map((row) => `<option value="${row.name}">${row.name}</option>`);
+      if (currentValue && !rows.some((row) => row.name === currentValue)) {
+        options.unshift(`<option value="${currentValue}">${currentValue} (legacy)</option>`);
+      }
+      select.innerHTML = '<option value="">Pilih Kategori Usaha</option>' + options.join('');
       if (currentValue) select.value = currentValue;
+    }
+    function syncUsahaPemilikMeta() {
+      const meta = document.getElementById('usahaPemilikMeta');
+      const selectedId = document.getElementById('usahaPemilik').value;
+      if (!selectedId) {
+        meta.textContent = 'Pilih alumni yang menjadi pemilik usaha.';
+        return;
+      }
+      const owner = state.alumniOptions.find((row) => String(row.id) === String(selectedId));
+      if (!owner) {
+        meta.textContent = `Pemilik legacy dengan ID #${selectedId}.`;
+        return;
+      }
+      const parts = [];
+      if (owner.angkatan) parts.push(`Angkatan ${owner.angkatan}`);
+      if (owner.profesi) parts.push(owner.profesi);
+      if (owner.kota) parts.push(owner.kota);
+      meta.textContent = parts.length ? parts.join(' | ') : `ID alumni #${owner.id}`;
+    }
+    function formatUsahaOwnerLabel(owner) {
+      return `${owner.nama}${owner.angkatan ? ` - ${owner.angkatan}` : ''}${owner.profesi ? ` | ${owner.profesi}` : ''}`;
+    }
+    function getUsahaOwnerLabelById(ownerId) {
+      const owner = state.alumniOptions.find((row) => String(row.id) === String(ownerId));
+      return owner ? formatUsahaOwnerLabel(owner) : (ownerId ? `Pemilik lama #${ownerId} (legacy)` : '');
+    }
+    function syncUsahaPemilikSearch() {
+      document.getElementById('usahaPemilikSearch').value = getUsahaOwnerLabelById(document.getElementById('usahaPemilik').value);
+    }
+    function closeUsahaPemilikResults() {
+      document.getElementById('usahaPemilikResults').classList.add('hidden');
+    }
+    function renderUsahaPemilikResults(query = '') {
+      const resultBox = document.getElementById('usahaPemilikResults');
+      const normalized = query.trim().toLowerCase();
+      const rows = state.alumniOptions
+        .filter((row) => {
+          if (!normalized) return true;
+          return [row.nama, row.angkatan, row.profesi, row.kota]
+            .filter(Boolean)
+            .some((value) => String(value).toLowerCase().includes(normalized));
+        })
+        .slice(0, 12);
+      if (!rows.length) {
+        resultBox.innerHTML = '<div class="px-3 py-2 text-xs text-slate-500">Tidak ada alumni yang cocok.</div>';
+      } else {
+        resultBox.innerHTML = rows.map((row) => `
+          <button type="button" data-owner-id="${row.id}" class="usaha-owner-option flex w-full flex-col rounded-lg px-3 py-2 text-left hover:bg-slate-50">
+            <span class="text-[13px] font-semibold text-slate-800">${row.nama}</span>
+            <span class="text-xs text-slate-500">${[row.angkatan ? `Angkatan ${row.angkatan}` : '', row.profesi || '', row.kota || ''].filter(Boolean).join(' | ')}</span>
+          </button>
+        `).join('');
+      }
+      resultBox.classList.remove('hidden');
+    }
+    function selectUsahaOwner(ownerId) {
+      document.getElementById('usahaPemilik').value = String(ownerId || '');
+      syncUsahaPemilikSearch();
+      syncUsahaPemilikMeta();
+      closeUsahaPemilikResults();
+    }
+    function fillAlumniAngkatanOptions(selectedValue = '') {
+      const select = document.getElementById('alumniAngkatan');
+      const currentYear = new Date().getFullYear();
+      select.innerHTML = '<option value="">Pilih Angkatan</option>';
+      let hasSelectedValue = !selectedValue;
+      for (let year = currentYear; year >= 1980; year -= 1) {
+        const option = document.createElement('option');
+        option.value = String(year);
+        option.textContent = String(year);
+        if (option.value === selectedValue) hasSelectedValue = true;
+        select.appendChild(option);
+      }
+      if (selectedValue && !hasSelectedValue) {
+        const legacyOption = document.createElement('option');
+        legacyOption.value = selectedValue;
+        legacyOption.textContent = `${selectedValue} (legacy)`;
+        select.appendChild(legacyOption);
+      }
+      select.value = selectedValue || '';
+    }
+    function fillAlumniProvinceOptions(rows) {
+      state.provinces = rows;
+      const select = document.getElementById('alumniProvinsi');
+      const currentValue = select.value;
+      const options = rows.map((row) => `<option value="${row.name}">${row.name}</option>`);
+      if (currentValue && !rows.some((row) => row.name === currentValue)) {
+        options.unshift(`<option value="${currentValue}">${currentValue} (legacy)</option>`);
+      }
+      select.innerHTML = '<option value="">Pilih Provinsi</option>' + options.join('');
+      if (currentValue) select.value = currentValue;
+    }
+    function fillAlumniCategoryOptions(rows) {
+      const select = document.getElementById('alumniKategoriUsaha');
+      const currentValue = select.value;
+      const options = rows.map((row) => `<option value="${row.name}">${row.name}</option>`);
+      if (currentValue && !rows.some((row) => row.name === currentValue)) {
+        options.unshift(`<option value="${currentValue}">${currentValue} (legacy)</option>`);
+      }
+      select.innerHTML = '<option value="">Pilih Kategori Usaha</option>' + options.join('');
+      if (currentValue) select.value = currentValue;
+    }
+    function getSelectedAlumniProfesi() {
+      return document.querySelector('input[name="alumniProfesi"]:checked')?.value || '';
+    }
+    function setSelectedAlumniProfesi(value = '') {
+      document.querySelectorAll('input[name="alumniProfesi"]').forEach((input) => {
+        input.checked = input.value === value;
+      });
+      toggleAlumniUsahaFields();
+    }
+    function toggleAlumniUsahaFields() {
+      const isWirausaha = getSelectedAlumniProfesi() === 'Wirausaha';
+      const usahaFields = document.getElementById('alumniUsahaFields');
+      usahaFields.classList.toggle('hidden', !isWirausaha);
+      if (!isWirausaha) {
+        document.getElementById('alumniNamaUsaha').value = '';
+        document.getElementById('alumniKategoriUsaha').value = '';
+      }
     }
     function setSidebarCollapsed(collapsed) {
       state.sidebarCollapsed = collapsed;
@@ -565,16 +758,16 @@
       state.alumniEditId = null;
       document.getElementById('alumniFormTitle').textContent = 'Tambah Alumni';
       document.getElementById('alumniNama').value = '';
-      document.getElementById('alumniAngkatan').value = '';
+      fillAlumniAngkatanOptions('');
       document.getElementById('alumniGender').value = 'Laki-laki';
       document.getElementById('alumniEmail').value = '';
       document.getElementById('alumniPhone').value = '';
-      document.getElementById('alumniProfesi').value = '';
-      document.getElementById('alumniTempatLahir').value = '';
+      setSelectedAlumniProfesi('');
+      document.getElementById('alumniNamaUsaha').value = '';
+      document.getElementById('alumniKategoriUsaha').value = '';
       document.getElementById('alumniTanggalLahir').value = '';
       document.getElementById('alumniProvinsi').value = '';
       document.getElementById('alumniKota').value = '';
-      document.getElementById('alumniAlamat').value = '';
       document.getElementById('alumniVerified').checked = true;
       document.getElementById('saveAlumniBtn').textContent = 'Simpan Alumni';
       document.getElementById('alumniFormMessage').textContent = '';
@@ -585,19 +778,20 @@
       state.alumniEditId = row.id;
       document.getElementById('alumniFormTitle').textContent = `Edit Alumni: ${row.nama}`;
       document.getElementById('alumniNama').value = row.nama || '';
-      document.getElementById('alumniAngkatan').value = row.angkatan || '';
+      fillAlumniAngkatanOptions(row.angkatan || '');
       document.getElementById('alumniGender').value = row.gender || 'Laki-laki';
       document.getElementById('alumniEmail').value = row.email || '';
       document.getElementById('alumniPhone').value = row.phone || '';
-      document.getElementById('alumniProfesi').value = row.profesi || '';
-      document.getElementById('alumniTempatLahir').value = row.tempat_lahir || '';
+      setSelectedAlumniProfesi(row.profesi || '');
+      document.getElementById('alumniNamaUsaha').value = row.nama_usaha || '';
+      document.getElementById('alumniKategoriUsaha').value = row.kategori_usaha || '';
       document.getElementById('alumniTanggalLahir').value = row.tanggal_lahir ? String(row.tanggal_lahir).slice(0, 10) : '';
       document.getElementById('alumniProvinsi').value = row.provinsi || '';
       document.getElementById('alumniKota').value = row.kota || '';
-      document.getElementById('alumniAlamat').value = row.alamat || '';
       document.getElementById('alumniVerified').checked = Boolean(row.is_verified);
       document.getElementById('saveAlumniBtn').textContent = 'Simpan Perubahan';
       document.getElementById('alumniFormMessage').textContent = `Mode edit data: ${row.nama}`;
+      toggleAlumniUsahaFields();
     }
     function closeAlumniForm() { resetAlumniForm(); toggleCardVisibility('alumniFormCard', false); }
     function resetUsahaForm() {
@@ -606,9 +800,11 @@
       document.getElementById('usahaNama').value = '';
       document.getElementById('usahaKategori').value = '';
       document.getElementById('usahaPemilik').value = '';
+      syncUsahaPemilikSearch();
       document.getElementById('usahaVerified').checked = true;
       document.getElementById('saveUsahaBtn').textContent = 'Simpan Usaha';
       document.getElementById('usahaFormMessage').textContent = '';
+      syncUsahaPemilikMeta();
     }
     function openUsahaForm(row = null) {
       toggleCardVisibility('usahaFormCard', true);
@@ -618,9 +814,11 @@
       document.getElementById('usahaNama').value = row.nama_usaha || '';
       document.getElementById('usahaKategori').value = row.kategori || '';
       document.getElementById('usahaPemilik').value = String(row.pemilik_id || '');
+      syncUsahaPemilikSearch();
       document.getElementById('usahaVerified').checked = Boolean(row.is_verified);
       document.getElementById('saveUsahaBtn').textContent = 'Simpan Perubahan';
       document.getElementById('usahaFormMessage').textContent = `Mode edit data: ${row.nama_usaha}`;
+      syncUsahaPemilikMeta();
     }
     function closeUsahaForm() { resetUsahaForm(); toggleCardVisibility('usahaFormCard', false); }
     function renderRecentAlumni(rows) {
@@ -709,10 +907,23 @@
       const result = await fetchJSON(`${API_BASE}/admin/lapak-categories`);
       renderLapakCategories(result.data || []);
       fillUsahaCategoryOptions(result.data || []);
+      fillAlumniCategoryOptions(result.data || []);
     }
     async function loadProvinces() {
       const result = await fetchJSON(`${API_BASE}/admin/provinces`);
       renderProvinces(result.data || []);
+      fillAlumniProvinceOptions(result.data || []);
+    }
+    async function loadAlumniFormOptions() {
+      fillAlumniAngkatanOptions(document.getElementById('alumniAngkatan').value);
+      const [categoriesResult, provincesResult] = await Promise.all([
+        fetchJSON(`${API_BASE}/admin/lapak-categories`),
+        fetchJSON(`${API_BASE}/admin/provinces`),
+      ]);
+      state.lapakCategories = categoriesResult.data || [];
+      state.provinces = provincesResult.data || [];
+      fillAlumniCategoryOptions(state.lapakCategories);
+      fillAlumniProvinceOptions(state.provinces);
     }
     async function loadAdminUsers() {
       const result = await fetchJSON(`${API_BASE}/admin/users`);
@@ -725,7 +936,7 @@
       const target = document.getElementById(`view-${view}`);
       if (target) target.classList.remove('hidden');
       if (view === 'dashboard') await loadDashboard();
-      if (view === 'alumni') { closeAlumniForm(); await loadAlumni(); }
+      if (view === 'alumni') { closeAlumniForm(); await Promise.all([loadAlumni(), loadAlumniFormOptions()]); }
       if (view === 'usaha') { closeUsahaForm(); await Promise.all([loadUsaha(), loadUsahaFormOptions()]); }
       if (view === 'frontpage') await loadSiteSettings();
       if (view === 'lapak-categories') await loadLapakCategories();
@@ -861,22 +1072,28 @@
       event.preventDefault();
       const button = document.getElementById('saveAlumniBtn');
       const message = document.getElementById('alumniFormMessage');
+      const profesi = getSelectedAlumniProfesi();
       const payload = {
         nama: document.getElementById('alumniNama').value.trim(),
-        angkatan: document.getElementById('alumniAngkatan').value.trim(),
+        angkatan: document.getElementById('alumniAngkatan').value,
         gender: document.getElementById('alumniGender').value,
         email: document.getElementById('alumniEmail').value.trim(),
         phone: document.getElementById('alumniPhone').value.trim(),
-        profesi: document.getElementById('alumniProfesi').value.trim(),
-        tempat_lahir: document.getElementById('alumniTempatLahir').value.trim(),
+        profesi,
+        punya_usaha: profesi === 'Wirausaha',
+        nama_usaha: document.getElementById('alumniNamaUsaha').value.trim(),
+        kategori_usaha: document.getElementById('alumniKategoriUsaha').value,
         tanggal_lahir: document.getElementById('alumniTanggalLahir').value,
-        provinsi: document.getElementById('alumniProvinsi').value.trim(),
+        provinsi: document.getElementById('alumniProvinsi').value,
         kota: document.getElementById('alumniKota').value.trim(),
-        alamat: document.getElementById('alumniAlamat').value.trim(),
         is_verified: document.getElementById('alumniVerified').checked,
       };
       if (!payload.nama || !payload.angkatan || !payload.email || !payload.phone) {
-        message.textContent = 'Nama, angkatan, email, dan no. HP wajib diisi';
+        message.textContent = 'Nama lengkap, angkatan, email, dan nomor HP wajib diisi';
+        return;
+      }
+      if (payload.punya_usaha && (!payload.nama_usaha || !payload.kategori_usaha)) {
+        message.textContent = 'Nama usaha dan kategori usaha wajib diisi untuk alumni wirausaha';
         return;
       }
       button.disabled = true;
@@ -909,7 +1126,7 @@
         is_verified: document.getElementById('usahaVerified').checked,
       };
       if (!payload.nama_usaha || !payload.kategori || !payload.pemilik_id) {
-        message.textContent = 'Nama usaha, kategori, dan pemilik alumni wajib diisi';
+        message.textContent = 'Nama usaha, kategori usaha, dan pemilik alumni wajib diisi';
         return;
       }
       button.disabled = true;
@@ -986,7 +1203,10 @@
       const editButton = event.target.closest('.edit-usaha-btn');
       if (editButton) {
         const row = state.usahaRows.find((item) => String(item.id) === editButton.dataset.id);
-        if (row) openUsahaForm(row);
+        if (row) {
+          await loadUsahaFormOptions();
+          openUsahaForm(row);
+        }
         return;
       }
       const verifyButton = event.target.closest('.verify-usaha-btn');
@@ -1103,12 +1323,34 @@
     document.getElementById('logoutBtn').addEventListener('click', logout);
     document.getElementById('alumniSearchBtn').addEventListener('click', async () => { state.alumniSearch = document.getElementById('alumniSearch').value.trim(); await loadAlumni(); });
     document.getElementById('usahaSearchBtn').addEventListener('click', async () => { state.usahaSearch = document.getElementById('usahaSearch').value.trim(); await loadUsaha(); });
-    document.getElementById('openAlumniFormBtn').addEventListener('click', () => openAlumniForm());
-    document.getElementById('openUsahaFormBtn').addEventListener('click', () => openUsahaForm());
+    document.getElementById('openAlumniFormBtn').addEventListener('click', async () => { await loadAlumniFormOptions(); openAlumniForm(); });
+    document.getElementById('openUsahaFormBtn').addEventListener('click', async () => { await loadUsahaFormOptions(); openUsahaForm(); });
     document.getElementById('cancelAlumniFormBtn').addEventListener('click', closeAlumniForm);
     document.getElementById('cancelUsahaFormBtn').addEventListener('click', closeUsahaForm);
     document.getElementById('resetAlumniFormBtn').addEventListener('click', resetAlumniForm);
     document.getElementById('resetUsahaFormBtn').addEventListener('click', resetUsahaForm);
+    document.getElementById('usahaPemilik').addEventListener('change', () => {
+      syncUsahaPemilikSearch();
+      syncUsahaPemilikMeta();
+    });
+    document.getElementById('usahaPemilikSearch').addEventListener('focus', (event) => {
+      renderUsahaPemilikResults(event.target.value);
+    });
+    document.getElementById('usahaPemilikSearch').addEventListener('input', (event) => {
+      document.getElementById('usahaPemilik').value = '';
+      syncUsahaPemilikMeta();
+      renderUsahaPemilikResults(event.target.value);
+    });
+    document.getElementById('usahaPemilikResults').addEventListener('click', (event) => {
+      const button = event.target.closest('.usaha-owner-option');
+      if (!button) return;
+      selectUsahaOwner(button.dataset.ownerId);
+    });
+    document.addEventListener('click', (event) => {
+      if (event.target.closest('#usahaPemilikSearchWrap')) return;
+      closeUsahaPemilikResults();
+    });
+    document.querySelectorAll('input[name="alumniProfesi"]').forEach((input) => input.addEventListener('change', toggleAlumniUsahaFields));
     document.getElementById('hideLogoTextOnIndex').addEventListener('change', () => {
       syncAdminBrand({
         logo_text: document.getElementById('logoText').value.trim() || 'IKA SMANDA',

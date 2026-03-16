@@ -85,6 +85,10 @@ function validateImportedRow(row) {
 
 function normalizeAdminAlumniPayload(body = {}) {
   const isVerified = parseBooleanValue(body.is_verified ?? true);
+  const profesi = sanitizeString(body.profesi, 100);
+  const punyaUsaha = profesi === 'Wirausaha' || parseBooleanValue(body.punya_usaha);
+  const namaUsaha = sanitizeString(body.nama_usaha, 150);
+  const kategoriUsaha = sanitizeString(body.kategori_usaha, 100);
   return {
     nama: sanitizeString(body.nama, 150),
     angkatan: sanitizeString(body.angkatan, 10),
@@ -93,7 +97,10 @@ function normalizeAdminAlumniPayload(body = {}) {
     gender: sanitizeString(body.gender, 20) || 'Laki-laki',
     email: sanitizeString(body.email, 150)?.toLowerCase(),
     phone: sanitizeString(body.phone, 20),
-    profesi: sanitizeString(body.profesi, 100),
+    profesi,
+    punya_usaha: punyaUsaha ? 1 : 0,
+    nama_usaha: punyaUsaha ? namaUsaha : null,
+    kategori_usaha: punyaUsaha ? kategoriUsaha : null,
     provinsi: sanitizeString(body.provinsi, 100),
     kota: sanitizeString(body.kota, 100),
     alamat: sanitizeString(body.alamat, 1000),
@@ -110,6 +117,9 @@ function validateAdminAlumniPayload(payload) {
   if (!payload.phone) errors.push('phone wajib diisi');
   if (!['Laki-laki', 'Perempuan'].includes(payload.gender)) {
     errors.push('gender harus Laki-laki atau Perempuan');
+  }
+  if (payload.punya_usaha && (!payload.nama_usaha || !payload.kategori_usaha)) {
+    errors.push('nama usaha dan kategori usaha wajib diisi untuk alumni wirausaha');
   }
   return errors;
 }
@@ -129,7 +139,7 @@ function normalizeAdminUsahaPayload(body = {}) {
 function validateAdminUsahaPayload(payload) {
   const errors = [];
   if (!payload.nama_usaha) errors.push('nama usaha wajib diisi');
-  if (!payload.kategori) errors.push('kategori wajib diisi');
+  if (!payload.kategori) errors.push('kategori usaha wajib diisi');
   if (!payload.pemilik_id) errors.push('pemilik alumni wajib dipilih');
   return errors;
 }

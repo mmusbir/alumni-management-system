@@ -168,7 +168,8 @@ const AdminModel = {
 
     const [rows] = await db.execute(
       `SELECT id, nama, angkatan, tempat_lahir, tanggal_lahir, gender, email, phone,
-              profesi, provinsi, kota, alamat, created_at, is_verified, verified_at
+              profesi, punya_usaha, nama_usaha, kategori_usaha,
+              provinsi, kota, alamat, created_at, is_verified, verified_at
        FROM alumni
        ${where}
        ORDER BY created_at DESC
@@ -236,7 +237,7 @@ const AdminModel = {
 
   async getAlumniOptions() {
     const [rows] = await db.execute(
-      `SELECT id, nama, angkatan
+      `SELECT id, nama, angkatan, profesi, kota
        FROM alumni
        ORDER BY nama ASC`,
     );
@@ -246,7 +247,8 @@ const AdminModel = {
   async getAlumniById(id) {
     const [rows] = await db.execute(
       `SELECT id, nama, angkatan, tempat_lahir, tanggal_lahir, gender, email, phone,
-              profesi, provinsi, kota, alamat, is_verified, verified_at
+              profesi, punya_usaha, nama_usaha, kategori_usaha,
+              provinsi, kota, alamat, is_verified, verified_at
        FROM alumni
        WHERE id = ? LIMIT 1`,
       [id],
@@ -255,65 +257,177 @@ const AdminModel = {
   },
 
   async createAdminAlumni(data) {
-    const [result] = await db.execute(
-      `INSERT INTO alumni
-        (nama, angkatan, tempat_lahir, tanggal_lahir, gender,
-         email, phone, profesi, provinsi, kota, alamat, is_verified, verified_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [
-        data.nama,
-        data.angkatan,
-        data.tempat_lahir || null,
-        data.tanggal_lahir || null,
-        data.gender,
-        data.email,
-        data.phone,
-        data.profesi || null,
-        data.provinsi || null,
-        data.kota || null,
-        data.alamat || null,
-        data.is_verified,
-        data.verified_at,
-      ],
-    );
-    return result.insertId;
+    const connection = await db.getConnection();
+    try {
+      await connection.beginTransaction();
+
+      const [result] = await connection.execute(
+        `INSERT INTO alumni
+          (nama, angkatan, tempat_lahir, tanggal_lahir, gender,
+           email, phone, profesi, punya_usaha, nama_usaha, kategori_usaha,
+           provinsi, kota, alamat, is_verified, verified_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+          data.nama,
+          data.angkatan,
+          data.tempat_lahir || null,
+          data.tanggal_lahir || null,
+          data.gender,
+          data.email,
+          data.phone,
+          data.profesi || null,
+          data.punya_usaha ? 1 : 0,
+          data.nama_usaha || null,
+          data.kategori_usaha || null,
+          data.provinsi || null,
+          data.kota || null,
+          data.alamat || null,
+          data.is_verified,
+          data.verified_at,
+        ],
+      );
+
+      if (data.punya_usaha && data.nama_usaha && data.kategori_usaha) {
+        await connection.execute(
+          `INSERT INTO usaha (nama_usaha, kategori, pemilik_id, is_verified, verified_at)
+           VALUES (?, ?, ?, ?, ?)`,
+          [
+            data.nama_usaha,
+            data.kategori_usaha,
+            result.insertId,
+            data.is_verified,
+            data.verified_at,
+          ],
+        );
+      }
+
+      await connection.commit();
+      return result.insertId;
+    } catch (err) {
+      await connection.rollback();
+      throw err;
+    } finally {
+      connection.release();
+    }
   },
 
   async updateAdminAlumni(id, data) {
-    const [result] = await db.execute(
-      `UPDATE alumni
-       SET nama = ?,
-           angkatan = ?,
-           tempat_lahir = ?,
-           tanggal_lahir = ?,
-           gender = ?,
-           email = ?,
-           phone = ?,
-           profesi = ?,
-           provinsi = ?,
-           kota = ?,
-           alamat = ?,
-           is_verified = ?,
-           verified_at = ?
-       WHERE id = ?`,
-      [
-        data.nama,
-        data.angkatan,
-        data.tempat_lahir || null,
-        data.tanggal_lahir || null,
-        data.gender,
-        data.email,
-        data.phone,
-        data.profesi || null,
-        data.provinsi || null,
-        data.kota || null,
-        data.alamat || null,
-        data.is_verified,
-        data.verified_at,
-        id,
-      ],
-    );
-    return result.affectedRows > 0;
+    const connection = await db.getConnection();
+    try {
+      await connection.beginTransaction();
+
+      const [existingRows] = await connection.execute(
+        `SELECT punya_usaha, nama_usaha, kategori_usaha
+         FROM alumni
+         WHERE id = ?
+         LIMIT 1`,
+        [id],
+      );
+      const existing = existingRows[0] || null;
+      if (!existing) {
+        await connection.rollback();
+        return false;
+      }
+
+      const [result] = await connection.execute(
+        `UPDATE alumni
+         SET nama = ?,
+             angkatan = ?,
+             tempat_lahir = ?,
+             tanggal_lahir = ?,
+             gender = ?,
+             email = ?,
+             phone = ?,
+             profesi = ?,
+             punya_usaha = ?,
+             nama_usaha = ?,
+             kategori_usaha = ?,
+             provinsi = ?,
+             kota = ?,
+             alamat = ?,
+             is_verified = ?,
+             verified_at = ?
+         WHERE id = ?`,
+        [
+          data.nama,
+          data.angkatan,
+          data.tempat_lahir || null,
+          data.tanggal_lahir || null,
+          data.gender,
+          data.email,
+          data.phone,
+          data.profesi || null,
+          data.punya_usaha ? 1 : 0,
+          data.nama_usaha || null,
+          data.kategori_usaha || null,
+          data.provinsi || null,
+          data.kota || null,
+          data.alamat || null,
+          data.is_verified,
+          data.verified_at,
+          id,
+        ],
+      );
+
+      if (!result.affectedRows) {
+        await connection.rollback();
+        return false;
+      }
+
+      const usahaVerificationDate = data.verified_at || null;
+      const [linkedUsahaRows] = await connection.execute(
+        `SELECT id
+         FROM usaha
+         WHERE pemilik_id = ?
+           AND nama_usaha <=> ?
+           AND kategori <=> ?
+         LIMIT 1`,
+        [id, existing.nama_usaha || null, existing.kategori_usaha || null],
+      );
+      const linkedUsaha = linkedUsahaRows[0] || null;
+
+      if (data.punya_usaha && data.nama_usaha && data.kategori_usaha) {
+        if (linkedUsaha) {
+          await connection.execute(
+            `UPDATE usaha
+             SET nama_usaha = ?,
+                 kategori = ?,
+                 is_verified = ?,
+                 verified_at = ?
+             WHERE id = ?`,
+            [
+              data.nama_usaha,
+              data.kategori_usaha,
+              data.is_verified,
+              usahaVerificationDate,
+              linkedUsaha.id,
+            ],
+          );
+        } else {
+          await connection.execute(
+            `INSERT INTO usaha (nama_usaha, kategori, pemilik_id, is_verified, verified_at)
+             VALUES (?, ?, ?, ?, ?)`,
+            [
+              data.nama_usaha,
+              data.kategori_usaha,
+              id,
+              data.is_verified,
+              usahaVerificationDate,
+            ],
+          );
+        }
+      } else if (linkedUsaha) {
+        await connection.execute('DELETE FROM usaha WHERE id = ?', [linkedUsaha.id]);
+      }
+
+      await connection.commit();
+      return true;
+    } catch (err) {
+      await connection.rollback();
+      throw err;
+    } finally {
+      connection.release();
+    }
   },
 
   async verifyAlumniById(id) {
