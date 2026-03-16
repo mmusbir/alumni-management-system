@@ -233,13 +233,13 @@
                 </span>
                 <span class="menu-label">Provinsi</span>
               </button>
-              <button data-view="admin-users" title="User Admin" class="submenu-btn w-full rounded-lg px-3 py-2 text-left text-[13px] font-medium text-slate-600">
+              <button data-view="admin-users" title="Pengguna Admin" class="submenu-btn w-full rounded-lg px-3 py-2 text-left text-[13px] font-medium text-slate-600">
                 <span class="menu-icon">
                   <svg aria-hidden="true" class="h-4 w-4" fill="none" viewBox="0 0 24 24">
                     <path d="M15 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM5 19a5 5 0 0 1 10 0m5-8v6m-3-3h6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>
                   </svg>
                 </span>
-                <span class="menu-label">User Admin</span>
+                <span class="menu-label">Pengguna Admin</span>
               </button>
             </div>
           </div>
@@ -279,12 +279,12 @@
       <section id="view-alumni" class="view-panel hidden space-y-5">
         <article class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
           <div class="flex flex-wrap items-start justify-between gap-4">
-            <div><h2 class="text-base font-bold text-ink">Import Data Alumni CSV</h2><p class="mt-1 text-sm text-slate-500">Gunakan template resmi agar kolom sesuai. Baris duplikat akan dilewati.</p></div>
+            <div><h2 class="text-base font-bold text-ink">Impor Data Alumni CSV</h2><p class="mt-1 text-sm text-slate-500">Gunakan template resmi agar kolom sesuai. Baris duplikat akan dilewati.</p></div>
             <a href="/api/admin/alumni/import-template" class="rounded-lg border border-slate-300 px-3 py-2 text-[13px] font-semibold text-slate-700 hover:bg-slate-50">Unduh Template CSV</a>
           </div>
           <form id="importAlumniForm" class="mt-4 flex flex-col gap-3 md:flex-row md:items-center">
             <input id="csvFileInput" name="file" accept=".csv" type="file" class="block w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px]" />
-            <button id="importAlumniBtn" type="submit" class="rounded-lg bg-primary px-4 py-2 text-[13px] font-semibold text-white hover:bg-blue-700">Import CSV</button>
+            <button id="importAlumniBtn" type="submit" class="rounded-lg bg-primary px-4 py-2 text-[13px] font-semibold text-white hover:bg-blue-700">Impor CSV</button>
           </form>
           <div id="importAlumniMessage" class="mt-3 text-sm text-slate-500"></div>
           <div id="importAlumniErrors" class="mt-3 hidden rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900"></div>
@@ -368,9 +368,9 @@
         <article class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
           <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
             <h2 class="text-base font-bold text-ink">Data Alumni</h2>
-            <div class="flex flex-wrap gap-2"><input id="alumniSearch" type="text" placeholder="Cari nama/email/HP..." class="w-60 rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" /><button id="alumniSearchBtn" class="rounded-lg bg-primary px-3 py-2 text-[13px] font-semibold text-white hover:bg-blue-700">Cari</button><button id="openAlumniFormBtn" class="rounded-lg bg-slate-900 px-3 py-2 text-[13px] font-semibold text-white hover:bg-slate-700">Tambah Alumni</button></div>
+            <div class="flex flex-wrap gap-2"><input id="alumniSearch" type="text" placeholder="Cari nama/email/No. HP..." class="w-60 rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" /><button id="alumniSearchBtn" class="rounded-lg bg-primary px-3 py-2 text-[13px] font-semibold text-white hover:bg-blue-700">Cari</button><button id="openAlumniFormBtn" class="rounded-lg bg-slate-900 px-3 py-2 text-[13px] font-semibold text-white hover:bg-slate-700">Tambah Alumni</button></div>
           </div>
-          <div class="overflow-x-auto"><table class="w-full min-w-[1060px] text-sm"><thead><tr class="border-b border-slate-200 text-left text-xs uppercase tracking-wide text-slate-500"><th class="pb-3">Nama</th><th class="pb-3">Angkatan</th><th class="pb-3">Email</th><th class="pb-3">Phone</th><th class="pb-3">Profesi</th><th class="pb-3">Kota</th><th class="pb-3">Status</th><th class="pb-3">Aksi</th></tr></thead><tbody id="alumniRows"><tr><td class="py-4 text-slate-500" colspan="8">Memuat data...</td></tr></tbody></table></div>
+          <div class="overflow-x-auto"><table class="w-full min-w-[1060px] text-sm"><thead><tr class="border-b border-slate-200 text-left text-xs uppercase tracking-wide text-slate-500"><th class="pb-3">Nama</th><th class="pb-3">Angkatan</th><th class="pb-3">Email</th><th class="pb-3">No. HP</th><th class="pb-3">Profesi</th><th class="pb-3">Kota</th><th class="pb-3">Status</th><th class="pb-3">Aksi</th></tr></thead><tbody id="alumniRows"><tr><td class="py-4 text-slate-500" colspan="8">Memuat data...</td></tr></tbody></table></div>
         </article>
       </section>
 
@@ -416,13 +416,13 @@
       </section>
 
       <section id="view-frontpage" class="view-panel hidden rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-        <div class="mb-5"><h2 class="text-base font-bold text-ink">Pengaturan Halaman Depan</h2><p class="mt-1 text-sm text-slate-500">Upload asset visual untuk favicon, logo, dan background hero. Format file: PNG atau JPG.</p></div>
+        <div class="mb-5"><h2 class="text-base font-bold text-ink">Pengaturan Halaman Depan</h2><p class="mt-1 text-sm text-slate-500">Unggah aset visual untuk favicon, logo, dan background hero. Format file: PNG atau JPG.</p></div>
         <form id="siteSettingsForm" class="grid gap-5 lg:grid-cols-2">
           <div class="space-y-4">
             <div><label class="mb-1 block text-sm font-semibold">Teks Logo Fallback</label><input id="logoText" type="text" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" /><p class="mt-1 text-xs text-slate-500">Dipakai jika file logo belum diunggah dan ikut menjadi teks brand di panel admin.</p></div>
             <label class="flex items-start gap-3 rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700"><input id="hideLogoTextOnIndex" type="checkbox" class="mt-0.5 h-4 w-4 rounded border-slate-300 text-primary focus:ring-primary" /><span>Sembunyikan teks logo di halaman index dan panel admin saat logo PNG/JPG ditampilkan.</span></label>
-            <div><label class="mb-1 block text-sm font-semibold">Upload Favicon</label><input id="faviconFile" accept="image/png,image/jpeg" type="file" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px]" /><div class="mt-2 flex items-center gap-3"><img id="faviconPreview" class="hidden h-14 w-14 rounded-lg border border-slate-200 object-contain p-1" alt="Preview favicon" /><button id="removeFaviconBtn" type="button" class="hidden rounded-lg border border-red-200 px-3 py-1.5 text-xs font-semibold text-red-600 hover:bg-red-50">Hapus</button></div></div>
-            <div><label class="mb-1 block text-sm font-semibold">Upload Logo</label><input id="logoFile" accept="image/png,image/jpeg" type="file" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px]" /><div class="mt-2 flex items-center gap-3"><img id="logoPreview" class="hidden h-14 w-auto rounded-lg border border-slate-200 object-contain p-1" alt="Preview logo" /><button id="removeLogoBtn" type="button" class="hidden rounded-lg border border-red-200 px-3 py-1.5 text-xs font-semibold text-red-600 hover:bg-red-50">Hapus</button></div></div>
+            <div><label class="mb-1 block text-sm font-semibold">Unggah Favicon</label><input id="faviconFile" accept="image/png,image/jpeg" type="file" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px]" /><div class="mt-2 flex items-center gap-3"><img id="faviconPreview" class="hidden h-14 w-14 rounded-lg border border-slate-200 object-contain p-1" alt="Preview favicon" /><button id="removeFaviconBtn" type="button" class="hidden rounded-lg border border-red-200 px-3 py-1.5 text-xs font-semibold text-red-600 hover:bg-red-50">Hapus</button></div></div>
+            <div><label class="mb-1 block text-sm font-semibold">Unggah Logo</label><input id="logoFile" accept="image/png,image/jpeg" type="file" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px]" /><div class="mt-2 flex items-center gap-3"><img id="logoPreview" class="hidden h-14 w-auto rounded-lg border border-slate-200 object-contain p-1" alt="Preview logo" /><button id="removeLogoBtn" type="button" class="hidden rounded-lg border border-red-200 px-3 py-1.5 text-xs font-semibold text-red-600 hover:bg-red-50">Hapus</button></div></div>
             <div><label class="mb-1 block text-sm font-semibold">Judul Hero</label><input id="heroTitle" type="text" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" /></div>
             <div><label class="mb-1 block text-sm font-semibold">Subjudul Hero</label><textarea id="heroSubtitle" rows="4" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary"></textarea></div>
           </div>
@@ -431,7 +431,7 @@
             <div><label class="mb-1 block text-sm font-semibold">Link Tombol Hero 1</label><input id="heroPrimaryLink" type="text" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" placeholder="/pendaftaran atau https://..." /></div>
             <div><label class="mb-1 block text-sm font-semibold">Teks Tombol Hero 2</label><input id="heroSecondaryText" type="text" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" /></div>
             <div><label class="mb-1 block text-sm font-semibold">Link Tombol Hero 2</label><input id="heroSecondaryLink" type="text" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" placeholder="/direktori atau https://..." /></div>
-            <div><label class="mb-1 block text-sm font-semibold">Upload Background Hero</label><input id="heroFile" accept="image/png,image/jpeg" type="file" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px]" /><div class="mt-2 space-y-3"><img id="heroPreview" class="hidden h-28 w-full rounded-lg border border-slate-200 object-cover" alt="Preview hero" /><button id="removeHeroBtn" type="button" class="hidden rounded-lg border border-red-200 px-3 py-1.5 text-xs font-semibold text-red-600 hover:bg-red-50">Hapus Background Hero</button></div></div>
+            <div><label class="mb-1 block text-sm font-semibold">Unggah Background Hero</label><input id="heroFile" accept="image/png,image/jpeg" type="file" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px]" /><div class="mt-2 space-y-3"><img id="heroPreview" class="hidden h-28 w-full rounded-lg border border-slate-200 object-cover" alt="Preview hero" /><button id="removeHeroBtn" type="button" class="hidden rounded-lg border border-red-200 px-3 py-1.5 text-xs font-semibold text-red-600 hover:bg-red-50">Hapus Background Hero</button></div></div>
           </div>
           <div class="flex items-center justify-between gap-3 lg:col-span-2"><p id="settingsMessage" class="text-sm text-slate-500"></p><button id="saveSettingsBtn" type="submit" class="rounded-lg bg-primary px-4 py-2 text-[13px] font-semibold text-white hover:bg-blue-700">Simpan Pengaturan</button></div>
         </form>
@@ -460,14 +460,14 @@
 
       <section id="view-admin-users" class="view-panel hidden space-y-5">
         <article class="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-          <div class="mb-4"><h2 class="text-base font-bold text-ink">User Admin</h2><p class="mt-1 text-sm text-slate-500">Kelola akun yang dapat login ke halaman admin.</p></div>
+          <div class="mb-4"><h2 class="text-base font-bold text-ink">Pengguna Admin</h2><p class="mt-1 text-sm text-slate-500">Kelola akun yang dapat login ke halaman admin.</p></div>
           <form id="adminUserForm" class="grid gap-3 md:grid-cols-3">
             <input id="adminUserName" type="text" placeholder="Nama admin" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" />
             <input id="adminUserEmail" type="email" placeholder="Email admin" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" />
             <input id="adminUserPassword" type="password" placeholder="Password admin" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" />
             <div class="md:col-span-3 flex items-center justify-between gap-3">
               <p id="adminUserMessage" class="text-sm text-slate-500"></p>
-              <button id="saveAdminUserBtn" type="submit" class="rounded-lg bg-primary px-4 py-2 text-[13px] font-semibold text-white hover:bg-blue-700">Tambah User</button>
+              <button id="saveAdminUserBtn" type="submit" class="rounded-lg bg-primary px-4 py-2 text-[13px] font-semibold text-white hover:bg-blue-700">Tambah Pengguna</button>
             </div>
           </form>
         </article>
@@ -524,7 +524,7 @@
     async function fetchJSON(url, options = {}) {
       const response = await fetch(url, { credentials: 'include', ...options });
       const result = await response.json();
-      if (!response.ok) throw new Error(result.message || 'Request gagal');
+      if (!response.ok) throw new Error(result.message || 'Permintaan gagal');
       return result;
     }
     function setActiveMenu(view) {
@@ -790,7 +790,7 @@
       document.getElementById('alumniKota').value = row.kota || '';
       document.getElementById('alumniVerified').checked = Boolean(row.is_verified);
       document.getElementById('saveAlumniBtn').textContent = 'Simpan Perubahan';
-      document.getElementById('alumniFormMessage').textContent = `Mode edit data: ${row.nama}`;
+      document.getElementById('alumniFormMessage').textContent = `Mode edit: ${row.nama}`;
       toggleAlumniUsahaFields();
     }
     function closeAlumniForm() { resetAlumniForm(); toggleCardVisibility('alumniFormCard', false); }
@@ -817,7 +817,7 @@
       syncUsahaPemilikSearch();
       document.getElementById('usahaVerified').checked = Boolean(row.is_verified);
       document.getElementById('saveUsahaBtn').textContent = 'Simpan Perubahan';
-      document.getElementById('usahaFormMessage').textContent = `Mode edit data: ${row.nama_usaha}`;
+      document.getElementById('usahaFormMessage').textContent = `Mode edit: ${row.nama_usaha}`;
       syncUsahaPemilikMeta();
     }
     function closeUsahaForm() { resetUsahaForm(); toggleCardVisibility('usahaFormCard', false); }
@@ -853,7 +853,7 @@
     }
     function renderAdminUsers(rows) {
       const tbody = document.getElementById('adminUserRows');
-      if (!rows.length) { tbody.innerHTML = '<tr><td class="py-4 text-slate-500" colspan="4">Belum ada user admin.</td></tr>'; return; }
+      if (!rows.length) { tbody.innerHTML = '<tr><td class="py-4 text-slate-500" colspan="4">Belum ada pengguna admin.</td></tr>'; return; }
       tbody.innerHTML = rows.map((row) => `<tr class="border-b border-slate-100"><td class="py-3 font-semibold text-slate-800">${row.name}${row.id === state.currentAdminId ? ' <span class="rounded bg-emerald-100 px-2 py-0.5 text-xs text-emerald-700">Anda</span>' : ''}</td><td class="py-3">${row.email}</td><td class="py-3">${formatDate(row.created_at)}</td><td class="py-3"><div class="flex gap-2"><button data-id="${row.id}" data-name="${row.name}" data-email="${row.email}" class="edit-admin-user-btn rounded bg-slate-900 px-2 py-1 text-xs font-semibold text-white hover:bg-slate-700">Edit</button><button data-id="${row.id}" class="delete-admin-user-btn rounded bg-red-600 px-2 py-1 text-xs font-semibold text-white hover:bg-red-700">Hapus</button></div></td></tr>`).join('');
     }
     async function ensureAuth() {
@@ -990,7 +990,7 @@
       const name = input.value.trim();
       if (!name) { message.textContent = 'Nama kategori wajib diisi'; return; }
       button.disabled = true;
-      button.textContent = state.lapakCategoryEditId ? 'Menyimpan...' : 'Menambah...';
+        button.textContent = state.lapakCategoryEditId ? 'Menyimpan...' : 'Menambahkan...';
       try {
         if (state.lapakCategoryEditId) {
           await fetchJSON(`${API_BASE}/admin/lapak-categories/${state.lapakCategoryEditId}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name }) });
@@ -1017,7 +1017,7 @@
       const name = input.value.trim();
       if (!name) { message.textContent = 'Nama provinsi wajib diisi'; return; }
       button.disabled = true;
-      button.textContent = state.provinceEditId ? 'Menyimpan...' : 'Menambah...';
+        button.textContent = state.provinceEditId ? 'Menyimpan...' : 'Menambahkan...';
       try {
         if (state.provinceEditId) {
           await fetchJSON(`${API_BASE}/admin/provinces/${state.provinceEditId}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name }) });
@@ -1047,20 +1047,20 @@
       if (!payload.name || !payload.email || (!state.adminUserEditId && payload.password.length < 6)) { message.textContent = 'Nama, email, dan password minimal 6 karakter wajib diisi'; return; }
       if (state.adminUserEditId && payload.password && payload.password.length < 6) { message.textContent = 'Password baru minimal 6 karakter'; return; }
       button.disabled = true;
-      button.textContent = state.adminUserEditId ? 'Menyimpan...' : 'Menambah...';
+      button.textContent = state.adminUserEditId ? 'Menyimpan...' : 'Menambahkan...';
       try {
         if (state.adminUserEditId) {
           await fetchJSON(`${API_BASE}/admin/users/${state.adminUserEditId}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-          message.textContent = 'User admin berhasil diperbarui';
+          message.textContent = 'Pengguna admin berhasil diperbarui';
         } else {
           await fetchJSON(`${API_BASE}/admin/users`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-          message.textContent = 'User admin berhasil ditambahkan';
+          message.textContent = 'Pengguna admin berhasil ditambahkan';
         }
         state.adminUserEditId = null;
         nameInput.value = '';
         emailInput.value = '';
         passwordInput.value = '';
-        button.textContent = 'Tambah User';
+        button.textContent = 'Tambah Pengguna';
         await loadAdminUsers();
       } catch (err) {
         message.textContent = err.message;
@@ -1097,7 +1097,7 @@
         return;
       }
       button.disabled = true;
-      button.textContent = state.alumniEditId ? 'Menyimpan...' : 'Menambah...';
+      button.textContent = state.alumniEditId ? 'Menyimpan...' : 'Menambahkan...';
       try {
         if (state.alumniEditId) {
           await fetchJSON(`${API_BASE}/admin/alumni/${state.alumniEditId}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
@@ -1130,7 +1130,7 @@
         return;
       }
       button.disabled = true;
-      button.textContent = state.usahaEditId ? 'Menyimpan...' : 'Menambah...';
+      button.textContent = state.usahaEditId ? 'Menyimpan...' : 'Menambahkan...';
       try {
         if (state.usahaEditId) {
           await fetchJSON(`${API_BASE}/admin/usaha/${state.usahaEditId}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
@@ -1177,7 +1177,7 @@
         message.textContent = err.message;
       } finally {
         button.disabled = false;
-        button.textContent = 'Import CSV';
+        button.textContent = 'Impor CSV';
       }
     }
     async function handleAlumniAction(event) {
@@ -1227,7 +1227,7 @@
         state.lapakCategoryEditId = editButton.dataset.id;
         document.getElementById('lapakCategoryName').value = editButton.dataset.name;
         document.getElementById('saveLapakCategoryBtn').textContent = 'Simpan Perubahan';
-        document.getElementById('lapakCategoryMessage').textContent = `Mode edit kategori: ${editButton.dataset.name}`;
+        document.getElementById('lapakCategoryMessage').textContent = `Mode edit: ${editButton.dataset.name}`;
         return;
       }
       const deleteButton = event.target.closest('.delete-category-btn');
@@ -1247,7 +1247,7 @@
         state.provinceEditId = editButton.dataset.id;
         document.getElementById('provinceName').value = editButton.dataset.name;
         document.getElementById('saveProvinceBtn').textContent = 'Simpan Perubahan';
-        document.getElementById('provinceMessage').textContent = `Mode edit provinsi: ${editButton.dataset.name}`;
+        document.getElementById('provinceMessage').textContent = `Mode edit: ${editButton.dataset.name}`;
         return;
       }
       const deleteButton = event.target.closest('.delete-province-btn');
@@ -1269,15 +1269,15 @@
         document.getElementById('adminUserEmail').value = editButton.dataset.email;
         document.getElementById('adminUserPassword').value = '';
         document.getElementById('saveAdminUserBtn').textContent = 'Simpan Perubahan';
-        document.getElementById('adminUserMessage').textContent = `Mode edit user: ${editButton.dataset.email}`;
+        document.getElementById('adminUserMessage').textContent = `Mode edit: ${editButton.dataset.email}`;
         return;
       }
       const deleteButton = event.target.closest('.delete-admin-user-btn');
       if (!deleteButton) return;
-      if (!confirm('Hapus user admin ini?')) return;
+      if (!confirm('Hapus pengguna admin ini?')) return;
       try {
         await fetchJSON(`${API_BASE}/admin/users/${deleteButton.dataset.id}`, { method: 'DELETE' });
-        document.getElementById('adminUserMessage').textContent = 'User admin berhasil dihapus';
+        document.getElementById('adminUserMessage').textContent = 'Pengguna admin berhasil dihapus';
         await loadAdminUsers();
       } catch (err) {
         document.getElementById('adminUserMessage').textContent = err.message;

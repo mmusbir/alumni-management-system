@@ -70,10 +70,10 @@ function normalizeImportedRow(row = {}) {
 
 function validateImportedRow(row) {
   const errors = [];
-  if (!row.nama) errors.push('nama wajib diisi');
+  if (!row.nama) errors.push('nama lengkap wajib diisi');
   if (!row.angkatan) errors.push('angkatan wajib diisi');
   if (!row.email) errors.push('email wajib diisi');
-  if (!row.phone) errors.push('phone wajib diisi');
+  if (!row.phone) errors.push('No. HP wajib diisi');
   if (!['Laki-laki', 'Perempuan'].includes(row.gender)) {
     errors.push('gender harus Laki-laki atau Perempuan');
   }
@@ -111,10 +111,10 @@ function normalizeAdminAlumniPayload(body = {}) {
 
 function validateAdminAlumniPayload(payload) {
   const errors = [];
-  if (!payload.nama) errors.push('nama wajib diisi');
+  if (!payload.nama) errors.push('nama lengkap wajib diisi');
   if (!payload.angkatan) errors.push('angkatan wajib diisi');
   if (!payload.email) errors.push('email wajib diisi');
-  if (!payload.phone) errors.push('phone wajib diisi');
+  if (!payload.phone) errors.push('No. HP wajib diisi');
   if (!['Laki-laki', 'Perempuan'].includes(payload.gender)) {
     errors.push('gender harus Laki-laki atau Perempuan');
   }
@@ -304,7 +304,7 @@ const adminController = {
 
       return res.status(201).json({
         success: true,
-        message: 'User admin berhasil ditambahkan',
+        message: 'Pengguna admin berhasil ditambahkan',
         data: { id, users },
       });
     } catch (err) {
@@ -348,14 +348,14 @@ const adminController = {
       if (!updated) {
         return res.status(404).json({
           success: false,
-          message: 'User admin tidak ditemukan',
+          message: 'Pengguna admin tidak ditemukan',
         });
       }
 
       const users = await AdminModel.getAdminUsers();
       return res.json({
         success: true,
-        message: 'User admin berhasil diperbarui',
+        message: 'Pengguna admin berhasil diperbarui',
         data: users,
       });
     } catch (err) {
@@ -379,7 +379,7 @@ const adminController = {
       if (!id || id < 1) {
         return res.status(400).json({
           success: false,
-          message: 'ID user admin tidak valid',
+          message: 'ID pengguna admin tidak valid',
         });
       }
 
@@ -402,14 +402,14 @@ const adminController = {
       if (!deleted) {
         return res.status(404).json({
           success: false,
-          message: 'User admin tidak ditemukan',
+          message: 'Pengguna admin tidak ditemukan',
         });
       }
 
       const users = await AdminModel.getAdminUsers();
       return res.json({
         success: true,
-        message: 'User admin berhasil dihapus',
+        message: 'Pengguna admin berhasil dihapus',
         data: users,
       });
     } catch (err) {
@@ -482,7 +482,7 @@ const adminController = {
       if (err.code === 'ER_DUP_ENTRY') {
         return res.status(409).json({
           success: false,
-          message: 'Email atau nomor HP sudah digunakan',
+          message: 'Email atau No. HP sudah digunakan',
         });
       }
       return res.status(500).json({
@@ -540,7 +540,7 @@ const adminController = {
       if (err.code === 'ER_DUP_ENTRY') {
         return res.status(409).json({
           success: false,
-          message: 'Email atau nomor HP sudah digunakan',
+          message: 'Email atau No. HP sudah digunakan',
         });
       }
       return res.status(500).json({
@@ -969,7 +969,7 @@ const adminController = {
           await connection.rollback();
           summary.skipped += 1;
           if (err.code === 'ER_DUP_ENTRY') {
-            summary.errors.push(`Baris ${rowNumber}: email atau phone sudah terdaftar`);
+            summary.errors.push(`Baris ${rowNumber}: email atau No. HP sudah terdaftar`);
           } else {
             summary.errors.push(`Baris ${rowNumber}: ${err.message}`);
           }
