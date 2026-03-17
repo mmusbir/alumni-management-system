@@ -19,6 +19,22 @@ const DEFAULT_PORT = 3000;
 const MAX_PORT_ATTEMPTS = 10;
 const parsedPort = Number.parseInt(process.env.PORT || '', 10);
 const PORT = Number.isInteger(parsedPort) ? parsedPort : DEFAULT_PORT;
+let bootstrapPromise = null;
+
+function ensureAppReady() {
+  if (!bootstrapPromise) {
+    bootstrapPromise = bootstrapApp()
+      .then(() => {
+        console.log('Bootstrap selesai.');
+      })
+      .catch((err) => {
+        bootstrapPromise = null;
+        throw err;
+      });
+  }
+
+  return bootstrapPromise;
+}
 
 // Request logger
 app.use((req, _res, next) => {
@@ -52,6 +68,16 @@ app.use('/api', limiter);
 // Body parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(async (_req, _res, next) => {
+  try {
+    await ensureAppReady();
+    next();
+  } catch (err) {
+    console.error('Bootstrap gagal:', err.message);
+    next(err);
+  }
+});
 
 // Serve the frontend folder from the parent directory
 app.use(express.static(path.join(__dirname, '../frontend')));
@@ -97,6 +123,22 @@ app.use((_req, res) => {
 // Global error handler
 app.use((err, _req, res, _next) => {
   console.error('Unhandled error:', err);
+
+  if (err.code === 'LIMIT_FILE_SIZE') {
+    return res.status(413).json({
+      success: false,
+      message: 'Ukuran file terlalu besar untuk diproses.',
+    });
+  }
+
+  if (err.message === 'File gambar harus berformat PNG atau JPG'
+    || err.message === 'File import harus berformat CSV') {
+    return res.status(400).json({
+      success: false,
+      message: err.message,
+    });
+  }
+
   res.status(500).json({
     success: false,
     message: 'Terjadi kesalahan server',
@@ -126,8 +168,7 @@ function listenOnAvailablePort(port, attemptsLeft = MAX_PORT_ATTEMPTS) {
 
 async function startServer() {
   try {
-    await bootstrapApp();
-    console.log('Bootstrap selesai.');
+    await ensureAppReady();
   } catch (err) {
     console.error('Bootstrap gagal:', err.message);
   }
@@ -150,6 +191,8 @@ async function startServer() {
   }
 }
 
-startServer();
+if (require.main === module) {
+  startServer();
+}
 
 module.exports = app;

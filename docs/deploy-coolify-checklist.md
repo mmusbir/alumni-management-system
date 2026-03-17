@@ -6,9 +6,8 @@ Gunakan checklist ini saat deploy production.
 
 - repo terbaru sudah di-push ke GitHub
 - domain sudah mengarah ke server Coolify
-- MySQL service sudah dibuat
-- database `ika_smanda` sudah ada
-- `backend/config/schema.sql` sudah di-import
+- project Supabase sudah aktif
+- connection string Supabase sudah siap
 - SMTP production sudah siap
 - password admin default sudah kuat
 
@@ -24,11 +23,11 @@ Gunakan checklist ini saat deploy production.
 
 - `NODE_ENV=production`
 - `PORT=3000`
-- `DB_HOST`
-- `DB_PORT`
-- `DB_USER`
-- `DB_PASSWORD`
-- `DB_NAME=ika_smanda`
+- `DATABASE_URL`
+- `DB_SSL=true`
+- `SUPABASE_URL`
+- `SUPABASE_SERVICE_ROLE_KEY`
+- `SUPABASE_STORAGE_BUCKET`
 - `CORS_ORIGIN=https://domain-anda.com`
 - `SMTP_HOST`
 - `SMTP_PORT`
@@ -40,11 +39,6 @@ Gunakan checklist ini saat deploy production.
 - `ADMIN_DEFAULT_PASSWORD`
 - `ADMIN_SESSION_TTL_SECONDS`
 
-## Persistent Storage
-
-- storage sudah dipasang ke:
-  - `/app/frontend/uploads`
-
 ## Setelah Deploy
 
 - homepage terbuka
@@ -53,14 +47,14 @@ Gunakan checklist ini saat deploy production.
 - direktori alumni terbuka
 - lapak alumni terbuka
 - upload favicon/logo/hero berhasil
-- file upload tetap ada setelah redeploy
-- pendaftaran alumni berhasil tersimpan ke database
+- asset upload muncul dari Supabase Storage
+- pendaftaran alumni berhasil tersimpan ke database Supabase
 - email konfirmasi terkirim jika SMTP aktif
 
 ## Jika Gagal
 
 - cek log build
 - cek log runtime
-- cek koneksi database
-- cek apakah schema sudah di-import
-- cek apakah storage persisten sudah dipasang
+- cek koneksi Supabase
+- cek apakah `DATABASE_URL` benar
+- cek apakah `SUPABASE_SERVICE_ROLE_KEY` dan bucket Storage benar

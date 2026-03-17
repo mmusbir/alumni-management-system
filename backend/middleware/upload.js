@@ -1,37 +1,9 @@
-const fs = require('fs');
-const path = require('path');
 const multer = require('multer');
 
-const frontendRoot = path.join(__dirname, '../../frontend');
-const uploadRoot = path.join(frontendRoot, 'uploads');
-const siteSettingsDir = path.join(uploadRoot, 'site-settings');
-const importsDir = path.join(uploadRoot, 'imports');
+const IMAGE_FILE_SIZE_LIMIT = 1_250_000;
+const CSV_FILE_SIZE_LIMIT = 4 * 1024 * 1024;
 
-[uploadRoot, siteSettingsDir, importsDir].forEach((dirPath) => {
-  if (!fs.existsSync(dirPath)) {
-    fs.mkdirSync(dirPath, { recursive: true });
-  }
-});
-
-function buildFileName(file) {
-  const ext = path.extname(file.originalname || '').toLowerCase();
-  const safeBase = path.basename(file.originalname || 'file', ext)
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .slice(0, 60) || 'file';
-  return `${Date.now()}-${safeBase}${ext}`;
-}
-
-const imageStorage = multer.diskStorage({
-  destination: (_req, _file, cb) => cb(null, siteSettingsDir),
-  filename: (_req, file, cb) => cb(null, buildFileName(file)),
-});
-
-const csvStorage = multer.diskStorage({
-  destination: (_req, _file, cb) => cb(null, importsDir),
-  filename: (_req, file, cb) => cb(null, buildFileName(file)),
-});
+const memoryStorage = multer.memoryStorage();
 
 function imageFilter(_req, file, cb) {
   const allowed = ['image/png', 'image/jpeg', 'image/jpg'];
@@ -49,7 +21,7 @@ function csvFilter(_req, file, cb) {
     'application/vnd.ms-excel',
     'text/plain',
   ].includes(file.mimetype);
-  const isCsvExt = path.extname(file.originalname || '').toLowerCase() === '.csv';
+  const isCsvExt = (file.originalname || '').toLowerCase().endsWith('.csv');
   if (!isCsvMime && !isCsvExt) {
     cb(new Error('File import harus berformat CSV'));
     return;
@@ -58,15 +30,15 @@ function csvFilter(_req, file, cb) {
 }
 
 const uploadSiteAssets = multer({
-  storage: imageStorage,
+  storage: memoryStorage,
   fileFilter: imageFilter,
-  limits: { fileSize: 5 * 1024 * 1024 },
+  limits: { fileSize: IMAGE_FILE_SIZE_LIMIT },
 });
 
 const uploadCsv = multer({
-  storage: csvStorage,
+  storage: memoryStorage,
   fileFilter: csvFilter,
-  limits: { fileSize: 5 * 1024 * 1024 },
+  limits: { fileSize: CSV_FILE_SIZE_LIMIT },
 });
 
 module.exports = {

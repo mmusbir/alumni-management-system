@@ -1,7 +1,6 @@
-const fs = require('fs');
-const path = require('path');
 const { parse } = require('csv-parse/sync');
 const db = require('../config/db');
+const { uploadPublicAsset, removePublicAsset } = require('../config/supabase');
 const AdminModel = require('../models/adminModel');
 const {
   hashPassword,
@@ -15,26 +14,6 @@ const {
   clearSessionCookie,
   readSessionTokenFromRequest,
 } = require('../utils/adminSession');
-
-function toPublicUploadUrl(filePath) {
-  if (!filePath) return null;
-  const normalized = filePath.replace(/\\/g, '/');
-  const uploadsIndex = normalized.lastIndexOf('/uploads/');
-  if (uploadsIndex === -1) return null;
-  return normalized.slice(uploadsIndex);
-}
-
-async function removeUploadedAsset(publicPath) {
-  if (!publicPath || !String(publicPath).startsWith('/uploads/')) return;
-  const assetPath = path.join(__dirname, '../../frontend', publicPath.replace(/^\/+/, ''));
-  try {
-    await fs.promises.unlink(assetPath);
-  } catch (err) {
-    if (err.code !== 'ENOENT') {
-      console.error('Failed to remove uploaded asset:', err.message);
-    }
-  }
-}
 
 function sanitizeString(value, maxLength = 255) {
   if (value === undefined || value === null) return null;
@@ -142,15 +121,6 @@ function validateAdminUsahaPayload(payload) {
   if (!payload.kategori) errors.push('kategori usaha wajib diisi');
   if (!payload.pemilik_id) errors.push('pemilik alumni wajib dipilih');
   return errors;
-}
-
-async function removeTempFile(file) {
-  if (!file?.path) return;
-  try {
-    await fs.promises.unlink(file.path);
-  } catch (_err) {
-    // ignore cleanup failure
-  }
 }
 
 const adminController = {
@@ -819,6 +789,10 @@ const adminController = {
   },
 
   async updateSiteSettings(req, res) {
+    let faviconUpload = null;
+    let logoUpload = null;
+    let heroUpload = null;
+
     try {
       const currentSettings = await AdminModel.getSiteSettings();
       if (!currentSettings) {
@@ -835,14 +809,24 @@ const adminController = {
       const shouldDeleteLogo = parseBooleanValue(req.body.delete_logo_file);
       const shouldDeleteHero = parseBooleanValue(req.body.delete_hero_file);
 
-      const nextFaviconUrl = uploadedFavicon
-        ? toPublicUploadUrl(uploadedFavicon.path)
+      faviconUpload = uploadedFavicon
+        ? await uploadPublicAsset(uploadedFavicon, 'site-settings')
+        : null;
+      logoUpload = uploadedLogo
+        ? await uploadPublicAsset(uploadedLogo, 'site-settings')
+        : null;
+      heroUpload = uploadedHero
+        ? await uploadPublicAsset(uploadedHero, 'site-settings')
+        : null;
+
+      const nextFaviconUrl = faviconUpload
+        ? faviconUpload.publicUrl
         : (shouldDeleteFavicon ? null : currentSettings.favicon_url);
-      const nextLogoUrl = uploadedLogo
-        ? toPublicUploadUrl(uploadedLogo.path)
+      const nextLogoUrl = logoUpload
+        ? logoUpload.publicUrl
         : (shouldDeleteLogo ? null : currentSettings.logo_image_url);
-      const nextHeroUrl = uploadedHero
-        ? toPublicUploadUrl(uploadedHero.path)
+      const nextHeroUrl = heroUpload
+        ? heroUpload.publicUrl
         : (shouldDeleteHero ? null : currentSettings.hero_background_url);
 
       const merged = {
@@ -864,13 +848,13 @@ const adminController = {
 
       await AdminModel.updateSiteSettings(merged);
       if (currentSettings.favicon_url && currentSettings.favicon_url !== nextFaviconUrl) {
-        await removeUploadedAsset(currentSettings.favicon_url);
+        await removePublicAsset(currentSettings.favicon_url);
       }
       if (currentSettings.logo_image_url && currentSettings.logo_image_url !== nextLogoUrl) {
-        await removeUploadedAsset(currentSettings.logo_image_url);
+        await removePublicAsset(currentSettings.logo_image_url);
       }
       if (currentSettings.hero_background_url && currentSettings.hero_background_url !== nextHeroUrl) {
-        await removeUploadedAsset(currentSettings.hero_background_url);
+        await removePublicAsset(currentSettings.hero_background_url);
       }
       const updatedSettings = await AdminModel.getSiteSettings();
 
@@ -880,6 +864,14 @@ const adminController = {
         data: updatedSettings,
       });
     } catch (err) {
+      const cleanupTasks = [faviconUpload, logoUpload, heroUpload]
+        .filter(Boolean)
+        .map((upload) => removePublicAsset(upload.publicUrl).catch((_cleanupErr) => {}));
+
+      if (cleanupTasks.length) {
+        await Promise.all(cleanupTasks);
+      }
+
       console.error('Update site settings error:', err);
       return res.status(500).json({
         success: false,
@@ -927,7 +919,7 @@ const adminController = {
 
     let connection;
     try {
-      const content = await fs.promises.readFile(csvFile.path, 'utf8');
+      const content = csvFile.buffer.toString('utf8');
       const records = parse(content, {
         columns: true,
         skip_empty_lines: true,
@@ -989,7 +981,6 @@ const adminController = {
       });
     } finally {
       if (connection) connection.release();
-      await removeTempFile(csvFile);
     }
   },
 

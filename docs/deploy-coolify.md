@@ -1,27 +1,13 @@
 # Panduan Deploy ke Coolify
 
-Panduan ini dibuat khusus untuk struktur project ini:
+Panduan ini dibuat untuk struktur project ini:
 
 - `backend/` berisi aplikasi Express
 - `frontend/` disajikan langsung oleh Express dari folder statis
-- upload file disimpan di `frontend/uploads`
-- database menggunakan MySQL
+- upload file disimpan di Supabase Storage
+- database menggunakan Supabase Postgres sebagai service eksternal
 
 Untuk project ini, metode deploy yang paling aman di Coolify adalah **Dockerfile build pack**.
-
-Alasannya:
-
-- project ini berbentuk monorepo (`backend` + `frontend`)
-- server Node di `backend/server.js` membaca asset frontend dari `../frontend`
-- upload file perlu storage persisten di dalam container
-
-Referensi Coolify yang dipakai:
-
-- Dockerfile build pack: https://coolify.io/docs/applications/build-packs/dockerfile
-- Applications / base directory / deployment model: https://coolify.io/docs/applications/
-- Persistent storage: https://coolify.io/docs/knowledge-base/persistent-storage
-- Environment variables: https://coolify.io/docs/knowledge-base/environment-variables
-- Domains dan HTTPS: https://coolify.io/docs/knowledge-base/domains
 
 ## 1. Prasyarat
 
@@ -31,78 +17,19 @@ Sebelum mulai, siapkan:
 - domain/subdomain yang mengarah ke server Coolify
 - repository GitHub:
   - `https://github.com/mmusbir/alumni-management-system`
+- project Supabase yang sudah aktif
+- connection string Postgres dari Supabase
 - akun SMTP yang valid jika ingin email pendaftaran aktif
 
 ## 2. Struktur deploy yang direkomendasikan
 
-Di Coolify buat 2 resource:
+Di Coolify cukup buat:
 
 1. **Application** untuk project ini
-2. **MySQL Service** untuk database
 
-Tambahkan juga **Persistent Storage** ke application untuk folder upload.
+Anda tidak perlu membuat database service terpisah di Coolify jika database memakai Supabase.
 
-## 3. Buat MySQL Service di Coolify
-
-Di project Coolify Anda:
-
-1. klik **Create New Resource**
-2. pilih **Database**
-3. pilih **MySQL**
-4. gunakan nama database:
-   - `ika_smanda`
-
-Simpan credential yang dibuat Coolify:
-
-- host
-- port
-- username
-- password
-- database name
-
-Catatan penting:
-
-- file `backend/config/schema.sql` memakai `CREATE DATABASE ika_smanda` dan `USE ika_smanda`
-- paling mudah jika nama database service di Coolify juga dibuat `ika_smanda`
-
-## 4. Import schema database
-
-Project ini masih membutuhkan tabel utama dari `schema.sql`, karena bootstrap aplikasi hanya membuat:
-
-- `admin_users`
-- `admin_sessions`
-- `site_settings`
-- `lapak_categories`
-- `provinces`
-- beberapa kolom tambahan
-
-Bootstrap **tidak** membuat tabel utama berikut dari nol:
-
-- `alumni`
-- `usaha`
-
-Jadi Anda harus import:
-
-- `backend/config/schema.sql`
-
-Cara import yang paling aman:
-
-1. buat MySQL service di Coolify
-2. konek ke service itu dari local machine atau terminal server
-3. jalankan:
-
-```bash
-mysql -h <DB_HOST> -P <DB_PORT> -u <DB_USER> -p ika_smanda < backend/config/schema.sql
-```
-
-Jika database service Anda **bukan** bernama `ika_smanda`, edit dulu dua baris awal `schema.sql` sebelum import:
-
-```sql
-CREATE DATABASE IF NOT EXISTS nama_database_anda;
-USE nama_database_anda;
-```
-
-## 5. Tambahkan Application di Coolify
+## 3. Tambahkan Application di Coolify
 
 Di Coolify:
 
@@ -118,7 +45,7 @@ Di Coolify:
 
 Karena repo ini sudah memiliki `Dockerfile` di root, Coolify bisa langsung build dari sana.
 
-## 6. Pengaturan dasar Application
+## 4. Pengaturan dasar Application
 
 Set nilai berikut di Coolify:
 
@@ -126,12 +53,7 @@ Set nilai berikut di Coolify:
 - **Dockerfile Location**: `./Dockerfile`
 - **Base Directory**: kosongkan / root repository
 
-Alasan:
-
-- container berjalan dari root repo
-- `backend/server.js` membutuhkan akses ke `../frontend`
-
-## 7. Environment Variables yang wajib
+## 5. Environment Variables yang wajib
 
 Tambahkan environment variables berikut di resource application:
 
@@ -139,11 +61,11 @@ Tambahkan environment variables berikut di resource application:
 NODE_ENV=production
 PORT=3000
 
-DB_HOST=<host mysql dari coolify>
-DB_PORT=<port mysql dari coolify>
-DB_USER=<username mysql dari coolify>
-DB_PASSWORD=<password mysql dari coolify>
-DB_NAME=ika_smanda
+DATABASE_URL=postgresql://postgres.[PROJECT-REF]:YOUR-PASSWORD@HOST:5432/postgres
+DB_SSL=true
+SUPABASE_URL=https://PROJECT-REF.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=YOUR-SERVICE-ROLE-KEY
+SUPABASE_STORAGE_BUCKET=ikasmanda-assets
 
 CORS_ORIGIN=https://domain-anda.com
 
@@ -161,29 +83,21 @@ ADMIN_SESSION_TTL_SECONDS=43200
 
 Catatan:
 
-- menurut dokumentasi Coolify, jika `PORT` tidak di-set maka Coolify akan mengisi dari `Port Exposes`, tapi untuk project ini lebih baik di-set eksplisit
-- Coolify juga menyediakan variable bawaan seperti `PORT`, `HOST`, `COOLIFY_FQDN`, dan lainnya jika dibutuhkan
+- backend akan otomatis menjalankan bootstrap schema saat start
+- jika Anda tidak ingin memakai `DATABASE_URL`, backend juga mendukung `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, dan `DB_NAME`
+- untuk Supabase, disarankan memakai connection string yang memang ditujukan untuk koneksi server/backend
 
-## 8. Tambahkan Persistent Storage
+## 6. Bootstrap schema database
 
-Karena upload asset disimpan ke:
+Saat aplikasi pertama kali start, backend akan menjalankan [backend/config/schema.sql](d:/Laragon/www/ikasmanda/backend/config/schema.sql) secara otomatis.
 
-- `frontend/uploads/site-settings`
-- `frontend/uploads/imports`
+Artinya:
 
-Tambahkan persistent storage ke application:
+- tidak perlu import SQL manual lewat CLI database
+- tabel utama dan seed default akan dibuat otomatis jika belum ada
+- admin default tetap dibuat dari environment variables
 
-- **Destination Path**:
-  - `/app/frontend/uploads`
-
-Ini mengikuti dokumentasi Coolify bahwa base path di dalam container adalah `/app`.
-
-Tanpa storage persisten:
-
-- favicon/logo/hero upload akan hilang saat redeploy
-- file CSV import yang tersimpan di folder upload juga tidak persisten
-
-## 9. Tambahkan domain
+## 7. Tambahkan domain
 
 Di resource application:
 
@@ -193,9 +107,7 @@ Di resource application:
 
 Coolify akan mengatur reverse proxy dan SSL otomatis jika domain sudah mengarah ke server.
 
-Pastikan DNS domain sudah mengarah ke IP server Coolify.
-
-## 10. Deploy pertama
+## 8. Deploy pertama
 
 Setelah semua siap:
 
@@ -208,7 +120,7 @@ Jika sukses, buka:
 - `https://domain-anda.com/`
 - `https://domain-anda.com/admin`
 
-## 11. Checklist verifikasi setelah deploy
+## 9. Checklist verifikasi setelah deploy
 
 Cek hal berikut:
 
@@ -216,24 +128,26 @@ Cek hal berikut:
 2. `/api/health` mengembalikan sukses
 3. login admin berhasil
 4. upload logo/favicon/hero berhasil
-5. setelah upload, file tetap ada setelah redeploy
-6. pendaftaran alumni berhasil menyimpan ke database
+5. asset yang diupload muncul dari Supabase Storage
+6. pendaftaran alumni berhasil menyimpan ke database Supabase
 7. email konfirmasi berjalan jika SMTP valid
 
-## 12. Masalah yang paling mungkin muncul
+## 10. Masalah yang paling mungkin muncul
 
 ### A. Aplikasi hidup tapi database error
 
 Penyebab paling umum:
 
-- `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_NAME` salah
-- schema belum di-import
+- `DATABASE_URL` salah
+- kredensial `DB_HOST`/`DB_PORT`/`DB_USER`/`DB_PASSWORD`/`DB_NAME` salah
+- Supabase belum mengizinkan koneksi dari environment deploy yang dipakai
 
-### B. Halaman jalan, tapi upload hilang setelah deploy ulang
+### B. Upload asset gagal atau URL asset tidak muncul
 
 Penyebab:
 
-- belum menambahkan persistent storage `/app/frontend/uploads`
+- `SUPABASE_SERVICE_ROLE_KEY` salah
+- bucket `SUPABASE_STORAGE_BUCKET` belum ada atau belum public
 
 ### C. Login admin gagal setelah deploy
 
@@ -243,11 +157,6 @@ Cek:
 - `ADMIN_DEFAULT_PASSWORD`
 - tabel `admin_users` sudah ada
 
-Catatan:
-
-- admin default hanya dibuat jika email tersebut belum ada di database
-- jika Anda ganti env setelah admin pertama dibuat, akun lama tidak otomatis diubah
-
 ### D. Pendaftaran berhasil tapi email tidak terkirim
 
 Penyebab:
@@ -255,54 +164,12 @@ Penyebab:
 - SMTP belum valid
 - akun Gmail belum memakai app password
 
-Penting:
-
-- kegagalan email tidak selalu menggagalkan pendaftaran, karena pengiriman email dibuat non-blocking
-
-## 13. Rekomendasi production
+## 11. Rekomendasi production
 
 Sebelum live penuh:
 
 1. ganti password admin default ke password kuat
-2. gunakan database password kuat
+2. gunakan kredensial Supabase yang aman
 3. set `CORS_ORIGIN` hanya ke domain production
 4. aktifkan SMTP yang benar
-5. backup database MySQL lewat fitur backup Coolify jika tersedia di instance Anda
-
-## 14. Nilai yang saya rekomendasikan untuk project ini
-
-Jika domain production Anda misalnya `https://alumni.example.com`, maka:
-
-```env
-NODE_ENV=production
-PORT=3000
-CORS_ORIGIN=https://alumni.example.com
-DB_NAME=ika_smanda
-ADMIN_SESSION_TTL_SECONDS=43200
-```
-
-Storage:
-
-```text
-/app/frontend/uploads
-```
-
-Build:
-
-```text
-Dockerfile
-```
-
-Port:
-
-```text
-3000
-```
-
-## 15. Setelah panduan ini
-
-Jika Anda ingin proses deploy lebih mulus lagi, langkah berikut yang paling berguna adalah:
-
-1. menambahkan healthcheck container
-2. menambahkan `.env.production.example`
-3. menambahkan script migrasi database terpisah supaya tidak perlu import manual
+5. backup database secara berkala dari sisi Supabase

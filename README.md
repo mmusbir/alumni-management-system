@@ -5,7 +5,7 @@ Sistem manajemen alumni untuk Ikatan Keluarga Alumni SMAN 2 Kendal.
 Project ini mencakup:
 - website publik untuk beranda, direktori alumni, lapak usaha, dan pendaftaran mandiri
 - panel admin untuk verifikasi, CRUD data, import CSV, pengaturan halaman depan, kategori lapak, provinsi, dan user admin
-- backend API berbasis Express + MySQL
+- backend API berbasis Express + Supabase Postgres
 
 ## Fitur Utama
 
@@ -38,7 +38,7 @@ Project ini mencakup:
 
 - Frontend: HTML, Tailwind via CDN, vanilla JavaScript
 - Backend: Node.js, Express
-- Database: MySQL
+- Database: Supabase Postgres
 - Upload: Multer
 - Mailer: Nodemailer
 
@@ -55,7 +55,7 @@ Project ini mencakup:
   - controller
   - route
   - middleware
-  - bootstrap database
+  - bootstrap schema database
 
 ## Menjalankan Secara Lokal
 
@@ -76,21 +76,25 @@ Copy-Item backend/.env.example backend/.env
 
 Lalu sesuaikan nilai di `backend/.env`.
 
-### 3. Buat database MySQL
+### 3. Siapkan Supabase
 
-Buat database bernama:
+1. Buat project baru di Supabase.
+2. Ambil connection string Postgres dan kredensial project dari dashboard Supabase.
+3. Isi `DATABASE_URL`, `SUPABASE_URL`, dan `SUPABASE_SERVICE_ROLE_KEY` di `backend/.env`.
 
-```sql
-ika_smanda
+Contoh:
+
+```env
+DATABASE_URL=postgresql://postgres.[PROJECT-REF]:YOUR-PASSWORD@HOST:5432/postgres
+DB_SSL=true
+SUPABASE_URL=https://PROJECT-REF.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=YOUR-SERVICE-ROLE-KEY
+SUPABASE_STORAGE_BUCKET=ikasmanda-assets
 ```
 
-Lalu import schema:
+Jika Anda lebih suka mengisi variabel terpisah, backend juga masih mendukung `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, dan `DB_NAME`.
 
-```powershell
-mysql -u root -p ika_smanda < backend/config/schema.sql
-```
-
-Jika menggunakan Laragon, Anda juga bisa import file [schema.sql](d:/Laragon/www/ikasmanda/backend/config/schema.sql) lewat HeidiSQL atau phpMyAdmin.
+Schema dan seed awal akan diterapkan otomatis saat server backend pertama kali dijalankan, jadi Anda tidak perlu import SQL manual.
 
 ### 4. Install dependency
 
@@ -147,6 +151,11 @@ Contoh konfigurasi tersedia di [backend/.env.example](d:/Laragon/www/ikasmanda/b
 Variabel utama:
 
 - `PORT`
+- `DATABASE_URL`
+- `DB_SSL`
+- `SUPABASE_URL`
+- `SUPABASE_SERVICE_ROLE_KEY`
+- `SUPABASE_STORAGE_BUCKET`
 - `DB_HOST`
 - `DB_PORT`
 - `DB_USER`
@@ -165,7 +174,7 @@ Variabel utama:
 
 ## Catatan Database
 
-Schema awal akan membuat tabel:
+Saat server start, bootstrap akan otomatis menerapkan schema PostgreSQL di [backend/config/schema.sql](d:/Laragon/www/ikasmanda/backend/config/schema.sql) dan membuat tabel berikut jika belum ada:
 
 - `alumni`
 - `usaha`
@@ -194,7 +203,7 @@ Gunakan nilai aman sebelum deployment production, terutama:
 
 - file sensitif seperti `backend/.env` tidak ikut di-push
 - `backend/node_modules` tidak ikut repo
-- folder `frontend/uploads` diabaikan, hanya struktur folder yang disimpan
+- asset upload production sebaiknya disimpan di Supabase Storage
 - `backend/package-lock.json` tetap disimpan agar instalasi konsisten
 
 ## Catatan Production
@@ -203,6 +212,7 @@ Sebelum deploy ke server production:
 
 - ganti kredensial admin default
 - gunakan password database yang kuat
+- gunakan connection string Supabase yang benar
 - isi konfigurasi SMTP yang valid
 - set `CORS_ORIGIN` ke domain aplikasi
 - aktifkan reverse proxy jika tidak ingin memakai `:3000`
@@ -214,6 +224,13 @@ Panduan khusus deploy project ini ke Coolify tersedia di:
 - [docs/deploy-coolify.md](d:/Laragon/www/ikasmanda/docs/deploy-coolify.md)
 - [docs/deploy-coolify-checklist.md](d:/Laragon/www/ikasmanda/docs/deploy-coolify-checklist.md)
 - [backend/.env.production.example](d:/Laragon/www/ikasmanda/backend/.env.production.example)
+
+## Deploy ke Vercel
+
+Panduan deploy untuk target `Vercel + Supabase` tersedia di:
+
+- [docs/deploy-vercel.md](d:/Laragon/www/ikasmanda/docs/deploy-vercel.md)
+- [vercel.json](d:/Laragon/www/ikasmanda/vercel.json)
 
 ## Changelog
 
