@@ -38,8 +38,8 @@ const UsahaModel = {
     }
 
     if (search) {
-      conditions.push('(u.nama_usaha LIKE ? OR a.nama LIKE ?)');
-      params.push(`%${search}%`, `%${search}%`);
+      conditions.push('(u.nama_usaha LIKE ? OR u.phone_usaha LIKE ? OR a.nama LIKE ?)');
+      params.push(`%${search}%`, `%${search}%`, `%${search}%`);
     }
 
     const where = conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';

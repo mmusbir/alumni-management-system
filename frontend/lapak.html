@@ -107,7 +107,7 @@
                 <path d="m20 20-4.2-4.2" stroke="currentColor" stroke-linecap="round" stroke-width="1.8"/>
               </svg>
             </span>
-            <input class="w-full rounded-xl border-slate-200 pl-10 pr-3 py-2.5 focus:border-primary focus:ring-primary" id="searchUsaha" placeholder="Cari nama usaha atau pemilik..." type="text" />
+            <input class="w-full rounded-xl border-slate-200 pl-10 pr-3 py-2.5 focus:border-primary focus:ring-primary" id="searchUsaha" placeholder="Cari nama usaha, pemilik, atau no. HP usaha..." type="text" />
           </div>
           <select class="rounded-xl border-slate-200 px-3 py-2.5 focus:border-primary focus:ring-primary" id="filterKategori">
             <option value="">Semua Kategori</option>
@@ -177,6 +177,8 @@
         </svg>
       `;
     };
+
+    const toTelHref = (value) => `tel:${String(value || '').replace(/[^\d+]/g, '')}`;
 
     const setSiteBranding = async () => {
       try {
@@ -288,7 +290,19 @@
             <div class="mt-2">
               <p class="inline-flex rounded-full bg-slate-100 px-2.5 py-1 text-xs font-bold uppercase tracking-wide text-slate-600">${item.kategori}</p>
             </div>
-            <p class="mt-auto pt-5 text-sm text-slate-500">Pemilik: <span class="font-semibold text-slate-700">${item.pemilik}</span></p>
+            <div class="mt-auto space-y-2 pt-5">
+              <p class="text-sm text-slate-500">Pemilik: <span class="font-semibold text-slate-700">${item.pemilik}</span></p>
+              ${item.phone_usaha ? `
+                <a class="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:text-accent" href="${toTelHref(item.phone_usaha)}">
+                  <span class="icon-svg">
+                    <svg aria-hidden="true" class="h-4 w-4" fill="none" viewBox="0 0 24 24">
+                      <path d="M7.5 4.5h3l1.5 4-2 1.5a16 16 0 0 0 4 4l1.5-2 4 1.5v3A1.5 1.5 0 0 1 18 18C10.8 18 5 12.2 5 5a1.5 1.5 0 0 1 1.5-1.5Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6"/>
+                    </svg>
+                  </span>
+                  <span>No. HP: ${item.phone_usaha}</span>
+                </a>
+              ` : '<p class="text-sm text-slate-400">No. HP usaha belum tersedia</p>'}
+            </div>
           </div>
         </article>
       `).join('');
