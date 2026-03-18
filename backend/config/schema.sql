@@ -81,6 +81,7 @@ CREATE TABLE IF NOT EXISTS site_settings (
   hide_logo_text_on_index SMALLINT NOT NULL DEFAULT 0,
   logo_image_url VARCHAR(255),
   favicon_url VARCHAR(255),
+  whatsapp_number VARCHAR(30) NOT NULL DEFAULT '+62 812-3456-7890',
   hero_title VARCHAR(255) NOT NULL DEFAULT 'Ikatan Keluarga Alumni SMAN 2 Kendal',
   hero_subtitle TEXT,
   hero_primary_text VARCHAR(100) NOT NULL DEFAULT 'Daftar Sekarang',
@@ -101,7 +102,8 @@ ALTER TABLE usaha
 
 ALTER TABLE site_settings
   ADD COLUMN IF NOT EXISTS logo_image_url VARCHAR(255),
-  ADD COLUMN IF NOT EXISTS hide_logo_text_on_index SMALLINT NOT NULL DEFAULT 0;
+  ADD COLUMN IF NOT EXISTS hide_logo_text_on_index SMALLINT NOT NULL DEFAULT 0,
+  ADD COLUMN IF NOT EXISTS whatsapp_number VARCHAR(30) NOT NULL DEFAULT '+62 812-3456-7890';
 
 DROP TRIGGER IF EXISTS trg_lapak_categories_updated_at ON lapak_categories;
 CREATE TRIGGER trg_lapak_categories_updated_at
@@ -130,6 +132,7 @@ EXECUTE FUNCTION set_updated_at();
 INSERT INTO site_settings (
   id,
   logo_text,
+  whatsapp_number,
   hero_title,
   hero_subtitle,
   hero_primary_text,
@@ -140,6 +143,7 @@ INSERT INTO site_settings (
 VALUES (
   1,
   'IKA SMANDA',
+  '+62 812-3456-7890',
   'Ikatan Keluarga Alumni SMAN 2 Kendal',
   'Menghubungkan alumni lintas angkatan dan membangun kolaborasi nyata bagi almamater serta sesama alumni.',
   'Daftar Sekarang',
@@ -151,6 +155,7 @@ ON CONFLICT (id) DO NOTHING;
 
 UPDATE site_settings
 SET
+  whatsapp_number = COALESCE(NULLIF(TRIM(whatsapp_number), ''), '+62 812-3456-7890'),
   hero_primary_link = CASE
     WHEN hero_primary_link = '#daftar' THEN '/pendaftaran'
     ELSE hero_primary_link

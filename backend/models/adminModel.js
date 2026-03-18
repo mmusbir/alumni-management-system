@@ -544,15 +544,16 @@ const AdminModel = {
 
   async getSiteSettings() {
     const [rows] = await db.execute(
-      `SELECT
-         id,
-         logo_text,
-         hide_logo_text_on_index,
-         logo_image_url,
-         favicon_url,
-         hero_title,
-         hero_subtitle,
-         hero_primary_text,
+        `SELECT
+           id,
+           logo_text,
+           hide_logo_text_on_index,
+           logo_image_url,
+           favicon_url,
+           whatsapp_number,
+           hero_title,
+           hero_subtitle,
+           hero_primary_text,
          hero_primary_link,
          hero_secondary_text,
          hero_secondary_link,
@@ -569,14 +570,15 @@ const AdminModel = {
   async updateSiteSettings(data) {
     await db.execute(
       `UPDATE site_settings
-       SET
-        logo_text = ?,
-        hide_logo_text_on_index = ?,
-        logo_image_url = ?,
-        favicon_url = ?,
-        hero_title = ?,
-        hero_subtitle = ?,
-         hero_primary_text = ?,
+        SET
+         logo_text = ?,
+         hide_logo_text_on_index = ?,
+         logo_image_url = ?,
+         favicon_url = ?,
+         whatsapp_number = ?,
+         hero_title = ?,
+         hero_subtitle = ?,
+          hero_primary_text = ?,
          hero_primary_link = ?,
          hero_secondary_text = ?,
          hero_secondary_link = ?,
@@ -587,6 +589,7 @@ const AdminModel = {
         data.hide_logo_text_on_index ? 1 : 0,
         data.logo_image_url,
         data.favicon_url,
+        data.whatsapp_number,
         data.hero_title,
         data.hero_subtitle,
         data.hero_primary_text,

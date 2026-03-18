@@ -527,6 +527,7 @@
             <label class="flex items-start gap-3 rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-700"><input id="hideLogoTextOnIndex" type="checkbox" class="mt-0.5 h-4 w-4 rounded border-slate-300 text-primary focus:ring-primary" /><span>Sembunyikan teks logo di halaman index dan panel admin saat logo PNG/JPG ditampilkan.</span></label>
             <div><label class="mb-1 block text-sm font-semibold">Unggah Favicon</label><input id="faviconFile" accept="image/png,image/jpeg" type="file" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px]" /><div class="mt-2 flex items-center gap-3"><img id="faviconPreview" class="hidden h-14 w-14 rounded-lg border border-slate-200 object-contain p-1" alt="Preview favicon" /><button id="removeFaviconBtn" type="button" class="hidden rounded-lg border border-red-200 px-3 py-1.5 text-xs font-semibold text-red-600 hover:bg-red-50">Hapus</button></div></div>
             <div><label class="mb-1 block text-sm font-semibold">Unggah Logo</label><input id="logoFile" accept="image/png,image/jpeg" type="file" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px]" /><div class="mt-2 flex items-center gap-3"><img id="logoPreview" class="hidden h-14 w-auto rounded-lg border border-slate-200 object-contain p-1" alt="Preview logo" /><button id="removeLogoBtn" type="button" class="hidden rounded-lg border border-red-200 px-3 py-1.5 text-xs font-semibold text-red-600 hover:bg-red-50">Hapus</button></div></div>
+            <div><label class="mb-1 block text-sm font-semibold">Nomor WhatsApp</label><input id="whatsappNumber" type="text" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" placeholder="+62 812-3456-7890 atau 081234567890" /><p class="mt-1 text-xs text-slate-500">Dipakai untuk tombol WhatsApp mengambang di halaman depan dan nomor HP pada footer.</p></div>
             <div><label class="mb-1 block text-sm font-semibold">Judul Hero</label><input id="heroTitle" type="text" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary" /></div>
             <div><label class="mb-1 block text-sm font-semibold">Subjudul Hero</label><textarea id="heroSubtitle" rows="4" class="w-full rounded-lg border border-slate-300 px-3 py-2 text-[13px] outline-none focus:border-primary"></textarea></div>
           </div>
@@ -725,6 +726,7 @@
       state.deleteHero = false;
       document.getElementById('logoText').value = data.logo_text || '';
       document.getElementById('hideLogoTextOnIndex').checked = Boolean(data.hide_logo_text_on_index);
+      document.getElementById('whatsappNumber').value = data.whatsapp_number || '';
       document.getElementById('heroTitle').value = data.hero_title || '';
       document.getElementById('heroSubtitle').value = data.hero_subtitle || '';
       document.getElementById('heroPrimaryText').value = data.hero_primary_text || '';
@@ -1104,6 +1106,7 @@
       const formData = new FormData();
       formData.append('logo_text', document.getElementById('logoText').value.trim());
       formData.append('hide_logo_text_on_index', document.getElementById('hideLogoTextOnIndex').checked ? '1' : '0');
+      formData.append('whatsapp_number', document.getElementById('whatsappNumber').value.trim());
       formData.append('delete_favicon_file', state.deleteFavicon ? '1' : '0');
       formData.append('delete_logo_file', state.deleteLogo ? '1' : '0');
       formData.append('delete_hero_file', state.deleteHero ? '1' : '0');

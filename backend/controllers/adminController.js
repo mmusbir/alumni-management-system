@@ -837,6 +837,7 @@ const adminController = {
           : parseBooleanValue(req.body.hide_logo_text_on_index),
         logo_image_url: nextLogoUrl,
         favicon_url: nextFaviconUrl,
+        whatsapp_number: sanitizeString(req.body.whatsapp_number, 30) || currentSettings.whatsapp_number,
         hero_title: sanitizeString(req.body.hero_title, 255) || currentSettings.hero_title,
         hero_subtitle: sanitizeString(req.body.hero_subtitle, 1000) || currentSettings.hero_subtitle,
         hero_primary_text: sanitizeString(req.body.hero_primary_text, 100) || currentSettings.hero_primary_text,
