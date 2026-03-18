@@ -58,11 +58,12 @@
       z-index: 40;
       display: inline-flex;
       align-items: center;
-      gap: 0.75rem;
+      justify-content: center;
       border-radius: 999px;
       background: linear-gradient(135deg, #16a34a, #22c55e);
       color: white;
-      padding: 0.85rem 1rem;
+      width: 3.6rem;
+      height: 3.6rem;
       box-shadow: 0 18px 40px rgba(22, 163, 74, 0.28);
       transition: transform 180ms ease, box-shadow 180ms ease;
     }
@@ -70,34 +71,12 @@
       transform: translateY(-2px);
       box-shadow: 0 22px 48px rgba(22, 163, 74, 0.34);
     }
-    .floating-whatsapp-label {
-      display: flex;
-      flex-direction: column;
-      min-width: 0;
-      line-height: 1.15;
-    }
-    .floating-whatsapp-label strong {
-      font-size: 0.9rem;
-      font-weight: 800;
-      letter-spacing: 0.01em;
-    }
-    .floating-whatsapp-label span {
-      font-size: 0.72rem;
-      color: rgba(255, 255, 255, 0.84);
-      white-space: nowrap;
-    }
     @media (max-width: 767px) {
       .floating-whatsapp {
         right: 0.875rem;
         bottom: 0.875rem;
-        gap: 0.625rem;
-        padding: 0.8rem 0.9rem;
-      }
-      .floating-whatsapp-label strong {
-        font-size: 0.84rem;
-      }
-      .floating-whatsapp-label span {
-        font-size: 0.68rem;
+        width: 3.35rem;
+        height: 3.35rem;
       }
     }
     @keyframes enterUp {
@@ -353,10 +332,6 @@ Yunaka Tech</a>. ❤️
         <path d="M9.4 9.1c.2-.4.4-.4.6-.4h.5c.2 0 .4 0 .5.3l.7 1.8c.1.2 0 .4-.1.6l-.5.6c.6 1.1 1.5 1.9 2.6 2.5l.8-.5c.2-.1.4-.1.6 0l1.6.8c.2.1.3.2.3.5v.5c0 .2 0 .4-.3.6-.5.3-1 .5-1.5.5-3.6 0-6.5-2.9-6.5-6.5 0-.5.2-1 .5-1.4Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
       </svg>
     </span>
-    <span class="floating-whatsapp-label">
-      <strong>Chat WhatsApp</strong>
-      <span id="floatingWhatsappNumber">+62 812-3456-7890</span>
-    </span>
   </a>
 
   <script>
@@ -395,7 +370,6 @@ Yunaka Tech</a>. ❤️
       const footerWhatsappNumber = document.getElementById('footerWhatsappNumber');
       const footerWhatsappLink = document.getElementById('footerWhatsappLink');
       const floatingWhatsappButton = document.getElementById('floatingWhatsappButton');
-      const floatingWhatsappNumber = document.getElementById('floatingWhatsappNumber');
 
       if (logoText && settings.logo_text) logoText.textContent = settings.logo_text;
       if (logoImage) {
@@ -436,7 +410,6 @@ Yunaka Tech</a>. ❤️
 
       if (footerWhatsappNumber) footerWhatsappNumber.textContent = whatsappDisplay;
       if (footerWhatsappLink) footerWhatsappLink.href = whatsappUrl;
-      if (floatingWhatsappNumber) floatingWhatsappNumber.textContent = whatsappDisplay;
       if (floatingWhatsappButton) floatingWhatsappButton.href = whatsappUrl;
     };
 
