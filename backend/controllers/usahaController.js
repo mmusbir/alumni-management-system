@@ -33,7 +33,10 @@ const usahaController = {
    */
   async createUsaha(req, res) {
     try {
-      const id = await UsahaModel.create(req.body);
+      const id = await UsahaModel.create({
+        ...req.body,
+        phone_usaha: req.body.phone_usaha || req.body.phone,
+      });
 
       return res.status(201).json({
         success: true,

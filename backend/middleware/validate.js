@@ -89,6 +89,11 @@ const validateRegister = [
     .trim()
     .isLength({ max: 100 }),
 
+  body('phone_usaha')
+    .optional({ values: 'falsy' })
+    .trim()
+    .matches(/^[0-9+\-\s]{8,20}$/).withMessage('Format no. HP usaha tidak valid'),
+
   handleValidation,
 ];
 
@@ -105,6 +110,11 @@ const validateUsaha = [
     .trim()
     .notEmpty().withMessage('Kategori wajib diisi')
     .isLength({ max: 100 }),
+
+  body('phone_usaha')
+    .trim()
+    .notEmpty().withMessage('No. HP usaha wajib diisi')
+    .matches(/^[0-9+\-\s]{8,20}$/).withMessage('Format no. HP usaha tidak valid'),
 
   body('pemilik_id')
     .notEmpty().withMessage('Pemilik ID wajib diisi')

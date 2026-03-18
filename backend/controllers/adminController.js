@@ -29,6 +29,8 @@ function parseBooleanValue(value) {
 }
 
 function normalizeImportedRow(row = {}) {
+  const alumniPhone = sanitizeString(row.phone, 20);
+  const punyaUsaha = parseBooleanValue(row.punya_usaha);
   return {
     nama: sanitizeString(row.nama, 150),
     angkatan: sanitizeString(row.angkatan, 10),
@@ -36,10 +38,11 @@ function normalizeImportedRow(row = {}) {
     tanggal_lahir: sanitizeString(row.tanggal_lahir, 20),
     gender: sanitizeString(row.gender, 20) || 'Laki-laki',
     email: sanitizeString(row.email, 150)?.toLowerCase(),
-    phone: sanitizeString(row.phone, 20),
+    phone: alumniPhone,
     profesi: sanitizeString(row.profesi, 100),
-    punya_usaha: parseBooleanValue(row.punya_usaha),
+    punya_usaha: punyaUsaha,
     nama_usaha: sanitizeString(row.nama_usaha, 150),
+    phone_usaha: punyaUsaha ? (sanitizeString(row.phone_usaha, 20) || alumniPhone) : null,
     kategori_usaha: sanitizeString(row.kategori_usaha, 100),
     provinsi: sanitizeString(row.provinsi, 100),
     kota: sanitizeString(row.kota, 100),
@@ -68,6 +71,8 @@ function normalizeAdminAlumniPayload(body = {}) {
   const punyaUsaha = profesi === 'Wirausaha' || parseBooleanValue(body.punya_usaha);
   const namaUsaha = sanitizeString(body.nama_usaha, 150);
   const kategoriUsaha = sanitizeString(body.kategori_usaha, 100);
+  const alumniPhone = sanitizeString(body.phone, 20);
+  const phoneUsaha = sanitizeString(body.phone_usaha, 20) || alumniPhone;
   return {
     nama: sanitizeString(body.nama, 150),
     angkatan: sanitizeString(body.angkatan, 10),
@@ -75,10 +80,11 @@ function normalizeAdminAlumniPayload(body = {}) {
     tanggal_lahir: sanitizeString(body.tanggal_lahir, 20),
     gender: sanitizeString(body.gender, 20) || 'Laki-laki',
     email: sanitizeString(body.email, 150)?.toLowerCase(),
-    phone: sanitizeString(body.phone, 20),
+    phone: alumniPhone,
     profesi,
     punya_usaha: punyaUsaha ? 1 : 0,
     nama_usaha: punyaUsaha ? namaUsaha : null,
+    phone_usaha: punyaUsaha ? phoneUsaha : null,
     kategori_usaha: punyaUsaha ? kategoriUsaha : null,
     provinsi: sanitizeString(body.provinsi, 100),
     kota: sanitizeString(body.kota, 100),
@@ -108,6 +114,7 @@ function normalizeAdminUsahaPayload(body = {}) {
   const pemilikId = parseInt(body.pemilik_id, 10);
   return {
     nama_usaha: sanitizeString(body.nama_usaha, 150),
+    phone_usaha: sanitizeString(body.phone_usaha, 20),
     kategori: sanitizeString(body.kategori, 100),
     pemilik_id: Number.isInteger(pemilikId) && pemilikId > 0 ? pemilikId : null,
     is_verified: isVerified ? 1 : 0,
@@ -118,6 +125,7 @@ function normalizeAdminUsahaPayload(body = {}) {
 function validateAdminUsahaPayload(payload) {
   const errors = [];
   if (!payload.nama_usaha) errors.push('nama usaha wajib diisi');
+  if (!payload.phone_usaha) errors.push('No. HP usaha wajib diisi');
   if (!payload.kategori) errors.push('kategori usaha wajib diisi');
   if (!payload.pemilik_id) errors.push('pemilik alumni wajib dipilih');
   return errors;
@@ -899,9 +907,9 @@ const adminController = {
 
   async downloadAlumniImportTemplate(_req, res) {
     const template = [
-      'nama,angkatan,tempat_lahir,tanggal_lahir,gender,email,phone,profesi,punya_usaha,nama_usaha,kategori_usaha,provinsi,kota,alamat',
-      'Budi Santoso,2005,Kendal,1987-01-10,Laki-laki,budi@example.com,081234567890,Swasta,false,,,Jawa Tengah,Semarang,"Jl. Pandanaran No. 1"',
-      'Siti Aminah,2008,Semarang,1990-08-21,Perempuan,siti@example.com,081298765432,Wirausaha,true,Kopi Alumni,Kuliner,Jawa Tengah,Kendal,"Jl. Raya Kendal No. 2"',
+      'nama,angkatan,tempat_lahir,tanggal_lahir,gender,email,phone,profesi,punya_usaha,nama_usaha,phone_usaha,kategori_usaha,provinsi,kota,alamat',
+      'Budi Santoso,2005,Kendal,1987-01-10,Laki-laki,budi@example.com,081234567890,Swasta,false,,,,Jawa Tengah,Semarang,"Jl. Pandanaran No. 1"',
+      'Siti Aminah,2008,Semarang,1990-08-21,Perempuan,siti@example.com,081298765432,Wirausaha,true,Kopi Alumni,082233445566,Kuliner,Jawa Tengah,Kendal,"Jl. Raya Kendal No. 2"',
     ].join('\n');
 
     res.setHeader('Content-Type', 'text/csv; charset=utf-8');

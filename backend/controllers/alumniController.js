@@ -41,6 +41,7 @@ const alumniController = {
       if (data.punya_usaha && data.nama_usaha && data.kategori_usaha) {
         await UsahaModel.create({
           nama_usaha: data.nama_usaha,
+          phone_usaha: data.phone_usaha || data.phone,
           kategori: data.kategori_usaha,
           pemilik_id: alumniId,
           is_verified: false,

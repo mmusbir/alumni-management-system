@@ -134,7 +134,7 @@ const AdminModel = {
   async getRecentUsaha(limit = 5) {
     const safeLimit = Number.isInteger(limit) && limit > 0 ? limit : 5;
     const [rows] = await db.execute(
-      `SELECT u.id, u.nama_usaha, u.kategori, a.nama AS pemilik, u.created_at
+      `SELECT u.id, u.nama_usaha, u.phone_usaha, u.kategori, a.nama AS pemilik, u.created_at
        FROM usaha u
        JOIN alumni a ON a.id = u.pemilik_id
        ORDER BY u.created_at DESC
@@ -167,12 +167,19 @@ const AdminModel = {
     const total = countRows[0]?.total || 0;
 
     const [rows] = await db.execute(
-      `SELECT id, nama, angkatan, tempat_lahir, tanggal_lahir, gender, email, phone,
-              profesi, punya_usaha, nama_usaha, kategori_usaha,
-              provinsi, kota, alamat, created_at, is_verified, verified_at
-       FROM alumni
+      `SELECT a.id, a.nama, a.angkatan, a.tempat_lahir, a.tanggal_lahir, a.gender, a.email, a.phone,
+              a.profesi, a.punya_usaha, a.nama_usaha, a.kategori_usaha,
+              (
+                SELECT u.phone_usaha
+                FROM usaha u
+                WHERE u.pemilik_id = a.id
+                ORDER BY u.created_at DESC
+                LIMIT 1
+              ) AS phone_usaha,
+              a.provinsi, a.kota, a.alamat, a.created_at, a.is_verified, a.verified_at
+       FROM alumni a
        ${where}
-       ORDER BY created_at DESC
+       ORDER BY a.created_at DESC
        LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}`,
       params,
     );
@@ -197,8 +204,8 @@ const AdminModel = {
     }
 
     if (search) {
-      conditions.push('(u.nama_usaha LIKE ? OR a.nama LIKE ?)');
-      params.push(`%${search}%`, `%${search}%`);
+      conditions.push('(u.nama_usaha LIKE ? OR u.phone_usaha LIKE ? OR a.nama LIKE ?)');
+      params.push(`%${search}%`, `%${search}%`, `%${search}%`);
     }
 
     const where = conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';
@@ -212,7 +219,7 @@ const AdminModel = {
     const total = countRows[0]?.total || 0;
 
     const [rows] = await db.execute(
-      `SELECT u.id, u.nama_usaha, u.kategori, u.pemilik_id, a.nama AS pemilik,
+      `SELECT u.id, u.nama_usaha, u.phone_usaha, u.kategori, u.pemilik_id, a.nama AS pemilik,
               u.created_at, u.is_verified, u.verified_at
        FROM usaha u
        JOIN alumni a ON a.id = u.pemilik_id
@@ -246,11 +253,18 @@ const AdminModel = {
 
   async getAlumniById(id) {
     const [rows] = await db.execute(
-      `SELECT id, nama, angkatan, tempat_lahir, tanggal_lahir, gender, email, phone,
-              profesi, punya_usaha, nama_usaha, kategori_usaha,
-              provinsi, kota, alamat, is_verified, verified_at
-       FROM alumni
-       WHERE id = ? LIMIT 1`,
+      `SELECT a.id, a.nama, a.angkatan, a.tempat_lahir, a.tanggal_lahir, a.gender, a.email, a.phone,
+              a.profesi, a.punya_usaha, a.nama_usaha, a.kategori_usaha,
+              (
+                SELECT u.phone_usaha
+                FROM usaha u
+                WHERE u.pemilik_id = a.id
+                ORDER BY u.created_at DESC
+                LIMIT 1
+              ) AS phone_usaha,
+              a.provinsi, a.kota, a.alamat, a.is_verified, a.verified_at
+       FROM alumni a
+       WHERE a.id = ? LIMIT 1`,
       [id],
     );
     return rows[0] || null;
@@ -289,10 +303,11 @@ const AdminModel = {
 
       if (data.punya_usaha && data.nama_usaha && data.kategori_usaha) {
         await connection.execute(
-          `INSERT INTO usaha (nama_usaha, kategori, pemilik_id, is_verified, verified_at)
-           VALUES (?, ?, ?, ?, ?)`,
+          `INSERT INTO usaha (nama_usaha, phone_usaha, kategori, pemilik_id, is_verified, verified_at)
+           VALUES (?, ?, ?, ?, ?, ?)`,
           [
             data.nama_usaha,
+            data.phone_usaha || data.phone || null,
             data.kategori_usaha,
             result.insertId,
             data.is_verified,
@@ -391,12 +406,14 @@ const AdminModel = {
           await connection.execute(
             `UPDATE usaha
              SET nama_usaha = ?,
+                 phone_usaha = ?,
                  kategori = ?,
                  is_verified = ?,
                  verified_at = ?
              WHERE id = ?`,
             [
               data.nama_usaha,
+              data.phone_usaha || data.phone || null,
               data.kategori_usaha,
               data.is_verified,
               usahaVerificationDate,
@@ -405,10 +422,11 @@ const AdminModel = {
           );
         } else {
           await connection.execute(
-            `INSERT INTO usaha (nama_usaha, kategori, pemilik_id, is_verified, verified_at)
-             VALUES (?, ?, ?, ?, ?)`,
+            `INSERT INTO usaha (nama_usaha, phone_usaha, kategori, pemilik_id, is_verified, verified_at)
+             VALUES (?, ?, ?, ?, ?, ?)`,
             [
               data.nama_usaha,
+              data.phone_usaha || data.phone || null,
               data.kategori_usaha,
               id,
               data.is_verified,
@@ -448,7 +466,7 @@ const AdminModel = {
 
   async getUsahaById(id) {
     const [rows] = await db.execute(
-      `SELECT id, nama_usaha, kategori, pemilik_id, is_verified, verified_at
+      `SELECT id, nama_usaha, phone_usaha, kategori, pemilik_id, is_verified, verified_at
        FROM usaha
        WHERE id = ? LIMIT 1`,
       [id],
@@ -458,10 +476,11 @@ const AdminModel = {
 
   async createAdminUsaha(data) {
     const [result] = await db.execute(
-      `INSERT INTO usaha (nama_usaha, kategori, pemilik_id, is_verified, verified_at)
-       VALUES (?, ?, ?, ?, ?)`,
+      `INSERT INTO usaha (nama_usaha, phone_usaha, kategori, pemilik_id, is_verified, verified_at)
+       VALUES (?, ?, ?, ?, ?, ?)`,
       [
         data.nama_usaha,
+        data.phone_usaha,
         data.kategori,
         data.pemilik_id,
         data.is_verified,
@@ -475,6 +494,7 @@ const AdminModel = {
     const [result] = await db.execute(
       `UPDATE usaha
        SET nama_usaha = ?,
+           phone_usaha = ?,
            kategori = ?,
            pemilik_id = ?,
            is_verified = ?,
@@ -482,6 +502,7 @@ const AdminModel = {
        WHERE id = ?`,
       [
         data.nama_usaha,
+        data.phone_usaha,
         data.kategori,
         data.pemilik_id,
         data.is_verified,
@@ -533,9 +554,16 @@ const AdminModel = {
 
     if (data.punya_usaha && data.nama_usaha && data.kategori_usaha) {
       await connection.execute(
-        `INSERT INTO usaha (nama_usaha, kategori, pemilik_id, is_verified, verified_at)
-         VALUES (?, ?, ?, ?, ?)`,
-        [data.nama_usaha, data.kategori_usaha, alumniResult.insertId, 1, verifiedAt],
+        `INSERT INTO usaha (nama_usaha, phone_usaha, kategori, pemilik_id, is_verified, verified_at)
+         VALUES (?, ?, ?, ?, ?, ?)`,
+        [
+          data.nama_usaha,
+          data.phone_usaha || data.phone || null,
+          data.kategori_usaha,
+          alumniResult.insertId,
+          1,
+          verifiedAt,
+        ],
       );
     }
 

@@ -10,11 +10,12 @@ const UsahaModel = {
     const isVerified = data.is_verified === undefined ? 1 : (data.is_verified ? 1 : 0);
     const verifiedAt = isVerified ? (data.verified_at || new Date()) : null;
     const sql = `
-      INSERT INTO usaha (nama_usaha, kategori, pemilik_id, is_verified, verified_at)
-      VALUES (?, ?, ?, ?, ?)
+      INSERT INTO usaha (nama_usaha, phone_usaha, kategori, pemilik_id, is_verified, verified_at)
+      VALUES (?, ?, ?, ?, ?, ?)
     `;
     const [result] = await db.execute(sql, [
       data.nama_usaha,
+      data.phone_usaha || null,
       data.kategori,
       data.pemilik_id,
       isVerified,
@@ -53,7 +54,7 @@ const UsahaModel = {
     const total = countRows[0].total;
 
     const [rows] = await db.execute(
-      `SELECT u.id, u.nama_usaha, u.kategori, u.pemilik_id,
+      `SELECT u.id, u.nama_usaha, u.phone_usaha, u.kategori, u.pemilik_id,
               a.nama AS pemilik, u.created_at
        FROM usaha u
        JOIN alumni a ON a.id = u.pemilik_id
