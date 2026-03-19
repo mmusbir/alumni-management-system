@@ -4,13 +4,13 @@ Sistem manajemen alumni untuk Ikatan Keluarga Alumni SMAN 2 Kendal.
 
 Project ini mencakup:
 - website publik untuk beranda, direktori alumni, lapak usaha, dan pendaftaran mandiri
-- panel admin untuk verifikasi, CRUD data, import CSV, pengaturan halaman depan, kategori lapak, provinsi, dan user admin
-- backend API berbasis Express + Supabase Postgres
+- panel admin untuk verifikasi, CRUD data, import CSV, pengaturan halaman depan, kategori lapak, provinsi, dan pengguna admin
+- backend API berbasis Express yang memakai Supabase Postgres dan Supabase Storage
 
 ## Fitur Utama
 
-- autentikasi admin berbasis session
-- dashboard admin dengan sidebar dan submenu pengaturan
+- autentikasi admin berbasis session cookie
+- dashboard admin responsif
 - manajemen data alumni:
   - tambah
   - edit
@@ -22,111 +22,99 @@ Project ini mencakup:
   - edit
   - hapus
   - verifikasi
+  - nomor HP usaha terpisah dari nomor HP alumni
 - pengaturan halaman depan:
   - favicon
   - logo
   - hero section
   - hide/show teks logo
+  - nomor WhatsApp publik
 - manajemen kategori lapak
 - manajemen provinsi
-- manajemen user admin
+- manajemen pengguna admin
 - direktori alumni publik dengan filter
 - lapak alumni publik dengan filter
 - pendaftaran alumni mandiri dengan alur verifikasi admin
 
 ## Stack
 
-- Frontend: HTML, Tailwind via CDN, vanilla JavaScript
+- Frontend: HTML, Tailwind CSS via CDN, vanilla JavaScript
 - Backend: Node.js, Express
 - Database: Supabase Postgres
+- Storage: Supabase Storage
 - Upload: Multer
 - Mailer: Nodemailer
+- Deploy target utama: Vercel
 
-## Struktur Folder
+## Struktur Project
 
 - `frontend/`
   - halaman publik
-  - halaman login admin
+  - login admin
   - panel admin
-  - folder upload publik
 - `backend/`
-  - API
-  - model
   - controller
+  - model
   - route
   - middleware
   - bootstrap schema database
+- `api/`
+  - entrypoint serverless untuk Vercel
+- `docs/`
+  - panduan deployment
 
-## Menjalankan Secara Lokal
+## Quick Start Lokal
 
-### 1. Clone repository
+### 1. Clone repo
 
 ```powershell
-git clone https://github.com/mmusbir/alumni-management-system.git
-cd alumni-management-system
+git clone <url-repository-anda>
+cd <nama-folder-project>
 ```
 
-### 2. Siapkan file environment
-
-Salin file contoh:
+### 2. Buat file environment
 
 ```powershell
 Copy-Item backend/.env.example backend/.env
 ```
 
-Lalu sesuaikan nilai di `backend/.env`.
+Lalu isi `backend/.env` dengan kredensial Supabase Anda.
 
 ### 3. Siapkan Supabase
 
-1. Buat project baru di Supabase.
-2. Ambil connection string Postgres dan kredensial project dari dashboard Supabase.
-3. Isi `DATABASE_URL`, `SUPABASE_URL`, dan `SUPABASE_SERVICE_ROLE_KEY` di `backend/.env`.
-
-Contoh:
+Minimal isi:
 
 ```env
 DATABASE_URL=postgresql://postgres.[PROJECT-REF]:YOUR-PASSWORD@HOST:5432/postgres
 DB_SSL=true
+DB_POOL_MAX=5
 SUPABASE_URL=https://PROJECT-REF.supabase.co
 SUPABASE_SERVICE_ROLE_KEY=YOUR-SERVICE-ROLE-KEY
 SUPABASE_STORAGE_BUCKET=ikasmanda-assets
 ```
 
-Jika Anda lebih suka mengisi variabel terpisah, backend juga masih mendukung `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, dan `DB_NAME`.
+Catatan:
+- untuk lokal, session pooler atau direct connection sama-sama bisa dipakai selama koneksinya valid
+- untuk Vercel, gunakan connection string Supabase pooler
+- bucket `ikasmanda-assets` sebaiknya dibuat `public` jika dipakai untuk asset halaman depan
 
-Schema dan seed awal akan diterapkan otomatis saat server backend pertama kali dijalankan, jadi Anda tidak perlu import SQL manual.
+Schema dan seed awal akan diterapkan otomatis saat server pertama kali dijalankan.
 
 ### 4. Install dependency
 
-Dari root project, jalankan:
+Dari root project:
 
 ```powershell
 npm install
 ```
 
-Perintah ini akan meneruskan instalasi ke folder `backend/`.
+Script root akan meneruskan instalasi ke folder `backend/`.
 
-Jika Anda ingin menjalankannya manual seperti sebelumnya, tetap bisa menggunakan:
+### 5. Jalankan project
 
-```powershell
-cd backend
-npm install
-```
-
-### 5. Jalankan server
-
-Dari root project, jalankan:
+Dari root project:
 
 ```powershell
-npm run dev
-```
-
-Perintah ini akan meneruskan script `dev` ke `backend/`.
-
-Jika Anda ingin menjalankannya manual dari folder backend, tetap bisa:
-
-```powershell
-cd backend
 npm run dev
 ```
 
@@ -134,33 +122,41 @@ Server default berjalan di:
 
 - `http://localhost:3000`
 
-Jika port `3000` sedang dipakai proses lain, backend akan otomatis mencoba port berikutnya seperti `3001`, `3002`, dan seterusnya. Lihat log terminal untuk mengetahui port aktif yang dipakai.
+Jika port `3000` sedang dipakai, backend akan otomatis mencoba `3001`, `3002`, dan seterusnya.
 
 ### 6. Akses aplikasi
 
-- Website publik: `http://localhost:3000/`
-- Direktori: `http://localhost:3000/direktori`
-- Lapak: `http://localhost:3000/lapak`
-- Pendaftaran: `http://localhost:3000/pendaftaran`
-- Login admin: `http://localhost:3000/admin`
+- website publik: `http://localhost:3000/`
+- direktori: `http://localhost:3000/direktori`
+- lapak: `http://localhost:3000/lapak`
+- pendaftaran: `http://localhost:3000/pendaftaran`
+- login admin: `http://localhost:3000/admin`
 
-## Konfigurasi Environment
+## Script Root
 
-Contoh konfigurasi tersedia di [backend/.env.example](d:/Laragon/www/ikasmanda/backend/.env.example).
+File [package.json](./package.json) di root menyediakan script:
 
-Variabel utama:
+- `npm install`
+- `npm run dev`
+- `npm run start`
+
+Semua script itu meneruskan eksekusi ke backend, jadi Anda tidak perlu `cd backend` dulu.
+
+## Environment Variables
+
+Contoh konfigurasi:
+- [backend/.env.example](./backend/.env.example)
+- [backend/.env.production.example](./backend/.env.production.example)
+
+Variabel penting:
 
 - `PORT`
 - `DATABASE_URL`
 - `DB_SSL`
+- `DB_POOL_MAX`
 - `SUPABASE_URL`
 - `SUPABASE_SERVICE_ROLE_KEY`
 - `SUPABASE_STORAGE_BUCKET`
-- `DB_HOST`
-- `DB_PORT`
-- `DB_USER`
-- `DB_PASSWORD`
-- `DB_NAME`
 - `CORS_ORIGIN`
 - `SMTP_HOST`
 - `SMTP_PORT`
@@ -172,9 +168,18 @@ Variabel utama:
 - `ADMIN_DEFAULT_PASSWORD`
 - `ADMIN_SESSION_TTL_SECONDS`
 
-## Catatan Database
+Backend juga masih mendukung alternatif variabel terpisah:
+- `DB_HOST`
+- `DB_PORT`
+- `DB_USER`
+- `DB_PASSWORD`
+- `DB_NAME`
 
-Saat server start, bootstrap akan otomatis menerapkan schema PostgreSQL di [backend/config/schema.sql](d:/Laragon/www/ikasmanda/backend/config/schema.sql) dan membuat tabel berikut jika belum ada:
+## Database dan Seed
+
+Saat backend start, bootstrap akan otomatis menerapkan schema PostgreSQL dari [backend/config/schema.sql](./backend/config/schema.sql).
+
+Tabel utama:
 
 - `alumni`
 - `usaha`
@@ -184,57 +189,52 @@ Saat server start, bootstrap akan otomatis menerapkan schema PostgreSQL di [back
 - `admin_sessions`
 - `site_settings`
 
-Seed awal juga mencakup:
+Seed awal mencakup:
 
 - kategori lapak default
-- seluruh provinsi Indonesia
+- daftar provinsi Indonesia
 - site settings default
-
-## Catatan Admin Bootstrap
-
-Akun admin awal dibaca dari file `.env`.
-
-Gunakan nilai aman sebelum deployment production, terutama:
-
-- `ADMIN_DEFAULT_EMAIL`
-- `ADMIN_DEFAULT_PASSWORD`
-
-## Catatan Upload dan GitHub
-
-- file sensitif seperti `backend/.env` tidak ikut di-push
-- `backend/node_modules` tidak ikut repo
-- asset upload production sebaiknya disimpan di Supabase Storage
-- `backend/package-lock.json` tetap disimpan agar instalasi konsisten
-
-## Catatan Production
-
-Sebelum deploy ke server production:
-
-- ganti kredensial admin default
-- gunakan password database yang kuat
-- gunakan connection string Supabase yang benar
-- isi konfigurasi SMTP yang valid
-- set `CORS_ORIGIN` ke domain aplikasi
-- aktifkan reverse proxy jika tidak ingin memakai `:3000`
-
-## Deploy ke Coolify
-
-Panduan khusus deploy project ini ke Coolify tersedia di:
-
-- [docs/deploy-coolify.md](d:/Laragon/www/ikasmanda/docs/deploy-coolify.md)
-- [docs/deploy-coolify-checklist.md](d:/Laragon/www/ikasmanda/docs/deploy-coolify-checklist.md)
-- [backend/.env.production.example](d:/Laragon/www/ikasmanda/backend/.env.production.example)
+- admin bootstrap dari env jika belum ada
 
 ## Deploy ke Vercel
 
-Panduan deploy untuk target `Vercel + Supabase` tersedia di:
+Arsitektur production yang direkomendasikan:
 
-- [docs/deploy-vercel.md](d:/Laragon/www/ikasmanda/docs/deploy-vercel.md)
-- [vercel.json](d:/Laragon/www/ikasmanda/vercel.json)
+- Vercel untuk frontend dan API serverless
+- Supabase Postgres untuk database
+- Supabase Storage untuk upload asset
+
+Pengaturan Vercel yang disarankan:
+
+- `Framework Preset`: `Other`
+- `Install Command`: `npm install --prefix backend`
+- `Build Command`: kosong
+- `Output Directory`: kosong
+- `Node.js Version`: `22.x`
+
+Untuk `DATABASE_URL` di Vercel, gunakan connection string Supabase pooler, bukan direct connection `db.<project>.supabase.co`.
+
+Lihat panduan lengkap:
+- [docs/deploy-vercel.md](./docs/deploy-vercel.md)
+- [vercel.json](./vercel.json)
+
+## Deploy ke Coolify
+
+Dokumentasi tambahan:
+- [docs/deploy-coolify.md](./docs/deploy-coolify.md)
+- [docs/deploy-coolify-checklist.md](./docs/deploy-coolify-checklist.md)
+
+## Catatan Keamanan
+
+- jangan commit `backend/.env`
+- jangan commit secret Supabase asli ke file example
+- jangan pakai `SUPABASE_SERVICE_ROLE_KEY` di frontend
+- ganti password admin default sebelum production
+- rotate password database jika pernah terekspos
 
 ## Changelog
 
-Riwayat rilis dan perubahan penting tersedia di [CHANGELOG.md](d:/Laragon/www/ikasmanda/CHANGELOG.md).
+- [CHANGELOG.md](./CHANGELOG.md)
 
 ## Lisensi
 
